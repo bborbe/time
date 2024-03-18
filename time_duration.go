@@ -28,8 +28,6 @@ const (
 var UnitMap = map[string]time.Duration{
 	"ns": Nanosecond,
 	"us": Microsecond,
-	"µs": Microsecond, // U+00B5 = micro symbol
-	"μs": Microsecond, // U+03BC = Greek letter mu
 	"ms": Millisecond,
 	"s":  Second,
 	"m":  Minute,
@@ -38,24 +36,30 @@ var UnitMap = map[string]time.Duration{
 	"w":  Week,
 }
 
-var durationRegexp = regexp.MustCompile(`(\d*\.?\d+)([a-z]+)`)
+var durationRegexp = regexp.MustCompile(`^((\d*\.?\d+)(w))?((\d*\.?\d+)(d))?((\d*\.?\d+)(h))?((\d*\.?\d+)(m))?((\d*\.?\d+)(s))?((\d*\.?\d+)(ms))?((\d*\.?\d+)(us))?((\d*\.?\d+)(ns))?$`)
 
-func ParseDuration(ctx context.Context, value string) (*time.Duration, error) {
+func ParseDuration(ctx context.Context, input string) (*time.Duration, error) {
 	var isNegative bool
-	if len(value) > 0 && value[0] == '-' {
+	if len(input) > 0 && input[0] == '-' {
 		isNegative = true
-		value = value[1:]
+		input = input[1:]
 	}
 	var result time.Duration
-	for _, match := range durationRegexp.FindAllStringSubmatch(value, -1) {
-		if len(match) != 3 {
-			return nil, errors.Errorf(ctx, "invalid length of match")
+	matches := durationRegexp.FindStringSubmatch(input)
+	if len(matches) == 0 {
+		return nil, errors.Errorf(ctx, "parse failed")
+	}
+	for i := 1; i < len(matches); i += 3 {
+		value := matches[i+1]
+		unit := matches[i+2]
+		if value == "" || unit == "" {
+			continue
 		}
-		value, err := parseAsDuration(ctx, match[1], match[2])
+		duration, err := parseAsDuration(ctx, value, unit)
 		if err != nil {
 			return nil, errors.Wrapf(ctx, err, "parse failed")
 		}
-		result += value
+		result += duration
 	}
 	if isNegative {
 		result = result * -1

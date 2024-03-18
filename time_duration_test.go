@@ -14,10 +14,10 @@ import (
 )
 
 var _ = DescribeTable("ParseDuration",
-	func(input string, expectedDuration time.Duration, expectedError error) {
+	func(input string, expectedDuration time.Duration, expectedError bool) {
 		duration, err := libtime.ParseDuration(context.Background(), input)
-		if expectedError != nil {
-			Expect(err).To(Equal(expectedError))
+		if expectedError {
+			Expect(err).NotTo(BeNil())
 			Expect(duration).To(BeNil())
 		} else {
 			Expect(err).To(BeNil())
@@ -25,11 +25,17 @@ var _ = DescribeTable("ParseDuration",
 			Expect(*duration).To(Equal(expectedDuration))
 		}
 	},
-	Entry("minute", "1m", time.Minute, nil),
-	Entry("hour", "1h", time.Hour, nil),
-	Entry("day", "1d", 24*time.Hour, nil),
-	Entry("week", "1w", 7*24*time.Hour, nil),
-	Entry("combined", "1h30m", 90*time.Minute, nil),
-	Entry("negative", "-1h30m", -90*time.Minute, nil),
-	Entry("dot", "1.5h", 90*time.Minute, nil),
+	Entry("ns", "1ns", time.Nanosecond, false),
+	Entry("us", "1us", time.Microsecond, false),
+	Entry("ms", "1ms", time.Millisecond, false),
+	Entry("second", "1s", time.Second, false),
+	Entry("minute", "1m", time.Minute, false),
+	Entry("hour", "1h", time.Hour, false),
+	Entry("day", "1d", 24*time.Hour, false),
+	Entry("week", "1w", 7*24*time.Hour, false),
+	Entry("combined", "1h30m", 90*time.Minute, false),
+	Entry("negative", "-1h30m", -90*time.Minute, false),
+	Entry("dot", "1.5h", 90*time.Minute, false),
+	Entry("hello", "hello", time.Duration(0), true),
+	Entry("hello1d", "hello1d", time.Duration(0), true),
 )
