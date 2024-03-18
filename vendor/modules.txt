@@ -38,12 +38,12 @@ github.com/incu6us/goimports-reviser
 github.com/incu6us/goimports-reviser/pkg/astutil
 github.com/incu6us/goimports-reviser/pkg/std
 github.com/incu6us/goimports-reviser/reviser
-# github.com/kisielk/errcheck v1.6.3
-## explicit; go 1.14
+# github.com/kisielk/errcheck v1.7.0
+## explicit; go 1.18
 github.com/kisielk/errcheck
 github.com/kisielk/errcheck/errcheck
-# github.com/maxbrunsfeld/counterfeiter/v6 v6.7.0
-## explicit; go 1.19
+# github.com/maxbrunsfeld/counterfeiter/v6 v6.8.1
+## explicit; go 1.20
 github.com/maxbrunsfeld/counterfeiter/v6
 github.com/maxbrunsfeld/counterfeiter/v6/arguments
 github.com/maxbrunsfeld/counterfeiter/v6/command
@@ -89,12 +89,12 @@ github.com/pkg/errors
 ## explicit; go 1.11
 golang.org/x/lint
 golang.org/x/lint/golint
-# golang.org/x/mod v0.14.0
+# golang.org/x/mod v0.16.0
 ## explicit; go 1.18
 golang.org/x/mod/internal/lazyregexp
 golang.org/x/mod/module
 golang.org/x/mod/semver
-# golang.org/x/net v0.20.0
+# golang.org/x/net v0.22.0
 ## explicit; go 1.18
 golang.org/x/net/context
 golang.org/x/net/html
@@ -103,11 +103,12 @@ golang.org/x/net/html/charset
 # golang.org/x/sync v0.6.0
 ## explicit; go 1.18
 golang.org/x/sync/errgroup
-# golang.org/x/sys v0.16.0
+# golang.org/x/sys v0.18.0
 ## explicit; go 1.18
 golang.org/x/sys/unix
 # golang.org/x/text v0.14.0
 ## explicit; go 1.18
+golang.org/x/text/cases
 golang.org/x/text/encoding
 golang.org/x/text/encoding/charmap
 golang.org/x/text/encoding/htmlindex
@@ -118,6 +119,7 @@ golang.org/x/text/encoding/korean
 golang.org/x/text/encoding/simplifiedchinese
 golang.org/x/text/encoding/traditionalchinese
 golang.org/x/text/encoding/unicode
+golang.org/x/text/internal
 golang.org/x/text/internal/language
 golang.org/x/text/internal/language/compact
 golang.org/x/text/internal/tag
@@ -125,8 +127,9 @@ golang.org/x/text/internal/utf8internal
 golang.org/x/text/language
 golang.org/x/text/runes
 golang.org/x/text/transform
-# golang.org/x/tools v0.17.0
-## explicit; go 1.18
+golang.org/x/text/unicode/norm
+# golang.org/x/tools v0.19.0
+## explicit; go 1.19
 golang.org/x/tools/cover
 golang.org/x/tools/go/analysis
 golang.org/x/tools/go/ast/astutil
@@ -146,6 +149,7 @@ golang.org/x/tools/go/ssa/ssautil
 golang.org/x/tools/go/types/objectpath
 golang.org/x/tools/go/types/typeutil
 golang.org/x/tools/imports
+golang.org/x/tools/internal/aliases
 golang.org/x/tools/internal/event
 golang.org/x/tools/internal/event/core
 golang.org/x/tools/internal/event/keys
@@ -161,19 +165,19 @@ golang.org/x/tools/internal/tokeninternal
 golang.org/x/tools/internal/typeparams
 golang.org/x/tools/internal/typesinternal
 golang.org/x/tools/internal/versions
-# golang.org/x/vuln v1.0.1
+# golang.org/x/vuln v1.0.4
 ## explicit; go 1.18
 golang.org/x/vuln/cmd/govulncheck
 golang.org/x/vuln/internal
+golang.org/x/vuln/internal/buildinfo
 golang.org/x/vuln/internal/client
 golang.org/x/vuln/internal/derrors
+golang.org/x/vuln/internal/gosym
 golang.org/x/vuln/internal/govulncheck
 golang.org/x/vuln/internal/osv
 golang.org/x/vuln/internal/scan
 golang.org/x/vuln/internal/semver
 golang.org/x/vuln/internal/vulncheck
-golang.org/x/vuln/internal/vulncheck/internal/buildinfo
-golang.org/x/vuln/internal/vulncheck/internal/gosym
 golang.org/x/vuln/internal/web
 golang.org/x/vuln/scan
 # gopkg.in/yaml.v3 v3.0.1
