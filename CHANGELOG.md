@@ -11,6 +11,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 ## v1.3.0
 
 - Add compare time
+- go mod update
 
 ## v1.2.0
 
