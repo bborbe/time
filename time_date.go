@@ -11,9 +11,22 @@ import (
 	stdtime "time"
 
 	"github.com/bborbe/errors"
+	"github.com/bborbe/parse"
 
 	"github.com/bborbe/validation"
 )
+
+func ParseDate(ctx context.Context, value interface{}) (*Date, error) {
+	str, err := parse.ParseString(ctx, value)
+	if err != nil {
+		return nil, errors.Wrapf(ctx, err, "parse value failed")
+	}
+	time, err := ParseTime(ctx, str)
+	if err != nil {
+		return nil, errors.Wrapf(ctx, err, "parse time failed")
+	}
+	return DatePtr(time), nil
+}
 
 func DatePtr(value *stdtime.Time) *Date {
 	if value == nil {
@@ -73,4 +86,21 @@ func (s Date) Format(layout string) string {
 
 func (s Date) MarshalBinary() ([]byte, error) {
 	return s.Time().MarshalBinary()
+}
+
+func (s Date) Compare(stdTime Date) int {
+	return Compare(s.Time(), stdTime.Time())
+}
+
+func (s *Date) ComparePtr(stdTime *Date) int {
+	if s == nil && stdTime == nil {
+		return 0
+	}
+	if s == nil {
+		return -1
+	}
+	if stdTime == nil {
+		return 1
+	}
+	return s.Compare(*stdTime)
 }
