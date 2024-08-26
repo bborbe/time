@@ -5,7 +5,9 @@
 package time_test
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"time"
 
 	libtime "github.com/bborbe/time"
@@ -46,6 +48,40 @@ var _ = Describe("Date", func() {
 			It("returns correct content", func() {
 				Expect(string(bytes)).To(Equal(`null`))
 			})
+		})
+	})
+	Context("json marshal", func() {
+		var content string
+		JustBeforeEach(func() {
+			buf := &bytes.Buffer{}
+			encoder := json.NewEncoder(buf)
+			encoder.SetIndent("", "  ")
+
+			err = encoder.Encode(struct {
+				DateEmpty        libtime.Date  `json:"dateEmpty"`
+				DatePtrEmpty     *libtime.Date `json:"datePtrEmpty"`
+				DateOmitEmpty    libtime.Date  `json:"dateOmitEmpty,omitempty"`
+				DatePtrOmitEmpty *libtime.Date `json:"datePtrOmitEmpty,omitempty"`
+				Date             libtime.Date  `json:"date"`
+				DatePtr          *libtime.Date `json:"datePtr"`
+			}{
+				Date:    libtime.Date(time.Unix(1687161394, 0)),
+				DatePtr: libtime.Date(time.Unix(1687161394, 0)).Ptr(),
+			})
+			content = buf.String()
+		})
+		It("returns no error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("returns correct content", func() {
+			Expect(content).To(Equal(`{
+  "dateEmpty": null,
+  "datePtrEmpty": null,
+  "dateOmitEmpty": null,
+  "date": "2023-06-19",
+  "datePtr": "2023-06-19"
+}
+`))
 		})
 	})
 	Context("UnmarshalJSON", func() {

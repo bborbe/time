@@ -5,7 +5,9 @@
 package time_test
 
 import (
+	"bytes"
 	"context"
+	"encoding/json"
 	"time"
 
 	libtime "github.com/bborbe/time"
@@ -15,38 +17,114 @@ import (
 
 var _ = Describe("DateTime", func() {
 	var err error
-	var snapshotTime libtime.DateTime
 	var ctx context.Context
 	BeforeEach(func() {
 		ctx = context.Background()
 	})
 	Context("MarshalJSON", func() {
+		var snapshotTime libtime.DateTime
 		var bytes []byte
-		BeforeEach(func() {
-			snapshotTime = libtime.DateTime(time.Unix(1687161394, 0))
-		})
 		JustBeforeEach(func() {
 			bytes, err = snapshotTime.MarshalJSON()
+		})
+		Context("defined", func() {
+			BeforeEach(func() {
+				snapshotTime = libtime.DateTime(time.Unix(1687161394, 0))
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(string(bytes)).To(Equal(`"2023-06-19T07:56:34Z"`))
+			})
+		})
+		Context("undefined", func() {
+			BeforeEach(func() {
+				snapshotTime = libtime.DateTime{}
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(string(bytes)).To(Equal(`null`))
+			})
+		})
+	})
+	Context("json marshal", func() {
+		var content string
+		JustBeforeEach(func() {
+			buf := &bytes.Buffer{}
+			encoder := json.NewEncoder(buf)
+			encoder.SetIndent("", "  ")
+
+			err = encoder.Encode(struct {
+				DateEmpty        libtime.DateTime  `json:"dateEmpty"`
+				DatePtrEmpty     *libtime.DateTime `json:"datePtrEmpty"`
+				DateOmitEmpty    libtime.DateTime  `json:"dateOmitEmpty,omitempty"`
+				DatePtrOmitEmpty *libtime.DateTime `json:"datePtrOmitEmpty,omitempty"`
+				Date             libtime.DateTime  `json:"date"`
+				DatePtr          *libtime.DateTime `json:"datePtr"`
+			}{
+				Date:    libtime.DateTime(time.Unix(1687161394, 0)),
+				DatePtr: libtime.DateTime(time.Unix(1687161394, 0)).Ptr(),
+			})
+			content = buf.String()
 		})
 		It("returns no error", func() {
 			Expect(err).To(BeNil())
 		})
 		It("returns correct content", func() {
-			Expect(string(bytes)).To(Equal(`"2023-06-19T07:56:34Z"`))
+			Expect(content).To(Equal(`{
+  "dateEmpty": null,
+  "datePtrEmpty": null,
+  "dateOmitEmpty": null,
+  "date": "2023-06-19T07:56:34Z",
+  "datePtr": "2023-06-19T07:56:34Z"
+}
+`))
 		})
 	})
 	Context("UnmarshalJSON", func() {
+		var snapshotTime libtime.DateTime
+		var value string
 		BeforeEach(func() {
 			snapshotTime = libtime.DateTime{}
 		})
 		JustBeforeEach(func() {
-			err = snapshotTime.UnmarshalJSON([]byte(`"2023-06-19T07:56:34Z"`))
+			err = snapshotTime.UnmarshalJSON([]byte(value))
 		})
-		It("returns no error", func() {
-			Expect(err).To(BeNil())
+		Context("with value", func() {
+			BeforeEach(func() {
+				value = `"2023-06-19T07:56:34Z"`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(snapshotTime.Time().Format(time.RFC3339Nano)).To(Equal(`2023-06-19T07:56:34Z`))
+			})
 		})
-		It("returns correct content", func() {
-			Expect(snapshotTime.Time().Format(time.RFC3339Nano)).To(Equal(`2023-06-19T07:56:34Z`))
+		Context("with empty value", func() {
+			BeforeEach(func() {
+				value = `""`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(snapshotTime.Time().IsZero()).To(BeTrue())
+			})
+		})
+		Context("with null value", func() {
+			BeforeEach(func() {
+				value = `null`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(snapshotTime.Time().IsZero()).To(BeTrue())
+			})
 		})
 	})
 	Context("ParseDateTime", func() {
