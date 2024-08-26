@@ -8,7 +8,7 @@ import (
 	"context"
 	"encoding/json"
 	"strings"
-	"time"
+	stdtime "time"
 
 	"github.com/bborbe/errors"
 	"github.com/bborbe/parse"
@@ -28,7 +28,7 @@ func ParseDateTime(ctx context.Context, value interface{}) (*DateTime, error) {
 	return DateTimePtr(time), nil
 }
 
-func DateTimePtr(time *time.Time) *DateTime {
+func DateTimePtr(time *stdtime.Time) *DateTime {
 	if time == nil {
 		return nil
 	}
@@ -36,10 +36,10 @@ func DateTimePtr(time *time.Time) *DateTime {
 }
 
 func DateTimeFromUnixMicro(ms int64) DateTime {
-	return DateTime(time.UnixMicro(ms))
+	return DateTime(stdtime.UnixMicro(ms))
 }
 
-type DateTime time.Time
+type DateTime stdtime.Time
 
 func (s DateTime) Equal(stdTime DateTime) bool {
 	return s.Time().Equal(stdTime.Time())
@@ -56,7 +56,7 @@ func (s *DateTime) EqualPtr(stdTime *DateTime) bool {
 }
 
 func (s DateTime) String() string {
-	return s.Format(time.RFC3339Nano)
+	return s.Format(stdtime.RFC3339Nano)
 }
 
 func (s DateTime) Validate(ctx context.Context) error {
@@ -72,7 +72,11 @@ func (s DateTime) Ptr() *DateTime {
 
 func (s *DateTime) UnmarshalJSON(b []byte) error {
 	str := strings.Trim(string(b), `"`)
-	t, err := time.ParseInLocation(time.RFC3339Nano, str, time.UTC)
+	if len(str) == 0 || str == "null" {
+		*s = DateTime(stdtime.Time{})
+		return nil
+	}
+	t, err := stdtime.ParseInLocation(stdtime.RFC3339Nano, str, stdtime.UTC)
 	if err != nil {
 		return errors.Wrapf(context.Background(), err, "parse in location failed")
 	}
@@ -81,15 +85,19 @@ func (s *DateTime) UnmarshalJSON(b []byte) error {
 }
 
 func (s DateTime) MarshalJSON() ([]byte, error) {
-	return json.Marshal(s.Time().Format(time.RFC3339Nano))
+	time := s.Time()
+	if time.IsZero() {
+		return json.Marshal(nil)
+	}
+	return json.Marshal(time.Format(stdtime.RFC3339Nano))
 }
 
-func (s *DateTime) Time() time.Time {
-	return time.Time(*s)
+func (s *DateTime) Time() stdtime.Time {
+	return stdtime.Time(*s)
 }
 
-func (s *DateTime) TimePtr() *time.Time {
-	t := time.Time(*s)
+func (s *DateTime) TimePtr() *stdtime.Time {
+	t := stdtime.Time(*s)
 	return &t
 }
 
@@ -128,7 +136,7 @@ func (s DateTime) After(stdTime DateTime) bool {
 	return s.Time().After(stdTime.Time())
 }
 
-func (s DateTime) Add(duration time.Duration) DateTime {
+func (s DateTime) Add(duration stdtime.Duration) DateTime {
 	return DateTime(s.Time().Add(duration))
 }
 

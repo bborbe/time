@@ -15,38 +15,80 @@ import (
 
 var _ = Describe("Date", func() {
 	var err error
-	var snapshotTime libtime.Date
 	var ctx context.Context
 	BeforeEach(func() {
 		ctx = context.Background()
 	})
 	Context("MarshalJSON", func() {
+		var snapshotTime libtime.Date
 		var bytes []byte
-		BeforeEach(func() {
-			snapshotTime = libtime.Date(time.Unix(1687161394, 0))
-		})
 		JustBeforeEach(func() {
 			bytes, err = snapshotTime.MarshalJSON()
 		})
-		It("returns no error", func() {
-			Expect(err).To(BeNil())
+		Context("defined", func() {
+			BeforeEach(func() {
+				snapshotTime = libtime.Date(time.Unix(1687161394, 0))
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(string(bytes)).To(Equal(`"2023-06-19"`))
+			})
 		})
-		It("returns correct content", func() {
-			Expect(string(bytes)).To(Equal(`"2023-06-19"`))
+		Context("undefined", func() {
+			BeforeEach(func() {
+				snapshotTime = libtime.Date{}
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(string(bytes)).To(Equal(`null`))
+			})
 		})
 	})
 	Context("UnmarshalJSON", func() {
+		var snapshotTime libtime.Date
+		var value string
 		BeforeEach(func() {
 			snapshotTime = libtime.Date{}
 		})
 		JustBeforeEach(func() {
-			err = snapshotTime.UnmarshalJSON([]byte(`"2023-06-19"`))
+			err = snapshotTime.UnmarshalJSON([]byte(value))
 		})
-		It("returns no error", func() {
-			Expect(err).To(BeNil())
+		Context("with value", func() {
+			BeforeEach(func() {
+				value = `"2023-06-19"`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(snapshotTime.Time().Format(time.DateOnly)).To(Equal(`2023-06-19`))
+			})
 		})
-		It("returns correct content", func() {
-			Expect(snapshotTime.Time().Format(time.DateOnly)).To(Equal(`2023-06-19`))
+		Context("with empty value", func() {
+			BeforeEach(func() {
+				value = `""`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(snapshotTime.Time().IsZero()).To(BeTrue())
+			})
+		})
+		Context("with null value", func() {
+			BeforeEach(func() {
+				value = `null`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(snapshotTime.Time().IsZero()).To(BeTrue())
+			})
 		})
 	})
 	Context("ParseDate", func() {

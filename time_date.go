@@ -59,6 +59,10 @@ func (s Date) Ptr() *Date {
 
 func (s *Date) UnmarshalJSON(b []byte) error {
 	str := strings.Trim(string(b), `"`)
+	if len(str) == 0 || str == "null" {
+		*s = Date(stdtime.Time{})
+		return nil
+	}
 	t, err := stdtime.ParseInLocation(stdtime.DateOnly, str, stdtime.UTC)
 	if err != nil {
 		return errors.Wrapf(context.Background(), err, "parse in location failed")
@@ -68,7 +72,11 @@ func (s *Date) UnmarshalJSON(b []byte) error {
 }
 
 func (s Date) MarshalJSON() ([]byte, error) {
-	return json.Marshal(s.Time().Format(stdtime.DateOnly))
+	time := s.Time()
+	if time.IsZero() {
+		return json.Marshal(nil)
+	}
+	return json.Marshal(time.Format(stdtime.DateOnly))
 }
 
 func (s *Date) Time() stdtime.Time {
