@@ -12,6 +12,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 - add Duration
 - marshal unmarshal Duration from duration string or number
+- go mod update
 
 ## v1.4.2
 
