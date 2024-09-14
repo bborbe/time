@@ -8,6 +8,11 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.5.0
+
+- add Duration
+- marshal unmarshal Duration from duration string or number
+
 ## v1.4.2
 
 - test marshal Date and DateTime
