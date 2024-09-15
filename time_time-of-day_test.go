@@ -30,17 +30,17 @@ var _ = Describe("TimeOfDay", func() {
 	Context("ParseTimeOfDay", func() {
 		var input string
 		var timeOfDay *libtime.TimeOfDay
-		var winterTime *time.Time
-		var summerTime *time.Time
+		var winterTime *libtime.DateTime
+		var summerTime *libtime.DateTime
 		JustBeforeEach(func() {
 			timeOfDay, err = libtime.ParseTimeOfDay(ctx, input)
 			Expect(err).To(BeNil())
 			{
-				winterTime, err = timeOfDay.Date(2024, time.January, 1)
+				winterTime, err = timeOfDay.DateTime(2024, time.January, 1)
 				Expect(err).To(BeNil())
 			}
 			{
-				summerTime, err = timeOfDay.Date(2024, time.July, 1)
+				summerTime, err = timeOfDay.DateTime(2024, time.July, 1)
 				Expect(err).To(BeNil())
 			}
 		})
@@ -90,12 +90,12 @@ var _ = Describe("TimeOfDay", func() {
 			It("returns correct winterTime", func() {
 				Expect(winterTime).NotTo(BeNil())
 				Expect(winterTime.Format(time.RFC3339Nano)).To(Equal("2024-01-01T15:37:59+01:00"))
-				Expect(winterTime.UTC().Format(time.RFC3339Nano)).To(Equal("2024-01-01T14:37:59Z"))
+				Expect(winterTime.Time().UTC().Format(time.RFC3339Nano)).To(Equal("2024-01-01T14:37:59Z"))
 			})
 			It("returns correct summerTime", func() {
 				Expect(summerTime).NotTo(BeNil())
 				Expect(summerTime.Format(time.RFC3339Nano)).To(Equal("2024-07-01T15:37:59+02:00"))
-				Expect(summerTime.UTC().Format(time.RFC3339Nano)).To(Equal("2024-07-01T13:37:59Z"))
+				Expect(summerTime.Time().UTC().Format(time.RFC3339Nano)).To(Equal("2024-07-01T13:37:59Z"))
 			})
 		})
 	})
