@@ -30,19 +30,13 @@ var _ = Describe("TimeOfDay", func() {
 	Context("ParseTimeOfDay", func() {
 		var input string
 		var timeOfDay *libtime.TimeOfDay
-		var winterTime *libtime.DateTime
-		var summerTime *libtime.DateTime
+		var winterTime libtime.DateTime
+		var summerTime libtime.DateTime
 		JustBeforeEach(func() {
 			timeOfDay, err = libtime.ParseTimeOfDay(ctx, input)
 			Expect(err).To(BeNil())
-			{
-				winterTime, err = timeOfDay.DateTime(2024, time.January, 1)
-				Expect(err).To(BeNil())
-			}
-			{
-				summerTime, err = timeOfDay.DateTime(2024, time.July, 1)
-				Expect(err).To(BeNil())
-			}
+			winterTime = timeOfDay.DateTime(2024, time.January, 1)
+			summerTime = timeOfDay.DateTime(2024, time.July, 1)
 		})
 		Context("NOW", func() {
 			BeforeEach(func() {

@@ -79,8 +79,12 @@ func (t TimeOfDay) Format(layout string) string {
 	return t.date(1970, stdtime.January, 1).Format(layout)
 }
 
-func (t TimeOfDay) DateTime(year int, month stdtime.Month, day int) (*DateTime, error) {
-	return DateTime(t.date(year, month, day)).Ptr(), nil
+func (t TimeOfDay) DateTime(year int, month stdtime.Month, day int) DateTime {
+	return DateTime(t.date(year, month, day))
+}
+
+func (t TimeOfDay) Time(year int, month stdtime.Month, day int) stdtime.Time {
+	return t.date(year, month, day)
 }
 
 func (t TimeOfDay) Date(year int, month stdtime.Month, day int) (*stdtime.Time, error) {
