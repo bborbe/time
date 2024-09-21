@@ -108,6 +108,10 @@ func (d Duration) Ptr() *Duration {
 	return &d
 }
 
+func (d Duration) String() string {
+	return d.Duration().String()
+}
+
 func (d *Duration) UnmarshalJSON(b []byte) error {
 	str := strings.Trim(string(b), `"`)
 	if len(str) == 0 || str == "null" {
