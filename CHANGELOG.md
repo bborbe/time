@@ -8,6 +8,13 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.6.0
+
+- add ParseDateTimeDefault
+- add ParseDurationDefault
+- add ParseTimeDefault
+- add ParseTimeOfDayDefault
+
 ## v1.5.2
 
 - remove error from DateTime 

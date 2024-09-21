@@ -16,6 +16,14 @@ import (
 	"github.com/bborbe/validation"
 )
 
+func ParseDateTimeDefault(ctx context.Context, value interface{}, defaultValue DateTime) DateTime {
+	result, err := ParseDateTime(ctx, value)
+	if err != nil {
+		return defaultValue
+	}
+	return *result
+}
+
 func ParseDateTime(ctx context.Context, value interface{}) (*DateTime, error) {
 	str, err := parse.ParseString(ctx, value)
 	if err != nil {
