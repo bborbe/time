@@ -125,3 +125,15 @@ func (t TimeOfDay) MarshalJSON() ([]byte, error) {
 func (t TimeOfDay) Ptr() *TimeOfDay {
 	return &t
 }
+
+func (t TimeOfDay) Before(stdTime TimeOfDay) bool {
+	return t.Time(2024, 07, 01).Before(stdTime.Time(2024, 07, 01))
+}
+
+func (t TimeOfDay) After(stdTime TimeOfDay) bool {
+	return t.Time(2024, 07, 01).After(stdTime.Time(2024, 07, 01))
+}
+
+func (t TimeOfDay) Equal(stdTime TimeOfDay) bool {
+	return t.Time(2024, 07, 01).Equal(stdTime.Time(2024, 07, 01))
+}
