@@ -9,14 +9,58 @@ import (
 	"encoding/json"
 	"strconv"
 	"strings"
-	"time"
+	stdtime "time"
 
 	"github.com/bborbe/errors"
+	"github.com/bborbe/parse"
 
 	"github.com/bborbe/validation"
 )
 
-type UnixTime time.Time
+func ParseUnixTimeDefault(ctx context.Context, value interface{}, defaultValue UnixTime) UnixTime {
+	result, err := ParseUnixTime(ctx, value)
+	if err != nil {
+		return defaultValue
+	}
+	return *result
+}
+
+func ParseUnixTime(ctx context.Context, value interface{}) (*UnixTime, error) {
+	number, err := parse.ParseInt64(ctx, value)
+	if err == nil {
+		return UnixTimeFromSeconds(number).Ptr(), nil
+	}
+	str, err := parse.ParseString(ctx, value)
+	if err != nil {
+		return nil, errors.Wrapf(ctx, err, "parse value failed")
+	}
+	time, err := ParseTime(ctx, str)
+	if err != nil {
+		return nil, errors.Wrapf(ctx, err, "parse time failed")
+	}
+	return UnixTimePtr(time), nil
+}
+
+func UnixTimePtr(time *stdtime.Time) *UnixTime {
+	if time == nil {
+		return nil
+	}
+	return UnixTime(*time).Ptr()
+}
+
+func UnixTimeFromSeconds(seconds int64) UnixTime {
+	return UnixTime(stdtime.Unix(seconds, 0))
+}
+
+func UnixTimeFromMilli(msec int64) UnixTime {
+	return UnixTime(stdtime.UnixMilli(msec))
+}
+
+func UnixTimeFromMicro(usec int64) UnixTime {
+	return UnixTime(stdtime.UnixMicro(usec))
+}
+
+type UnixTime stdtime.Time
 
 func (u UnixTime) Equal(unixTime UnixTime) bool {
 	return u.Time().Equal(unixTime.Time())
@@ -33,7 +77,7 @@ func (u *UnixTime) EqualPtr(unixTime *UnixTime) bool {
 }
 
 func (u UnixTime) String() string {
-	return u.Format(time.RFC3339Nano)
+	return u.Format(stdtime.RFC3339Nano)
 }
 
 func (u UnixTime) Validate(ctx context.Context) error {
@@ -53,7 +97,7 @@ func (u *UnixTime) UnmarshalJSON(b []byte) error {
 	if err != nil {
 		return errors.Wrapf(context.Background(), err, "parse in location failed")
 	}
-	*u = UnixTime(time.Unix(n, 0))
+	*u = UnixTimeFromSeconds(n)
 	return nil
 }
 
@@ -61,12 +105,12 @@ func (u UnixTime) MarshalJSON() ([]byte, error) {
 	return json.Marshal(u.Time().Unix())
 }
 
-func (u *UnixTime) Time() time.Time {
-	return time.Time(*u)
+func (u *UnixTime) Time() stdtime.Time {
+	return stdtime.Time(*u)
 }
 
-func (u *UnixTime) TimePtr() *time.Time {
-	t := time.Time(*u)
+func (u *UnixTime) TimePtr() *stdtime.Time {
+	t := stdtime.Time(*u)
 	return &t
 }
 
