@@ -62,6 +62,34 @@ func UnixTimeFromMicro(usec int64) UnixTime {
 
 type UnixTime stdtime.Time
 
+func (u UnixTime) Year() int {
+	return u.Time().Year()
+}
+
+func (u UnixTime) Month() stdtime.Month {
+	return u.Time().Month()
+}
+
+func (u UnixTime) Day() int {
+	return u.Time().Day()
+}
+
+func (u UnixTime) Hour() int {
+	return u.Time().Hour()
+}
+
+func (u UnixTime) Minute() int {
+	return u.Time().Minute()
+}
+
+func (u UnixTime) Second() int {
+	return u.Time().Second()
+}
+
+func (u UnixTime) Nanosecond() int {
+	return u.Time().Nanosecond()
+}
+
 func (u UnixTime) Equal(unixTime UnixTime) bool {
 	return u.Time().Equal(unixTime.Time())
 }

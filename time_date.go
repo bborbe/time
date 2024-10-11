@@ -42,6 +42,18 @@ func ToDate(value stdtime.Time) Date {
 
 type Date stdtime.Time
 
+func (s Date) Year() int {
+	return s.Time().Year()
+}
+
+func (s Date) Month() stdtime.Month {
+	return s.Time().Month()
+}
+
+func (s Date) Day() int {
+	return s.Time().Day()
+}
+
 func (s Date) String() string {
 	return s.Format(stdtime.DateOnly)
 }
