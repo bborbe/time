@@ -149,3 +149,7 @@ func (u UnixTime) Format(layout string) string {
 func (u UnixTime) MarshalBinary() ([]byte, error) {
 	return u.Time().MarshalBinary()
 }
+
+func (u UnixTime) Add(duration stdtime.Duration) UnixTime {
+	return UnixTime(u.Time().Add(duration))
+}
