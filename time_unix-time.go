@@ -17,6 +17,14 @@ import (
 	"github.com/bborbe/validation"
 )
 
+func UnixTimeFromBinary(ctx context.Context, value []byte) (*UnixTime, error) {
+	var t stdtime.Time
+	if err := t.UnmarshalBinary(value); err != nil {
+		return nil, errors.Wrapf(ctx, err, "unmarshalBinary failed")
+	}
+	return UnixTime(t).Ptr(), nil
+}
+
 func ParseUnixTimeDefault(ctx context.Context, value interface{}, defaultValue UnixTime) UnixTime {
 	result, err := ParseUnixTime(ctx, value)
 	if err != nil {
@@ -152,4 +160,12 @@ func (u UnixTime) MarshalBinary() ([]byte, error) {
 
 func (u UnixTime) Add(duration stdtime.Duration) UnixTime {
 	return UnixTime(u.Time().Add(duration))
+}
+
+func (d UnixTime) UnixMicro() int64 {
+	return d.Time().UnixMicro()
+}
+
+func (d UnixTime) Unix() int64 {
+	return d.Time().Unix()
 }

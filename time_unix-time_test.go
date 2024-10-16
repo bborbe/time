@@ -20,6 +20,28 @@ var _ = Describe("UnixTime", func() {
 	BeforeEach(func() {
 		ctx = context.Background()
 	})
+	Context("MarshalBinary & UnixTimeFromBinary", func() {
+		var unixTime libtime.UnixTime
+		var binary []byte
+		BeforeEach(func() {
+			unixTime = libtime.UnixTime(time.Unix(1687161394, 0))
+		})
+		JustBeforeEach(func() {
+			binary, err = unixTime.MarshalBinary()
+		})
+		It("returns no error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("returns binary", func() {
+			Expect(binary).NotTo(BeNil())
+		})
+		It("returns binary", func() {
+			unixTimeFromBinary, err := libtime.UnixTimeFromBinary(ctx, binary)
+			Expect(err).To(BeNil())
+			Expect(unixTimeFromBinary).NotTo(BeNil())
+			Expect(unixTimeFromBinary.Unix()).To(Equal(int64(1687161394)))
+		})
+	})
 	Context("MarshalJSON", func() {
 		var bytes []byte
 		BeforeEach(func() {

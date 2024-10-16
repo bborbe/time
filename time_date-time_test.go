@@ -21,15 +21,37 @@ var _ = Describe("DateTime", func() {
 	BeforeEach(func() {
 		ctx = context.Background()
 	})
+	Context("MarshalBinary & DateTimeFromBinary", func() {
+		var dateTime libtime.DateTime
+		var binary []byte
+		BeforeEach(func() {
+			dateTime = libtime.DateTime(time.Unix(1687161394, 0))
+		})
+		JustBeforeEach(func() {
+			binary, err = dateTime.MarshalBinary()
+		})
+		It("returns no error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("returns binary", func() {
+			Expect(binary).NotTo(BeNil())
+		})
+		It("returns binary", func() {
+			dateTimeFromBinary, err := libtime.DateTimeFromBinary(ctx, binary)
+			Expect(err).To(BeNil())
+			Expect(dateTimeFromBinary).NotTo(BeNil())
+			Expect(dateTimeFromBinary.Unix()).To(Equal(int64(1687161394)))
+		})
+	})
 	Context("MarshalJSON", func() {
-		var snapshotTime libtime.DateTime
+		var dateTime libtime.DateTime
 		var bytes []byte
 		JustBeforeEach(func() {
-			bytes, err = snapshotTime.MarshalJSON()
+			bytes, err = dateTime.MarshalJSON()
 		})
 		Context("defined", func() {
 			BeforeEach(func() {
-				snapshotTime = libtime.DateTime(time.Unix(1687161394, 0))
+				dateTime = libtime.DateTime(time.Unix(1687161394, 0))
 			})
 			It("returns no error", func() {
 				Expect(err).To(BeNil())
@@ -40,7 +62,7 @@ var _ = Describe("DateTime", func() {
 		})
 		Context("undefined", func() {
 			BeforeEach(func() {
-				snapshotTime = libtime.DateTime{}
+				dateTime = libtime.DateTime{}
 			})
 			It("returns no error", func() {
 				Expect(err).To(BeNil())

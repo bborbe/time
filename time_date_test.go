@@ -21,6 +21,28 @@ var _ = Describe("Date", func() {
 	BeforeEach(func() {
 		ctx = context.Background()
 	})
+	Context("MarshalBinary & DateFromBinary", func() {
+		var date libtime.Date
+		var binary []byte
+		BeforeEach(func() {
+			date = libtime.Date(time.Unix(1687161394, 0))
+		})
+		JustBeforeEach(func() {
+			binary, err = date.MarshalBinary()
+		})
+		It("returns no error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("returns binary", func() {
+			Expect(binary).NotTo(BeNil())
+		})
+		It("returns binary", func() {
+			dateFromBinary, err := libtime.DateFromBinary(ctx, binary)
+			Expect(err).To(BeNil())
+			Expect(dateFromBinary).NotTo(BeNil())
+			Expect(dateFromBinary.Unix()).To(Equal(int64(1687161394)))
+		})
+	})
 	Context("MarshalJSON", func() {
 		var snapshotTime libtime.Date
 		var bytes []byte

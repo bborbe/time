@@ -16,6 +16,14 @@ import (
 	"github.com/bborbe/validation"
 )
 
+func DateTimeFromBinary(ctx context.Context, value []byte) (*DateTime, error) {
+	var t stdtime.Time
+	if err := t.UnmarshalBinary(value); err != nil {
+		return nil, errors.Wrapf(ctx, err, "unmarshalBinary failed")
+	}
+	return DateTime(t).Ptr(), nil
+}
+
 func ParseDateTimeDefault(ctx context.Context, value interface{}, defaultValue DateTime) DateTime {
 	result, err := ParseDateTime(ctx, value)
 	if err != nil {
