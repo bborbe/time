@@ -149,25 +149,22 @@ var _ = Describe("DateTime", func() {
 			})
 		})
 	})
-	Context("ParseDateTime", func() {
-		var value interface{}
-		var stdTime *libtime.DateTime
-		JustBeforeEach(func() {
-			stdTime, err = libtime.ParseDateTime(ctx, value)
-		})
-		Context("Success", func() {
-			BeforeEach(func() {
-				value = "2023-06-19T07:56:34Z"
-			})
-			It("returns no error", func() {
+	DescribeTable("ParseDateTime",
+		func(value interface{}, formatedDate string, expectError bool) {
+			result, err := libtime.ParseDateTime(ctx, value)
+			if expectError {
+				Expect(err).NotTo(BeNil())
+				Expect(result).To(BeNil())
+			} else {
 				Expect(err).To(BeNil())
-			})
-			It("returns correct time", func() {
-				Expect(stdTime).NotTo(BeNil())
-				Expect(stdTime.Format(time.RFC3339)).To(Equal("2023-06-19T07:56:34Z"))
-			})
-		})
-	})
+				Expect(result).NotTo(BeNil())
+				Expect(result.Format(time.RFC3339Nano)).To(Equal(formatedDate))
+			}
+		},
+		Entry("2023-06-19T07:56:34Z", "2023-06-19T07:56:34Z", "2023-06-19T07:56:34Z", false),
+		Entry("2023-06-19T07:56:34.234Z", "2023-06-19T07:56:34.234Z", "2023-06-19T07:56:34.234Z", false),
+		Entry("2023-06-19T07:56Z", "2023-06-19T07:56Z", "2023-06-19T07:56:00Z", false),
+	)
 	DescribeTable("ComparePtr",
 		func(a *libtime.DateTime, b *libtime.DateTime, expectedResult int) {
 			Expect(a.ComparePtr(b)).To(Equal(expectedResult))
