@@ -18,8 +18,13 @@ import (
 var _ = Describe("DateTime", func() {
 	var err error
 	var ctx context.Context
+	var now time.Time
 	BeforeEach(func() {
 		ctx = context.Background()
+		now = time.Unix(1731169783, 0)
+		libtime.Now = func() time.Time {
+			return now
+		}
 	})
 	Context("MarshalBinary & DateTimeFromBinary", func() {
 		var dateTime libtime.DateTime
@@ -126,6 +131,17 @@ var _ = Describe("DateTime", func() {
 				Expect(snapshotTime.Time().Format(time.RFC3339Nano)).To(Equal(`2023-06-19T07:56:34Z`))
 			})
 		})
+		Context("with value now", func() {
+			BeforeEach(func() {
+				value = `"NOW"`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(snapshotTime.Time().Format(time.RFC3339Nano)).To(Equal(`2024-11-09T16:29:43Z`))
+			})
+		})
 		Context("with empty value", func() {
 			BeforeEach(func() {
 				value = `""`
@@ -164,6 +180,7 @@ var _ = Describe("DateTime", func() {
 		Entry("2023-06-19T07:56:34Z", "2023-06-19T07:56:34Z", "2023-06-19T07:56:34Z", false),
 		Entry("2023-06-19T07:56:34.234Z", "2023-06-19T07:56:34.234Z", "2023-06-19T07:56:34.234Z", false),
 		Entry("2023-06-19T07:56Z", "2023-06-19T07:56Z", "2023-06-19T07:56:00Z", false),
+		Entry("NOW", "NOW", "2024-11-09T16:29:43Z", false),
 	)
 	DescribeTable("ComparePtr",
 		func(a *libtime.DateTime, b *libtime.DateTime, expectedResult int) {
