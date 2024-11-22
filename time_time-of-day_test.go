@@ -130,6 +130,22 @@ var _ = Describe("TimeOfDay", func() {
 			Expect(string(bytes)).To(Equal(`"13:45:59.123456Z"`))
 		})
 	})
+	DescribeTable("Date",
+		func(input libtime.TimeOfDay, year int, month int, day int, expectedTime string, expectError bool) {
+			dateTime, err := input.Date(year, time.Month(month), day)
+			if expectError {
+				Expect(err).NotTo(BeNil())
+				Expect(timeOfDay).To(BeNil())
+			} else {
+				Expect(err).To(BeNil())
+				Expect(dateTime.UTC().Format(time.RFC3339)).To(Equal(expectedTime))
+			}
+		},
+		Entry("13:37", ParseTimeOfDay("13:37"), 2024, 12, 24, "2024-12-24T13:37:00Z", false),
+		Entry("13:37:42", ParseTimeOfDay("13:37:42"), 2024, 12, 24, "2024-12-24T13:37:42Z", false),
+		Entry("13:37:42Z", ParseTimeOfDay("13:37:42Z"), 2024, 12, 24, "2024-12-24T13:37:42Z", false),
+		Entry("13:37:42 Europe/Berlin", ParseTimeOfDay("13:37:42 Europe/Berlin"), 2024, 12, 24, "2024-12-24T12:37:42Z", false),
+	)
 	DescribeTable("UnmarshalJSON",
 		func(input string, expected string, expectError bool) {
 			timeOfDay = libtime.TimeOfDay{}
@@ -152,6 +168,12 @@ var _ = Describe("TimeOfDay", func() {
 		Entry("datetime with tz and ns", `"2023-10-02T13:45:59.123456Z"`, `13:45:59.123456Z`, false),
 	)
 })
+
+func ParseTimeOfDay(value interface{}) libtime.TimeOfDay {
+	result, err := libtime.ParseTimeOfDay(context.Background(), value)
+	Expect(err).To(BeNil())
+	return *result
+}
 
 func ParseTime(timeString string) time.Time {
 	result, err := time.Parse(time.RFC3339, timeString)
