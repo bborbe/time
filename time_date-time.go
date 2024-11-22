@@ -16,6 +16,24 @@ import (
 	"github.com/bborbe/validation"
 )
 
+type DateTimes []DateTime
+
+func (t DateTimes) Interfaces() []interface{} {
+	result := make([]interface{}, len(t))
+	for i, ss := range t {
+		result[i] = ss
+	}
+	return result
+}
+
+func (t DateTimes) Strings() []string {
+	result := make([]string, len(t))
+	for i, ss := range t {
+		result[i] = ss.String()
+	}
+	return result
+}
+
 func DateTimeFromBinary(ctx context.Context, value []byte) (*DateTime, error) {
 	var t stdtime.Time
 	if err := t.UnmarshalBinary(value); err != nil {
