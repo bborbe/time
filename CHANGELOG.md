@@ -8,6 +8,11 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.9.0
+
+- Duration.String output now days and weeks like: 10w5d23h59m30s
+- go mod update
+
 ## v1.8.2
 
 - add list types

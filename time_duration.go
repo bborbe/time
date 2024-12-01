@@ -127,7 +127,23 @@ func (d Duration) Ptr() *Duration {
 }
 
 func (d Duration) String() string {
-	return d.Duration().String()
+	var builder strings.Builder
+	remaining := d
+
+	if weeks := remaining / Week; weeks > 0 {
+		remaining = remaining - weeks*Week
+		builder.WriteString(strconv.Itoa(int(weeks)))
+		builder.WriteString("w")
+	}
+
+	if days := remaining / Day; days > 0 {
+		remaining = remaining - days*Day
+		builder.WriteString(strconv.Itoa(int(days)))
+		builder.WriteString("d")
+	}
+
+	builder.WriteString(remaining.Duration().String())
+	return builder.String()
 }
 
 func (d *Duration) UnmarshalJSON(b []byte) error {
@@ -147,5 +163,6 @@ func (d *Duration) UnmarshalJSON(b []byte) error {
 }
 
 func (d Duration) MarshalJSON() ([]byte, error) {
+	// use stdtime.Duration.String to produce output in standard golang format
 	return json.Marshal(d.Duration().String())
 }

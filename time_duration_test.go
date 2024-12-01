@@ -41,23 +41,37 @@ var _ = DescribeTable("ParseDuration",
 )
 
 var _ = Describe("Duration", func() {
+	var _ = DescribeTable("String",
+		func(inputDuration libtime.Duration, expectedOutput string) {
+			Expect(inputDuration.String()).To(Equal(expectedOutput))
+		},
+		Entry("30s", 30*libtime.Second, "30s"),
+		Entry("59m30s", 59*libtime.Minute+30*libtime.Second, "59m30s"),
+		Entry("23h59m30s", 23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "23h59m30s"),
+		Entry("5d23h59m30s", 5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "5d23h59m30s"),
+		Entry("10w5d23h59m30s", 10*libtime.Week+5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "10w5d23h59m30s"),
+	)
+
+	var _ = DescribeTable("MarshalJSON",
+		func(inputDuration libtime.Duration, expectedOutput string, expectError bool) {
+			bytes, err := inputDuration.MarshalJSON()
+			if expectError {
+				Expect(err).NotTo(BeNil())
+				Expect(bytes).To(BeNil())
+			} else {
+				Expect(err).To(BeNil())
+				Expect(string(bytes)).To(Equal(expectedOutput))
+			}
+		},
+		Entry("30s", 30*libtime.Second, `"30s"`, false),
+		Entry("59m30s", 59*libtime.Minute+30*libtime.Second, `"59m30s"`, false),
+		Entry("23h59m30s", 23*libtime.Hour+59*libtime.Minute+30*libtime.Second, `"23h59m30s"`, false),
+		Entry("5d23h59m30s", 5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, `"143h59m30s"`, false),
+		Entry("10w5d23h59m30s", 10*libtime.Week+5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, `"1823h59m30s"`, false),
+	)
+
 	var err error
 	var duration libtime.Duration
-	Context("MarshalJSON", func() {
-		var bytes []byte
-		BeforeEach(func() {
-			duration = libtime.Hour
-		})
-		JustBeforeEach(func() {
-			bytes, err = duration.MarshalJSON()
-		})
-		It("returns no error", func() {
-			Expect(err).To(BeNil())
-		})
-		It("returns correct content", func() {
-			Expect(string(bytes)).To(Equal(`"1h0m0s"`))
-		})
-	})
 	Context("UnmarshalJSON", func() {
 		var value string
 		BeforeEach(func() {
