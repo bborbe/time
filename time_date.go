@@ -155,6 +155,10 @@ func (d Date) Add(duration stdtime.Duration) Date {
 	return Date(d.Time().Add(duration))
 }
 
+func (d Date) Sub(duration DateTime) Duration {
+	return Duration(d.Time().Sub(duration.Time()))
+}
+
 func (d Date) UnixMicro() int64 {
 	return d.Time().UnixMicro()
 }

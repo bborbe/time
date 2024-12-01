@@ -180,10 +180,14 @@ func (u UnixTime) Add(duration stdtime.Duration) UnixTime {
 	return UnixTime(u.Time().Add(duration))
 }
 
-func (d UnixTime) UnixMicro() int64 {
-	return d.Time().UnixMicro()
+func (u UnixTime) Sub(duration DateTime) Duration {
+	return Duration(u.Time().Sub(duration.Time()))
 }
 
-func (d UnixTime) Unix() int64 {
-	return d.Time().Unix()
+func (u UnixTime) UnixMicro() int64 {
+	return u.Time().UnixMicro()
+}
+
+func (u UnixTime) Unix() int64 {
+	return u.Time().Unix()
 }

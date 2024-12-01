@@ -8,6 +8,11 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.9.1
+
+- add Time.Sub 
+- add Duration.Abs
+
 ## v1.9.0
 
 - Duration.String output now days and weeks like: 10w5d23h59m30s

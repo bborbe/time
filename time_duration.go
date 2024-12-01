@@ -122,6 +122,10 @@ func (d Duration) Duration() stdtime.Duration {
 	return stdtime.Duration(d)
 }
 
+func (d Duration) Abs() Duration {
+	return Duration(d.Duration().Abs())
+}
+
 func (d Duration) Ptr() *Duration {
 	return &d
 }

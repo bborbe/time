@@ -207,6 +207,10 @@ func (d DateTime) Add(duration stdtime.Duration) DateTime {
 	return DateTime(d.Time().Add(duration))
 }
 
+func (d DateTime) Sub(duration DateTime) Duration {
+	return Duration(d.Time().Sub(duration.Time()))
+}
+
 func (d DateTime) Compare(stdTime DateTime) int {
 	return Compare(d.Time(), stdTime.Time())
 }
