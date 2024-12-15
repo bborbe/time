@@ -68,6 +68,17 @@ func ParseDurationDefault(ctx context.Context, value interface{}, defaultValue D
 }
 
 func ParseDuration(ctx context.Context, value interface{}) (*Duration, error) {
+	switch v := value.(type) {
+	case Duration:
+		return v.Ptr(), nil
+	case *Duration:
+		return v, nil
+	case stdtime.Duration:
+		return Duration(v).Ptr(), nil
+	case *stdtime.Duration:
+		return DurationPtr(v), nil
+	}
+
 	str, err := parse.ParseString(ctx, value)
 	if err != nil {
 		return nil, errors.Wrapf(ctx, err, "parse value failed")
@@ -114,6 +125,13 @@ func parseAsDuration(ctx context.Context, value string, unit string) (Duration, 
 		return 0, errors.Wrapf(ctx, err, "parse failed")
 	}
 	return Duration(i * float64(factor)), nil
+}
+
+func DurationPtr(time *stdtime.Duration) *Duration {
+	if time == nil {
+		return nil
+	}
+	return Duration(*time).Ptr()
 }
 
 type Duration stdtime.Duration
