@@ -227,3 +227,7 @@ func (d *DateTime) ComparePtr(stdTime *DateTime) int {
 	}
 	return d.Compare(*stdTime)
 }
+
+func (d DateTime) Truncate(duration Duration) DateTime {
+	return DateTime(d.Time().Truncate(duration.Duration()))
+}
