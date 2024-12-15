@@ -146,7 +146,28 @@ func (d Duration) String() string {
 		builder.WriteString("d")
 	}
 
-	builder.WriteString(remaining.Duration().String())
+	if hours := remaining / Hour; hours > 0 {
+		remaining = remaining - hours*Hour
+		builder.WriteString(strconv.Itoa(int(hours)))
+		builder.WriteString("h")
+	}
+
+	if minutes := remaining / Minute; minutes > 0 {
+		remaining = remaining - minutes*Minute
+		builder.WriteString(strconv.Itoa(int(minutes)))
+		builder.WriteString("m")
+	}
+
+	if seconds := remaining / Second; seconds > 0 {
+		remaining = remaining - seconds*Second
+		builder.WriteString(strconv.Itoa(int(seconds)))
+		builder.WriteString("s")
+	}
+
+	if remaining > 0 || builder.Len() == 0 {
+		builder.WriteString(remaining.Duration().String())
+	}
+
 	return builder.String()
 }
 

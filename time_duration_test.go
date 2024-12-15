@@ -63,11 +63,32 @@ var _ = Describe("Duration", func() {
 				Expect(string(bytes)).To(Equal(expectedOutput))
 			}
 		},
+		Entry("0", libtime.Duration(0), `"0s"`, false),
 		Entry("30s", 30*libtime.Second, `"30s"`, false),
 		Entry("59m30s", 59*libtime.Minute+30*libtime.Second, `"59m30s"`, false),
 		Entry("23h59m30s", 23*libtime.Hour+59*libtime.Minute+30*libtime.Second, `"23h59m30s"`, false),
-		Entry("5d23h59m30s", 5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, `"143h59m30s"`, false),
-		Entry("10w5d23h59m30s", 10*libtime.Week+5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, `"1823h59m30s"`, false),
+		Entry("143h59m30s", 5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, `"143h59m30s"`, false),
+		Entry("1823h59m30s", 10*libtime.Week+5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, `"1823h59m30s"`, false),
+	)
+
+	var _ = DescribeTable("String",
+		func(inputDuration libtime.Duration, expectedOutput string) {
+			Expect(inputDuration.String()).To(Equal(expectedOutput))
+		},
+		Entry("1w", libtime.Week, "1w"),
+		Entry("1d", libtime.Day, "1d"),
+		Entry("1h", libtime.Hour, "1h"),
+		Entry("1m", libtime.Minute, "1m"),
+		Entry("1s", libtime.Second, "1s"),
+		Entry("1ms", libtime.Millisecond, "1ms"),
+		Entry("1µs", libtime.Microsecond, "1µs"),
+		Entry("1ns", libtime.Nanosecond, "1ns"),
+		Entry("0", libtime.Duration(0), "0s"),
+		Entry("1w1ns", libtime.Week+libtime.Nanosecond, "1w1ns"),
+		Entry("59m30s", 59*libtime.Minute+30*libtime.Second, "59m30s"),
+		Entry("23h59m30s", 23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "23h59m30s"),
+		Entry("5d23h59m30s", 5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "5d23h59m30s"),
+		Entry("10w5d23h59m30s", 10*libtime.Week+5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "10w5d23h59m30s"),
 	)
 
 	var err error

@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.10.0
+
+- clean Duration.String() (1h15m0s => 1h15m) 
+
 ## v1.9.1
 
 - add Time.Sub 
