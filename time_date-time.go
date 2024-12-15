@@ -195,16 +195,16 @@ func (d DateTime) Unix() int64 {
 	return d.Time().Unix()
 }
 
-func (d DateTime) Before(stdTime DateTime) bool {
-	return d.Time().Before(stdTime.Time())
+func (d DateTime) Before(dateTime DateTime) bool {
+	return d.Time().Before(dateTime.Time())
 }
 
-func (d DateTime) After(stdTime DateTime) bool {
-	return d.Time().After(stdTime.Time())
+func (d DateTime) After(dateTime DateTime) bool {
+	return d.Time().After(dateTime.Time())
 }
 
-func (d DateTime) Add(duration stdtime.Duration) DateTime {
-	return DateTime(d.Time().Add(duration))
+func (d DateTime) Add(duration Duration) DateTime {
+	return DateTime(d.Time().Add(duration.Duration()))
 }
 
 func (d DateTime) Sub(duration DateTime) Duration {
