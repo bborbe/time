@@ -195,3 +195,7 @@ func (u UnixTime) Unix() int64 {
 func (u UnixTime) Truncate(duration Duration) UnixTime {
 	return UnixTime(u.Time().Truncate(duration.Duration()))
 }
+
+func (u UnixTime) DateTime() DateTime {
+	return DateTime(u)
+}

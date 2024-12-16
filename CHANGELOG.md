@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.11.5
+
+- add UnixTime.DateTime
+
 ## v1.11.4
 
 - add UnixTime.Truncate
