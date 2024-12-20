@@ -38,7 +38,7 @@ var _ = Describe("ParseTime", func() {
 			Expect(parseTime.Unix()).To(Equal(int64(1686419205)))
 		})
 	})
-	Context("NOW-1s", func() {
+	Context("NOW-1h", func() {
 		BeforeEach(func() {
 			input = "NOW-1h"
 		})
@@ -47,6 +47,17 @@ var _ = Describe("ParseTime", func() {
 		})
 		It("correct time", func() {
 			Expect(parseTime.Unix()).To(Equal(int64(1686419205 - 3600)))
+		})
+	})
+	Context("NOW-1d", func() {
+		BeforeEach(func() {
+			input = "NOW-1d"
+		})
+		It("returns no error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("correct time", func() {
+			Expect(parseTime.Unix()).To(Equal(int64(1686419205 - 24*3600)))
 		})
 	})
 	Context("invalid", func() {
