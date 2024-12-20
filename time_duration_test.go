@@ -91,9 +91,9 @@ var _ = Describe("Duration", func() {
 		Entry("10w5d23h59m30s", 10*libtime.Week+5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "10w5d23h59m30s"),
 	)
 
-	var err error
-	var duration libtime.Duration
 	Context("UnmarshalJSON", func() {
+		var err error
+		var duration libtime.Duration
 		var value string
 		BeforeEach(func() {
 			duration = 0
