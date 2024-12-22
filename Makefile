@@ -10,7 +10,7 @@ ensure:
 	go mod vendor
 
 format:
-	go run -mod=vendor github.com/incu6us/goimports-reviser/v3 -project-name github.com/bborbe/trading -format -excludes vendor ./...
+	go run -mod=vendor github.com/incu6us/goimports-reviser/v3 -project-name github.com/bborbe/time -format -excludes vendor ./...
 
 generate:
 	rm -rf mocks avro
