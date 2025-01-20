@@ -4,17 +4,16 @@ package mocks
 import (
 	"context"
 	"sync"
-	timea "time"
 
 	"github.com/bborbe/time"
 )
 
-type TimeWaiter struct {
-	WaitUntilStub        func(context.Context, timea.Time) error
+type WaiterUntil struct {
+	WaitUntilStub        func(context.Context, time.DateTime) error
 	waitUntilMutex       sync.RWMutex
 	waitUntilArgsForCall []struct {
 		arg1 context.Context
-		arg2 timea.Time
+		arg2 time.DateTime
 	}
 	waitUntilReturns struct {
 		result1 error
@@ -26,12 +25,12 @@ type TimeWaiter struct {
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *TimeWaiter) WaitUntil(arg1 context.Context, arg2 timea.Time) error {
+func (fake *WaiterUntil) WaitUntil(arg1 context.Context, arg2 time.DateTime) error {
 	fake.waitUntilMutex.Lock()
 	ret, specificReturn := fake.waitUntilReturnsOnCall[len(fake.waitUntilArgsForCall)]
 	fake.waitUntilArgsForCall = append(fake.waitUntilArgsForCall, struct {
 		arg1 context.Context
-		arg2 timea.Time
+		arg2 time.DateTime
 	}{arg1, arg2})
 	stub := fake.WaitUntilStub
 	fakeReturns := fake.waitUntilReturns
@@ -46,26 +45,26 @@ func (fake *TimeWaiter) WaitUntil(arg1 context.Context, arg2 timea.Time) error {
 	return fakeReturns.result1
 }
 
-func (fake *TimeWaiter) WaitUntilCallCount() int {
+func (fake *WaiterUntil) WaitUntilCallCount() int {
 	fake.waitUntilMutex.RLock()
 	defer fake.waitUntilMutex.RUnlock()
 	return len(fake.waitUntilArgsForCall)
 }
 
-func (fake *TimeWaiter) WaitUntilCalls(stub func(context.Context, timea.Time) error) {
+func (fake *WaiterUntil) WaitUntilCalls(stub func(context.Context, time.DateTime) error) {
 	fake.waitUntilMutex.Lock()
 	defer fake.waitUntilMutex.Unlock()
 	fake.WaitUntilStub = stub
 }
 
-func (fake *TimeWaiter) WaitUntilArgsForCall(i int) (context.Context, timea.Time) {
+func (fake *WaiterUntil) WaitUntilArgsForCall(i int) (context.Context, time.DateTime) {
 	fake.waitUntilMutex.RLock()
 	defer fake.waitUntilMutex.RUnlock()
 	argsForCall := fake.waitUntilArgsForCall[i]
 	return argsForCall.arg1, argsForCall.arg2
 }
 
-func (fake *TimeWaiter) WaitUntilReturns(result1 error) {
+func (fake *WaiterUntil) WaitUntilReturns(result1 error) {
 	fake.waitUntilMutex.Lock()
 	defer fake.waitUntilMutex.Unlock()
 	fake.WaitUntilStub = nil
@@ -74,7 +73,7 @@ func (fake *TimeWaiter) WaitUntilReturns(result1 error) {
 	}{result1}
 }
 
-func (fake *TimeWaiter) WaitUntilReturnsOnCall(i int, result1 error) {
+func (fake *WaiterUntil) WaitUntilReturnsOnCall(i int, result1 error) {
 	fake.waitUntilMutex.Lock()
 	defer fake.waitUntilMutex.Unlock()
 	fake.WaitUntilStub = nil
@@ -88,7 +87,7 @@ func (fake *TimeWaiter) WaitUntilReturnsOnCall(i int, result1 error) {
 	}{result1}
 }
 
-func (fake *TimeWaiter) Invocations() map[string][][]interface{} {
+func (fake *WaiterUntil) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
 	fake.waitUntilMutex.RLock()
@@ -100,7 +99,7 @@ func (fake *TimeWaiter) Invocations() map[string][][]interface{} {
 	return copiedInvocations
 }
 
-func (fake *TimeWaiter) recordInvocation(key string, args []interface{}) {
+func (fake *WaiterUntil) recordInvocation(key string, args []interface{}) {
 	fake.invocationsMutex.Lock()
 	defer fake.invocationsMutex.Unlock()
 	if fake.invocations == nil {
@@ -112,4 +111,4 @@ func (fake *TimeWaiter) recordInvocation(key string, args []interface{}) {
 	fake.invocations[key] = append(fake.invocations[key], args)
 }
 
-var _ time.Waiter = new(TimeWaiter)
+var _ time.WaiterUntil = new(WaiterUntil)
