@@ -7,9 +7,10 @@ package time_test
 import (
 	"time"
 
-	libtime "github.com/bborbe/time"
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+
+	libtime "github.com/bborbe/time"
 )
 
 var _ = DescribeTable("Compare",
