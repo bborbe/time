@@ -8,10 +8,15 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## v1.11.7
+## v1.12.1
 
 - add CurrentDateTimeGetterFunc and CurrentTimeGetterFunc
 - go mod update
+
+## v1.12.0
+
+- refactor WaiterUntil
+- add WaiterDuration
 
 ## v1.11.6
 
