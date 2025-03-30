@@ -21,7 +21,7 @@ require (
 require (
 	github.com/bborbe/collection v1.8.0 // indirect
 	github.com/bborbe/math v1.1.1 // indirect
-	github.com/bborbe/run v1.5.7 // indirect
+	github.com/bborbe/run v1.6.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bmatcuk/doublestar/v4 v4.8.1 // indirect
 	github.com/certifi/gocertifi v0.0.0-20210507211836-431795d63e8d // indirect
@@ -40,7 +40,7 @@ require (
 	github.com/prometheus/procfs v0.16.0 // indirect
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394 // indirect
 	golang.org/x/mod v0.24.0 // indirect
-	golang.org/x/net v0.37.0 // indirect
+	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/sync v0.12.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/telemetry v0.0.0-20250310203348-fdfaad844314 // indirect
