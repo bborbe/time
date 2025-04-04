@@ -188,4 +188,27 @@ var _ = Describe("Date", func() {
 		Entry("less", libtime.Date(time.Unix(999, 0)), libtime.Date(time.Unix(1000, 0)), -1),
 		Entry("greater", libtime.Date(time.Unix(1000, 0)), libtime.Date(time.Unix(999, 0)), 1),
 	)
+	Context("TimePtr", func() {
+		var dateTime *libtime.Date
+		var timePtr *time.Time
+		BeforeEach(func() {
+			dateTime = libtime.Date(time.Unix(1000, 0)).Ptr()
+		})
+		JustBeforeEach(func() {
+			timePtr = dateTime.TimePtr()
+		})
+		Context("datetime not nil", func() {
+			It("returns timePtr", func() {
+				Expect(timePtr).NotTo(BeNil())
+			})
+		})
+		Context("datetime nil", func() {
+			BeforeEach(func() {
+				dateTime = nil
+			})
+			It("returns not timePtr", func() {
+				Expect(timePtr).To(BeNil())
+			})
+		})
+	})
 })

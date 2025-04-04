@@ -163,6 +163,9 @@ func (d *DateTime) Time() stdtime.Time {
 }
 
 func (d *DateTime) TimePtr() *stdtime.Time {
+	if d == nil {
+		return nil
+	}
 	t := stdtime.Time(*d)
 	return &t
 }
@@ -229,4 +232,8 @@ func (d *DateTime) ComparePtr(stdTime *DateTime) int {
 
 func (d DateTime) Truncate(duration Duration) DateTime {
 	return DateTime(d.Time().Truncate(duration.Duration()))
+}
+
+func (d DateTime) AddTime(years int, months int, days int) DateTime {
+	return DateTime(d.Time().AddDate(years, months, days))
 }

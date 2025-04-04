@@ -121,6 +121,9 @@ func (d *Date) Time() stdtime.Time {
 }
 
 func (d *Date) TimePtr() *stdtime.Time {
+	if d == nil {
+		return nil
+	}
 	t := stdtime.Time(*d)
 	return &t
 }
@@ -164,4 +167,8 @@ func (d Date) UnixMicro() int64 {
 
 func (d Date) Unix() int64 {
 	return d.Time().Unix()
+}
+
+func (d Date) AddTime(years int, months int, days int) Date {
+	return Date(d.Time().AddDate(years, months, days))
 }

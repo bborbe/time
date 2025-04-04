@@ -89,4 +89,27 @@ var _ = Describe("UnixTime", func() {
 		Entry("unixTime", 1687161394, "2023-06-19T07:56:34Z", false),
 		Entry("unixTimeStr", "1687161394", "2023-06-19T07:56:34Z", false),
 	)
+	Context("TimePtr", func() {
+		var dateTime *libtime.UnixTime
+		var timePtr *time.Time
+		BeforeEach(func() {
+			dateTime = libtime.UnixTime(time.Unix(1000, 0)).Ptr()
+		})
+		JustBeforeEach(func() {
+			timePtr = dateTime.TimePtr()
+		})
+		Context("datetime not nil", func() {
+			It("returns timePtr", func() {
+				Expect(timePtr).NotTo(BeNil())
+			})
+		})
+		Context("datetime nil", func() {
+			BeforeEach(func() {
+				dateTime = nil
+			})
+			It("returns not timePtr", func() {
+				Expect(timePtr).To(BeNil())
+			})
+		})
+	})
 })

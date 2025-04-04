@@ -163,6 +163,9 @@ func (u *UnixTime) Time() stdtime.Time {
 }
 
 func (u *UnixTime) TimePtr() *stdtime.Time {
+	if u == nil {
+		return nil
+	}
 	t := stdtime.Time(*u)
 	return &t
 }
@@ -197,4 +200,8 @@ func (u UnixTime) Truncate(duration Duration) UnixTime {
 
 func (u UnixTime) DateTime() DateTime {
 	return DateTime(u)
+}
+
+func (u UnixTime) AddTime(years int, months int, days int) UnixTime {
+	return UnixTime(u.Time().AddDate(years, months, days))
 }
