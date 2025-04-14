@@ -8,8 +8,12 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## v1.14.1
+## v1.14.2
 
+- add UTC() and Weekday() to Date, DateTime and UnixTime 
+
+## v1.14.1
+ 
 - add Weekdays.Weekdays()
 
 ## v1.14.0

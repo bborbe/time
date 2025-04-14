@@ -237,3 +237,11 @@ func (d DateTime) Truncate(duration Duration) DateTime {
 func (d DateTime) AddTime(years int, months int, days int) DateTime {
 	return DateTime(d.Time().AddDate(years, months, days))
 }
+
+func (d DateTime) UTC() DateTime {
+	return DateTime(d.Time().UTC())
+}
+
+func (d DateTime) Weekday() Weekday {
+	return Weekday(d.Time().Weekday())
+}

@@ -205,3 +205,11 @@ func (u UnixTime) DateTime() DateTime {
 func (u UnixTime) AddTime(years int, months int, days int) UnixTime {
 	return UnixTime(u.Time().AddDate(years, months, days))
 }
+
+func (u UnixTime) UTC() UnixTime {
+	return UnixTime(u.Time().UTC())
+}
+
+func (u UnixTime) Weekday() Weekday {
+	return Weekday(u.Time().Weekday())
+}

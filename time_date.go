@@ -172,3 +172,11 @@ func (d Date) Unix() int64 {
 func (d Date) AddTime(years int, months int, days int) Date {
 	return Date(d.Time().AddDate(years, months, days))
 }
+
+func (d Date) UTC() Date {
+	return Date(d.Time().UTC())
+}
+
+func (d Date) Weekday() Weekday {
+	return Weekday(d.Time().Weekday())
+}
