@@ -52,6 +52,14 @@ func AsWeekdays[T ~int](values []T) Weekdays {
 
 type Weekdays []Weekday
 
+func (w Weekdays) Weekdays() []stdtime.Weekday {
+	result := make([]stdtime.Weekday, len(w))
+	for i, weekday := range w {
+		result[i] = weekday.Weekday()
+	}
+	return result
+}
+
 func (w Weekdays) Validate(ctx context.Context) error {
 	for _, w := range w {
 		if err := w.Validate(ctx); err != nil {
