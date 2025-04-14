@@ -4,6 +4,7 @@ go 1.24.1
 
 require (
 	github.com/actgardner/gogen-avro/v9 v9.2.0
+	github.com/bborbe/collection v1.8.0
 	github.com/bborbe/errors v1.3.0
 	github.com/bborbe/parse v1.6.1
 	github.com/bborbe/validation v1.2.0
@@ -19,7 +20,6 @@ require (
 )
 
 require (
-	github.com/bborbe/collection v1.8.0 // indirect
 	github.com/bborbe/math v1.1.1 // indirect
 	github.com/bborbe/run v1.6.0 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
