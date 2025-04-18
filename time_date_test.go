@@ -211,4 +211,41 @@ var _ = Describe("Date", func() {
 			})
 		})
 	})
+	Context("AddTime", func() {
+		var dateTime libtime.Date
+		var result libtime.Date
+		var days int
+		var months int
+		var years int
+		BeforeEach(func() {
+			years = 0
+			months = 0
+			days = 0
+			dateTime = ParseDate("2024-12-24")
+		})
+		JustBeforeEach(func() {
+			result = dateTime.AddTime(years, months, days)
+		})
+		Context("add nothing", func() {
+			It("returns the date time", func() {
+				Expect(result.String()).To(Equal("2024-12-24"))
+			})
+		})
+		Context("add +1 month", func() {
+			BeforeEach(func() {
+				months = 1
+			})
+			It("returns the date time", func() {
+				Expect(result.String()).To(Equal("2025-01-24"))
+			})
+		})
+		Context("add -1 month", func() {
+			BeforeEach(func() {
+				months = -1
+			})
+			It("returns the date time", func() {
+				Expect(result.String()).To(Equal("2024-11-24"))
+			})
+		})
+	})
 })

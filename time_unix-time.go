@@ -158,8 +158,8 @@ func (u UnixTime) MarshalJSON() ([]byte, error) {
 	return json.Marshal(u.Time().Unix())
 }
 
-func (u *UnixTime) Time() stdtime.Time {
-	return stdtime.Time(*u)
+func (u UnixTime) Time() stdtime.Time {
+	return stdtime.Time(u)
 }
 
 func (u *UnixTime) TimePtr() *stdtime.Time {
@@ -178,12 +178,12 @@ func (u UnixTime) MarshalBinary() ([]byte, error) {
 	return u.Time().MarshalBinary()
 }
 
-func (u UnixTime) Add(duration stdtime.Duration) UnixTime {
-	return UnixTime(u.Time().Add(duration))
+func (u UnixTime) Add(duration HasDuration) UnixTime {
+	return UnixTime(u.Time().Add(duration.Duration()))
 }
 
-func (u UnixTime) Sub(duration DateTime) Duration {
-	return Duration(u.Time().Sub(duration.Time()))
+func (u UnixTime) Sub(time HasTime) Duration {
+	return Duration(u.Time().Sub(time.Time()))
 }
 
 func (u UnixTime) UnixMicro() int64 {
@@ -194,7 +194,7 @@ func (u UnixTime) Unix() int64 {
 	return u.Time().Unix()
 }
 
-func (u UnixTime) Truncate(duration Duration) UnixTime {
+func (u UnixTime) Truncate(duration HasDuration) UnixTime {
 	return UnixTime(u.Time().Truncate(duration.Duration()))
 }
 
