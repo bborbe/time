@@ -8,6 +8,11 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.15.0
+
+- add LoadLocation with cache
+- add ParseLocation
+
 ## v1.14.2
 
 - add UTC() and Weekday() to Date, DateTime and UnixTime 
