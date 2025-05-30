@@ -178,6 +178,14 @@ func (u UnixTime) MarshalBinary() ([]byte, error) {
 	return u.Time().MarshalBinary()
 }
 
+func (u UnixTime) Before(time HasTime) bool {
+	return u.Time().Before(time.Time())
+}
+
+func (u UnixTime) After(time HasTime) bool {
+	return u.Time().After(time.Time())
+}
+
 func (u UnixTime) Add(duration HasDuration) UnixTime {
 	return UnixTime(u.Time().Add(duration.Duration()))
 }
