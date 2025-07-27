@@ -90,8 +90,6 @@ func (fake *WaiterUntil) WaitUntilReturnsOnCall(i int, result1 error) {
 func (fake *WaiterUntil) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.waitUntilMutex.RLock()
-	defer fake.waitUntilMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value

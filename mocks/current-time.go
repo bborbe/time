@@ -115,10 +115,6 @@ func (fake *CurrentDateTime) SetNowArgsForCall(i int) time.DateTime {
 func (fake *CurrentDateTime) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
-	fake.nowMutex.RLock()
-	defer fake.nowMutex.RUnlock()
-	fake.setNowMutex.RLock()
-	defer fake.setNowMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
 	for key, value := range fake.invocations {
 		copiedInvocations[key] = value
