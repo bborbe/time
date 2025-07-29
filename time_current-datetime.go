@@ -8,6 +8,7 @@ import (
 	"sync"
 )
 
+//counterfeiter:generate -o mocks/current-datetime-getter.go --fake-name CurrentDateTimeGetter . CurrentDateTimeGetter
 type CurrentDateTimeGetter interface {
 	Now() DateTime
 }
@@ -18,6 +19,7 @@ func (c CurrentDateTimeGetterFunc) Now() DateTime {
 	return c()
 }
 
+//counterfeiter:generate -o mocks/current-datetime-setter.go --fake-name CurrentDateTimeSetter . CurrentDateTimeSetter
 type CurrentDateTimeSetter interface {
 	SetNow(now DateTime)
 }

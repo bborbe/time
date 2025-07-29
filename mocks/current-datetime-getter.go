@@ -3,32 +3,26 @@ package mocks
 
 import (
 	"sync"
-	timea "time"
 
 	"github.com/bborbe/time"
 )
 
-type CurrentTime struct {
-	NowStub        func() timea.Time
+type CurrentDateTimeGetter struct {
+	NowStub        func() time.DateTime
 	nowMutex       sync.RWMutex
 	nowArgsForCall []struct {
 	}
 	nowReturns struct {
-		result1 timea.Time
+		result1 time.DateTime
 	}
 	nowReturnsOnCall map[int]struct {
-		result1 timea.Time
-	}
-	SetNowStub        func(timea.Time)
-	setNowMutex       sync.RWMutex
-	setNowArgsForCall []struct {
-		arg1 timea.Time
+		result1 time.DateTime
 	}
 	invocations      map[string][][]interface{}
 	invocationsMutex sync.RWMutex
 }
 
-func (fake *CurrentTime) Now() timea.Time {
+func (fake *CurrentDateTimeGetter) Now() time.DateTime {
 	fake.nowMutex.Lock()
 	ret, specificReturn := fake.nowReturnsOnCall[len(fake.nowArgsForCall)]
 	fake.nowArgsForCall = append(fake.nowArgsForCall, struct {
@@ -46,74 +40,42 @@ func (fake *CurrentTime) Now() timea.Time {
 	return fakeReturns.result1
 }
 
-func (fake *CurrentTime) NowCallCount() int {
+func (fake *CurrentDateTimeGetter) NowCallCount() int {
 	fake.nowMutex.RLock()
 	defer fake.nowMutex.RUnlock()
 	return len(fake.nowArgsForCall)
 }
 
-func (fake *CurrentTime) NowCalls(stub func() timea.Time) {
+func (fake *CurrentDateTimeGetter) NowCalls(stub func() time.DateTime) {
 	fake.nowMutex.Lock()
 	defer fake.nowMutex.Unlock()
 	fake.NowStub = stub
 }
 
-func (fake *CurrentTime) NowReturns(result1 timea.Time) {
+func (fake *CurrentDateTimeGetter) NowReturns(result1 time.DateTime) {
 	fake.nowMutex.Lock()
 	defer fake.nowMutex.Unlock()
 	fake.NowStub = nil
 	fake.nowReturns = struct {
-		result1 timea.Time
+		result1 time.DateTime
 	}{result1}
 }
 
-func (fake *CurrentTime) NowReturnsOnCall(i int, result1 timea.Time) {
+func (fake *CurrentDateTimeGetter) NowReturnsOnCall(i int, result1 time.DateTime) {
 	fake.nowMutex.Lock()
 	defer fake.nowMutex.Unlock()
 	fake.NowStub = nil
 	if fake.nowReturnsOnCall == nil {
 		fake.nowReturnsOnCall = make(map[int]struct {
-			result1 timea.Time
+			result1 time.DateTime
 		})
 	}
 	fake.nowReturnsOnCall[i] = struct {
-		result1 timea.Time
+		result1 time.DateTime
 	}{result1}
 }
 
-func (fake *CurrentTime) SetNow(arg1 timea.Time) {
-	fake.setNowMutex.Lock()
-	fake.setNowArgsForCall = append(fake.setNowArgsForCall, struct {
-		arg1 timea.Time
-	}{arg1})
-	stub := fake.SetNowStub
-	fake.recordInvocation("SetNow", []interface{}{arg1})
-	fake.setNowMutex.Unlock()
-	if stub != nil {
-		fake.SetNowStub(arg1)
-	}
-}
-
-func (fake *CurrentTime) SetNowCallCount() int {
-	fake.setNowMutex.RLock()
-	defer fake.setNowMutex.RUnlock()
-	return len(fake.setNowArgsForCall)
-}
-
-func (fake *CurrentTime) SetNowCalls(stub func(timea.Time)) {
-	fake.setNowMutex.Lock()
-	defer fake.setNowMutex.Unlock()
-	fake.SetNowStub = stub
-}
-
-func (fake *CurrentTime) SetNowArgsForCall(i int) timea.Time {
-	fake.setNowMutex.RLock()
-	defer fake.setNowMutex.RUnlock()
-	argsForCall := fake.setNowArgsForCall[i]
-	return argsForCall.arg1
-}
-
-func (fake *CurrentTime) Invocations() map[string][][]interface{} {
+func (fake *CurrentDateTimeGetter) Invocations() map[string][][]interface{} {
 	fake.invocationsMutex.RLock()
 	defer fake.invocationsMutex.RUnlock()
 	copiedInvocations := map[string][][]interface{}{}
@@ -123,7 +85,7 @@ func (fake *CurrentTime) Invocations() map[string][][]interface{} {
 	return copiedInvocations
 }
 
-func (fake *CurrentTime) recordInvocation(key string, args []interface{}) {
+func (fake *CurrentDateTimeGetter) recordInvocation(key string, args []interface{}) {
 	fake.invocationsMutex.Lock()
 	defer fake.invocationsMutex.Unlock()
 	if fake.invocations == nil {
@@ -135,4 +97,4 @@ func (fake *CurrentTime) recordInvocation(key string, args []interface{}) {
 	fake.invocations[key] = append(fake.invocations[key], args)
 }
 
-var _ time.CurrentTime = new(CurrentTime)
+var _ time.CurrentDateTimeGetter = new(CurrentDateTimeGetter)

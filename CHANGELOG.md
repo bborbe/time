@@ -8,6 +8,12 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.17.0
+
+- add counterfeiter mocks for all interfaces
+- add Layout types and parsing functionality
+- go mod update
+
 ## v1.16.3
 
 - add test.ParseDate

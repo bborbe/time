@@ -6,6 +6,7 @@ package time
 
 import stdtime "time"
 
+//counterfeiter:generate -o mocks/has-duration.go --fake-name HasDuration . HasDuration
 type HasDuration interface {
 	Duration() stdtime.Duration
 }
