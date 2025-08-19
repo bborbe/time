@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.17.1
+
+- add test.ParseDuration utility function
+
 ## v1.17.0
 
 - add counterfeiter mocks for all interfaces
