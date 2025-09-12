@@ -221,3 +221,8 @@ func (u UnixTime) UTC() UnixTime {
 func (u UnixTime) Weekday() Weekday {
 	return Weekday(u.Time().Weekday())
 }
+
+// IsZero reports whether u represents the zero time instant.
+func (u UnixTime) IsZero() bool {
+	return u.Time().IsZero()
+}

@@ -245,3 +245,8 @@ func (d DateTime) UTC() DateTime {
 func (d DateTime) Weekday() Weekday {
 	return Weekday(d.Time().Weekday())
 }
+
+// IsZero reports whether d represents the zero time instant.
+func (d DateTime) IsZero() bool {
+	return d.Time().IsZero()
+}

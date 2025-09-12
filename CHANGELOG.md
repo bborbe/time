@@ -8,6 +8,13 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.18.0
+- Add IsZero method to DateTime, UnixTime, and Date types
+- Add DateTimeRange, DateRange, and UnixTimeRange types with validation
+- Add comprehensive tests for all new IsZero methods
+- Add proper godoc comments following Go documentation best practices
+- Implement validation framework patterns for range type validation
+
 ## v1.17.1
 
 - add test.ParseDuration utility function

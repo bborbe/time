@@ -149,4 +149,18 @@ var _ = Describe("UnixTime", func() {
 			})
 		})
 	})
+	Context("IsZero", func() {
+		Context("zero time", func() {
+			It("returns true", func() {
+				var unixTime libtime.UnixTime
+				Expect(unixTime.IsZero()).To(BeTrue())
+			})
+		})
+		Context("non-zero time", func() {
+			It("returns false", func() {
+				unixTime := libtime.UnixTimeFromSeconds(1687161394)
+				Expect(unixTime.IsZero()).To(BeFalse())
+			})
+		})
+	})
 })

@@ -180,3 +180,8 @@ func (d Date) UTC() Date {
 func (d Date) Weekday() Weekday {
 	return Weekday(d.Time().Weekday())
 }
+
+// IsZero reports whether d represents the zero time instant.
+func (d Date) IsZero() bool {
+	return d.Time().IsZero()
+}

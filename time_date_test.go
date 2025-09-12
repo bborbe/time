@@ -248,4 +248,18 @@ var _ = Describe("Date", func() {
 			})
 		})
 	})
+	Context("IsZero", func() {
+		Context("zero time", func() {
+			It("returns true", func() {
+				var date libtime.Date
+				Expect(date.IsZero()).To(BeTrue())
+			})
+		})
+		Context("non-zero time", func() {
+			It("returns false", func() {
+				date := libtime.ToDate(time.Unix(1687161394, 0))
+				Expect(date.IsZero()).To(BeFalse())
+			})
+		})
+	})
 })
