@@ -68,6 +68,9 @@ func ParseDurationDefault(ctx context.Context, value interface{}, defaultValue D
 }
 
 func ParseDuration(ctx context.Context, value interface{}) (*Duration, error) {
+	if value == nil {
+		return nil, nil
+	}
 	switch v := value.(type) {
 	case Duration:
 		return v.Ptr(), nil
@@ -77,6 +80,10 @@ func ParseDuration(ctx context.Context, value interface{}) (*Duration, error) {
 		return Duration(v).Ptr(), nil
 	case *stdtime.Duration:
 		return DurationPtr(v), nil
+	case int64:
+		return Duration(v).Ptr(), nil
+	case *int64:
+		return Duration(*v).Ptr(), nil
 	}
 
 	str, err := parse.ParseString(ctx, value)
@@ -92,6 +99,8 @@ func ParseDuration(ctx context.Context, value interface{}) (*Duration, error) {
 		isNegative = true
 		str = str[1:]
 	}
+	// Convert to lowercase to support both uppercase and lowercase units
+	str = strings.ToLower(str)
 	var result Duration
 	matches := durationRegexp.FindStringSubmatch(str)
 	if len(matches) == 0 {

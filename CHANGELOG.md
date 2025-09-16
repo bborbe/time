@@ -8,6 +8,15 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.18.1
+- Fix WaiterUntil to handle equal times correctly (no longer waits when until time equals current time)
+- Remove 10-second buffer from WaiterUntil for more precise timing behavior
+- Add SpecTimeout to waiter tests to prevent hanging and improve test reliability
+- Add support for int64 and *int64 in ParseDuration for direct nanosecond value handling
+- Add support for uppercase and mixed case duration parsing (e.g., "1H30M", "1h30M")
+- Add .PHONY directive to Makefile test target
+- Update dependencies to latest versions
+
 ## v1.18.0
 - Add IsZero method to DateTime, UnixTime, and Date types
 - Add DateTimeRange, DateRange, and UnixTimeRange types with validation

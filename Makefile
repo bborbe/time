@@ -17,6 +17,7 @@ generate:
 	rm -rf mocks avro
 	go generate -mod=mod ./...
 
+.PHONY: test
 test:
 	go test -mod=mod -p=$${GO_TEST_PARALLEL:-1} -cover -race $(shell go list -mod=mod ./... | grep -v /vendor/)
 

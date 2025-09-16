@@ -34,6 +34,19 @@ var _ = DescribeTable("ParseDuration",
 	Entry("hour", "1h", libtime.Hour, false),
 	Entry("day", "1d", 24*libtime.Hour, false),
 	Entry("week", "1w", 7*24*libtime.Hour, false),
+	// Uppercase variants
+	Entry("second uppercase", "1S", libtime.Second, false),
+	Entry("minute uppercase", "1M", libtime.Minute, false),
+	Entry("hour uppercase", "1H", libtime.Hour, false),
+	Entry("day uppercase", "1D", 24*libtime.Hour, false),
+	Entry("week uppercase", "1W", 7*24*libtime.Hour, false),
+	// Mixed case combinations
+	Entry("combined uppercase", "1H30M", 90*libtime.Minute, false),
+	Entry("combined mixed case", "1h30M", 90*libtime.Minute, false),
+	Entry("combined mixed case 2", "1H30m", 90*libtime.Minute, false),
+	Entry("negative uppercase", "-1H30M", -90*libtime.Minute, false),
+	Entry("dot uppercase", "1.5H", 90*libtime.Minute, false),
+	// Original lowercase tests
 	Entry("combined", "1h30m", 90*libtime.Minute, false),
 	Entry("negative", "-1h30m", -90*libtime.Minute, false),
 	Entry("dot", "1.5h", 90*libtime.Minute, false),
@@ -133,6 +146,28 @@ var _ = Describe("Duration", func() {
 			})
 			It("returns correct content", func() {
 				Expect(duration).To(Equal(libtime.Hour))
+			})
+		})
+		Context("with uppercase duration value", func() {
+			BeforeEach(func() {
+				value = `"1H"`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(duration).To(Equal(libtime.Hour))
+			})
+		})
+		Context("with mixed case duration value", func() {
+			BeforeEach(func() {
+				value = `"1H30m"`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(duration).To(Equal(90 * libtime.Minute))
 			})
 		})
 		Context("with empty value", func() {

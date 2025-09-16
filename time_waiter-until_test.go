@@ -87,7 +87,7 @@ var _ = Describe("WaiterUntil", func() {
 		})
 
 		Describe("with future time", func() {
-			It("waits until the specified time", func() {
+			It("waits until the specified time", func(ctx context.Context) {
 				now := libtimetest.ParseDateTime("2023-12-25T10:00:00Z")
 				currentDateTime.SetNow(now)
 
@@ -99,13 +99,13 @@ var _ = Describe("WaiterUntil", func() {
 				elapsed := time.Since(start)
 
 				Expect(err).To(BeNil())
-				// Should wait for duration + 10 second buffer
-				expectedDuration := 50*time.Millisecond + 10*time.Second
+				// Should wait for the specified duration
+				expectedDuration := 50 * time.Millisecond
 				Expect(elapsed).To(BeNumerically(">=", expectedDuration))
 				Expect(elapsed).To(BeNumerically("<", expectedDuration+200*time.Millisecond))
-			})
+			}, SpecTimeout(2*time.Second))
 
-			It("includes 10 second buffer in wait time", func() {
+			It("waits for exact duration without buffer", func(ctx context.Context) {
 				now := libtimetest.ParseDateTime("2023-12-25T10:00:00Z")
 				currentDateTime.SetNow(now)
 
@@ -117,20 +117,20 @@ var _ = Describe("WaiterUntil", func() {
 				elapsed := time.Since(start)
 
 				Expect(err).To(BeNil())
-				// Should wait for 1ms + 10 second buffer
-				expectedDuration := 1*time.Millisecond + 10*time.Second
+				// Should wait for exactly 1ms
+				expectedDuration := 1 * time.Millisecond
 				Expect(elapsed).To(BeNumerically(">=", expectedDuration))
 				Expect(elapsed).To(BeNumerically("<", expectedDuration+200*time.Millisecond))
-			})
+			}, SpecTimeout(2*time.Second))
 
-			It("returns nil when wait completes successfully", func() {
+			It("returns nil when wait completes successfully", func(ctx context.Context) {
 				now := libtimetest.ParseDateTime("2023-12-25T10:00:00Z")
 				currentDateTime.SetNow(now)
 
 				until := now.Add(libtime.Duration(1 * time.Millisecond))
 				err := waiter.WaitUntil(context.Background(), until)
 				Expect(err).To(BeNil())
-			})
+			}, SpecTimeout(2*time.Second))
 		})
 
 		Describe("with past time", func() {
@@ -160,10 +160,7 @@ var _ = Describe("WaiterUntil", func() {
 				elapsed := time.Since(start)
 
 				Expect(err).To(BeNil())
-				// Note: Equal times are considered "before" in Go, so this will actually wait
-				// for 10 seconds (the buffer). This is the expected behavior.
-				Expect(elapsed).To(BeNumerically(">=", 10*time.Second))
-				Expect(elapsed).To(BeNumerically("<", 11*time.Second))
+				Expect(elapsed).To(BeNumerically("<", 10*time.Millisecond)) // Should be almost instant
 			})
 
 			It("returns immediately when until time is significantly in the past", func() {
@@ -231,7 +228,7 @@ var _ = Describe("WaiterUntil", func() {
 		})
 
 		Describe("with dynamic current time", func() {
-			It("calculates wait duration based on current time at call time", func() {
+			It("calculates wait duration based on current time at call time", func(ctx context.Context) {
 				// Set initial time
 				now := libtimetest.ParseDateTime("2023-12-25T10:00:00Z")
 				currentDateTime.SetNow(now)
@@ -247,11 +244,11 @@ var _ = Describe("WaiterUntil", func() {
 				elapsed := time.Since(start)
 
 				Expect(err).To(BeNil())
-				// Should wait for remaining 30ms + 10 second buffer
-				expectedDuration := 30*time.Millisecond + 10*time.Second
+				// Should wait for remaining 30ms
+				expectedDuration := 30 * time.Millisecond
 				Expect(elapsed).To(BeNumerically(">=", expectedDuration))
 				Expect(elapsed).To(BeNumerically("<", expectedDuration+200*time.Millisecond))
-			})
+			}, SpecTimeout(2*time.Second))
 
 			It("uses current time from getter at call time", func() {
 				callCount := 0
@@ -270,7 +267,7 @@ var _ = Describe("WaiterUntil", func() {
 		})
 
 		Describe("edge cases", func() {
-			It("handles very short wait durations", func() {
+			It("handles very short wait durations", func(ctx context.Context) {
 				now := libtimetest.ParseDateTime("2023-12-25T10:00:00Z")
 				currentDateTime.SetNow(now)
 
@@ -281,10 +278,10 @@ var _ = Describe("WaiterUntil", func() {
 				elapsed := time.Since(start)
 
 				Expect(err).To(BeNil())
-				// Should wait for 1ns + 10 second buffer
-				expectedDuration := 10 * time.Second
+				// Should wait for 1ns
+				expectedDuration := 1 * time.Nanosecond
 				Expect(elapsed).To(BeNumerically(">=", expectedDuration))
-			})
+			}, SpecTimeout(2*time.Second))
 
 			It("handles zero time values", func() {
 				currentDateTime.SetNow(libtime.DateTime{}) // Zero time
@@ -295,12 +292,11 @@ var _ = Describe("WaiterUntil", func() {
 				elapsed := time.Since(start)
 
 				Expect(err).To(BeNil())
-				// Zero times are equal, so this will wait for the 10 second buffer
-				Expect(elapsed).To(BeNumerically(">=", 10*time.Second))
-				Expect(elapsed).To(BeNumerically("<", 11*time.Second))
+				// Zero times are equal, so this should return immediately
+				Expect(elapsed).To(BeNumerically("<", 10*time.Millisecond))
 			})
 
-			It("handles different timezones correctly", func() {
+			It("handles different timezones correctly", func(ctx context.Context) {
 				utc := time.UTC
 				est := time.FixedZone("EST", -5*3600)
 
@@ -314,11 +310,11 @@ var _ = Describe("WaiterUntil", func() {
 				elapsed := time.Since(start)
 
 				Expect(err).To(BeNil())
-				// Should wait for 1 second + 10 second buffer
-				expectedDuration := 1*time.Second + 10*time.Second
+				// Should wait for 1 second
+				expectedDuration := 1 * time.Second
 				Expect(elapsed).To(BeNumerically(">=", expectedDuration))
 				Expect(elapsed).To(BeNumerically("<", expectedDuration+200*time.Millisecond))
-			})
+			}, SpecTimeout(3*time.Second))
 		})
 
 		Describe("interface compliance", func() {
