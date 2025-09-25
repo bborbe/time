@@ -42,3 +42,45 @@ func (r DateRange) Validate(ctx context.Context) error {
 func (r DateRange) Ptr() *DateRange {
 	return &r
 }
+
+// DayDateRange creates a DateRange covering the entire day containing the given date.
+// The range spans from 00:00:00.000000000 to 23:59:59.999999999 of that day.
+func DayDateRange(d Date) DateRange {
+	t := d.Time()
+	return DateRange{From: Date(BeginningOfDay(t)), Until: Date(EndOfDay(t))}
+}
+
+// WeekDateRange creates a DateRange covering the entire week containing the given date.
+// The range spans from Monday to Sunday of that week.
+// Uses ISO 8601 standard where Monday is the first day of the week.
+func WeekDateRange(d Date) DateRange {
+	t := d.Time()
+	return DateRange{From: Date(BeginningOfWeek(t)), Until: Date(EndOfWeek(t))}
+}
+
+// MonthDateRange creates a DateRange covering the entire month containing the given date.
+// The range spans from the 1st day to the last day of that month.
+func MonthDateRange(d Date) DateRange {
+	t := d.Time()
+	return DateRange{From: Date(BeginningOfMonth(t)), Until: Date(EndOfMonth(t))}
+}
+
+// QuarterDateRange creates a DateRange covering the entire quarter containing the given date.
+// Quarters are defined as: Q1=Jan-Mar, Q2=Apr-Jun, Q3=Jul-Sep, Q4=Oct-Dec.
+// The range spans from the 1st day of the quarter to the last day of that quarter.
+func QuarterDateRange(d Date) DateRange {
+	t := d.Time()
+	return DateRange{From: Date(BeginningOfQuarter(t)), Until: Date(EndOfQuarter(t))}
+}
+
+// YearDateRange creates a DateRange covering the entire year containing the given date.
+// The range spans from January 1st to December 31st of that year.
+func YearDateRange(d Date) DateRange {
+	t := d.Time()
+	return DateRange{From: Date(BeginningOfYear(t)), Until: Date(EndOfYear(t))}
+}
+
+// TimeRange converts a DateRange to a TimeRange.
+func (r DateRange) TimeRange() TimeRange {
+	return TimeRange{From: r.From.Time(), Until: r.Until.Time()}
+}

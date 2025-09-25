@@ -8,6 +8,16 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.19.0
+- Add time range constructor functions for all range types (DayTimeRange, WeekTimeRange, MonthTimeRange, QuarterTimeRange, YearTimeRange)
+- Add range constructor functions for DateRange (DayDateRange, WeekDateRange, MonthDateRange, QuarterDateRange, YearDateRange)
+- Add range constructor functions for DateTimeRange (DayDateTimeRange, WeekDateTimeRange, MonthDateTimeRange, QuarterDateTimeRange, YearDateTimeRange)
+- Add range constructor functions for UnixTimeRange (DayUnixTimeRange, WeekUnixTimeRange, MonthUnixTimeRange, QuarterUnixTimeRange, YearUnixTimeRange)
+- Add TimeRange() conversion methods to DateRange, DateTimeRange, and UnixTimeRange types
+- Add public period boundary calculation functions (BeginningOfDay, EndOfDay, BeginningOfWeek, EndOfWeek, etc.)
+- Add comprehensive test coverage for all new range constructor functionality with consistency validation
+- Support timezone preservation in all range calculations
+
 ## v1.18.1
 - Fix WaiterUntil to handle equal times correctly (no longer waits when until time equals current time)
 - Remove 10-second buffer from WaiterUntil for more precise timing behavior
