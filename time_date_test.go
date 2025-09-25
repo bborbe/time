@@ -262,4 +262,19 @@ var _ = Describe("Date", func() {
 			})
 		})
 	})
+	Context("NewDate", func() {
+		var result libtime.Date
+		BeforeEach(func() {
+			result = libtime.NewDate(2023, time.June, 19, 7, 56, 34, 0, time.UTC)
+		})
+		It("creates correct Date", func() {
+			Expect(result.Year()).To(Equal(2023))
+			Expect(result.Month()).To(Equal(time.June))
+			Expect(result.Day()).To(Equal(19))
+		})
+		It("matches time.Date behavior", func() {
+			expected := time.Date(2023, time.June, 19, 7, 56, 34, 0, time.UTC)
+			Expect(result.Time()).To(Equal(expected))
+		})
+	})
 })

@@ -65,6 +65,13 @@ func ToDate(value stdtime.Time) Date {
 	return Date(stdtime.Date(year, month, day, 0, 0, 0, 0, stdtime.UTC))
 }
 
+// NewDate creates a Date representing the date specified by the given parameters.
+// It wraps the standard library's time.Date function with the same parameter signature.
+// Note: hour, min, sec, nsec and loc parameters are typically ignored for Date operations.
+func NewDate(year int, month stdtime.Month, day, hour, min, sec, nsec int, loc *stdtime.Location) Date {
+	return Date(stdtime.Date(year, month, day, hour, min, sec, nsec, loc))
+}
+
 type Date stdtime.Time
 
 func (d Date) Year() int {

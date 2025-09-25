@@ -6,10 +6,20 @@ package time
 
 import (
 	"context"
+	stdtime "time"
 
 	"github.com/bborbe/errors"
 	"github.com/bborbe/validation"
 )
+
+// DateTimeRangeFromTime creates a DateTimeRange from two time.Time values.
+// It converts the from and until times to DateTime types and returns a DateTimeRange.
+func DateTimeRangeFromTime(from, until stdtime.Time) DateTimeRange {
+	return DateTimeRange{
+		From:  DateTime(from),
+		Until: DateTime(until),
+	}
+}
 
 type DateTimeRange struct {
 	From  DateTime `json:"from,omitempty"`

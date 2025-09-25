@@ -276,4 +276,24 @@ var _ = Describe("DateTime", func() {
 			})
 		})
 	})
+	Context("NewDateTime", func() {
+		var result libtime.DateTime
+		BeforeEach(func() {
+			result = libtime.NewDateTime(2023, time.June, 19, 7, 56, 34, 0, time.UTC)
+		})
+		It("creates correct DateTime", func() {
+			Expect(result.Year()).To(Equal(2023))
+			Expect(result.Month()).To(Equal(time.June))
+			Expect(result.Day()).To(Equal(19))
+			Expect(result.Hour()).To(Equal(7))
+			Expect(result.Minute()).To(Equal(56))
+			Expect(result.Second()).To(Equal(34))
+			Expect(result.Nanosecond()).To(Equal(0))
+			Expect(result.Time().Location()).To(Equal(time.UTC))
+		})
+		It("matches time.Date behavior", func() {
+			expected := time.Date(2023, time.June, 19, 7, 56, 34, 0, time.UTC)
+			Expect(result.Time()).To(Equal(expected))
+		})
+	})
 })

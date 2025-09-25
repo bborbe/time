@@ -6,10 +6,20 @@ package time
 
 import (
 	"context"
+	stdtime "time"
 
 	"github.com/bborbe/errors"
 	"github.com/bborbe/validation"
 )
+
+// UnixTimeRangeFromTime creates a UnixTimeRange from two time.Time values.
+// It converts the from and until times to UnixTime types and returns a UnixTimeRange.
+func UnixTimeRangeFromTime(from, until stdtime.Time) UnixTimeRange {
+	return UnixTimeRange{
+		From:  UnixTime(from),
+		Until: UnixTime(until),
+	}
+}
 
 type UnixTimeRange struct {
 	From  UnixTime `json:"from,omitempty"`
