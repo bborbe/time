@@ -176,8 +176,14 @@ func (d Date) Unix() int64 {
 	return d.Time().Unix()
 }
 
-func (d Date) AddTime(years int, months int, days int) Date {
+func (d Date) AddDate(years int, months int, days int) Date {
 	return Date(d.Time().AddDate(years, months, days))
+}
+
+// Deprecated: Use AddDate instead.
+// AddTime adds the given years, months, and days to the Date but will be removed in future versions.
+func (d Date) AddTime(years int, months int, days int) Date {
+	return d.AddDate(years, months, days)
 }
 
 func (d Date) UTC() Date {

@@ -240,8 +240,14 @@ func (d DateTime) Truncate(duration HasDuration) DateTime {
 	return DateTime(d.Time().Truncate(duration.Duration()))
 }
 
-func (d DateTime) AddTime(years int, months int, days int) DateTime {
+func (d DateTime) AddDate(years int, months int, days int) DateTime {
 	return DateTime(d.Time().AddDate(years, months, days))
+}
+
+// Deprecated: Use AddDate instead.
+// AddTime adds the given years, months, and days to the DateTime but will be removed in future versions.
+func (d DateTime) AddTime(years int, months int, days int) DateTime {
+	return d.AddDate(years, months, days)
 }
 
 func (d DateTime) UTC() DateTime {

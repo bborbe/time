@@ -211,7 +211,7 @@ var _ = Describe("Date", func() {
 			})
 		})
 	})
-	Context("AddTime", func() {
+	Context("AddDate", func() {
 		var dateTime libtime.Date
 		var result libtime.Date
 		var days int
@@ -224,7 +224,7 @@ var _ = Describe("Date", func() {
 			dateTime = ParseDate("2024-12-24")
 		})
 		JustBeforeEach(func() {
-			result = dateTime.AddTime(years, months, days)
+			result = dateTime.AddDate(years, months, days)
 		})
 		Context("add nothing", func() {
 			It("returns the date time", func() {

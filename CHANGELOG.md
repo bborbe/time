@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.19.1
+- Add AddDate() method to all types (DateTime, Date, UnixTime) to align with Go standard library naming conventions
+- Deprecate AddTime() methods (use AddDate() instead)
+
 ## v1.19.0
 - Add time range constructor functions for all range types (DayTimeRange, WeekTimeRange, MonthTimeRange, QuarterTimeRange, YearTimeRange)
 - Add range constructor functions for DateRange (DayDateRange, WeekDateRange, MonthDateRange, QuarterDateRange, YearDateRange)

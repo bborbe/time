@@ -216,8 +216,14 @@ func (u UnixTime) DateTime() DateTime {
 	return DateTime(u)
 }
 
-func (u UnixTime) AddTime(years int, months int, days int) UnixTime {
+func (u UnixTime) AddDate(years int, months int, days int) UnixTime {
 	return UnixTime(u.Time().AddDate(years, months, days))
+}
+
+// Deprecated: Use AddDate instead.
+// AddTime adds the given years, months, and days to the UnixTime but will be removed in future versions.
+func (u UnixTime) AddTime(years int, months int, days int) UnixTime {
+	return u.AddDate(years, months, days)
 }
 
 func (u UnixTime) UTC() UnixTime {
