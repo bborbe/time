@@ -12,6 +12,55 @@ import (
 	"github.com/bborbe/validation"
 )
 
+type DateRanges []DateRange
+
+// Max returns the maximum DateRange that encompasses all ranges in the list.
+// It finds the earliest From date and the latest Until date across all ranges.
+// Returns nil if the list is empty.
+func (ranges DateRanges) Max() *DateRange {
+	if len(ranges) == 0 {
+		return nil
+	}
+
+	maxRange := ranges[0]
+	for _, r := range ranges[1:] {
+		if r.From.Time().Before(maxRange.From.Time()) {
+			maxRange.From = r.From
+		}
+		if r.Until.Time().After(maxRange.Until.Time()) {
+			maxRange.Until = r.Until
+		}
+	}
+
+	return maxRange.Ptr()
+}
+
+// Min returns the minimum DateRange that is contained within all ranges in the list.
+// It finds the latest From date and the earliest Until date across all ranges.
+// Returns nil if the list is empty or if there is no overlap between ranges.
+func (ranges DateRanges) Min() *DateRange {
+	if len(ranges) == 0 {
+		return nil
+	}
+
+	minRange := ranges[0]
+	for _, r := range ranges[1:] {
+		if r.From.Time().After(minRange.From.Time()) {
+			minRange.From = r.From
+		}
+		if r.Until.Time().Before(minRange.Until.Time()) {
+			minRange.Until = r.Until
+		}
+	}
+
+	// Check if the resulting range is valid (From <= Until)
+	if minRange.From.Time().After(minRange.Until.Time()) {
+		return nil
+	}
+
+	return minRange.Ptr()
+}
+
 // DateRangeFromTime creates a DateRange from two time.Time values.
 // It converts the from and until times to Date types and returns a DateRange.
 func DateRangeFromTime(from, until stdtime.Time) DateRange {

@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.19.2
+- Add Max() method to DateTimeRanges, UnixTimeRanges, and DateRanges for finding maximum encompassing range
+- Add Min() method to DateTimeRanges, UnixTimeRanges, and DateRanges for finding minimum overlapping range
+
 ## v1.19.1
 - Add AddDate() method to all types (DateTime, Date, UnixTime) to align with Go standard library naming conventions
 - Deprecate AddTime() methods (use AddDate() instead)

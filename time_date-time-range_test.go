@@ -190,3 +190,100 @@ var _ = Describe("DateTimeRange", func() {
 		})
 	})
 })
+
+var _ = Describe("DateTimeRanges", func() {
+	Context("Max", func() {
+		It("returns nil for empty list", func() {
+			ranges := libtime.DateTimeRanges{}
+			result := ranges.Max()
+			Expect(result).To(BeNil())
+		})
+
+		It("returns the single range for single item list", func() {
+			range1 := libtime.DateTimeRangeFromTime(
+				time.Date(2023, 6, 10, 10, 0, 0, 0, time.UTC),
+				time.Date(2023, 6, 15, 15, 0, 0, 0, time.UTC),
+			)
+			ranges := libtime.DateTimeRanges{range1}
+			result := ranges.Max()
+			Expect(result).NotTo(BeNil())
+			Expect(*result).To(Equal(range1))
+		})
+
+		It("returns max range encompassing all ranges", func() {
+			range1 := libtime.DateTimeRangeFromTime(
+				time.Date(2023, 6, 10, 10, 0, 0, 0, time.UTC),
+				time.Date(2023, 6, 15, 15, 0, 0, 0, time.UTC),
+			)
+			range2 := libtime.DateTimeRangeFromTime(
+				time.Date(2023, 6, 5, 8, 0, 0, 0, time.UTC), // Earlier From
+				time.Date(2023, 6, 12, 12, 0, 0, 0, time.UTC),
+			)
+			range3 := libtime.DateTimeRangeFromTime(
+				time.Date(2023, 6, 8, 9, 0, 0, 0, time.UTC),
+				time.Date(2023, 6, 20, 18, 0, 0, 0, time.UTC), // Later Until
+			)
+			ranges := libtime.DateTimeRanges{range1, range2, range3}
+			result := ranges.Max()
+
+			Expect(result).NotTo(BeNil())
+			Expect(result.From.Time()).To(Equal(time.Date(2023, 6, 5, 8, 0, 0, 0, time.UTC)))
+			Expect(result.Until.Time()).To(Equal(time.Date(2023, 6, 20, 18, 0, 0, 0, time.UTC)))
+		})
+	})
+
+	Context("Min", func() {
+		It("returns nil for empty list", func() {
+			ranges := libtime.DateTimeRanges{}
+			result := ranges.Min()
+			Expect(result).To(BeNil())
+		})
+
+		It("returns the single range for single item list", func() {
+			range1 := libtime.DateTimeRangeFromTime(
+				time.Date(2023, 6, 10, 10, 0, 0, 0, time.UTC),
+				time.Date(2023, 6, 15, 15, 0, 0, 0, time.UTC),
+			)
+			ranges := libtime.DateTimeRanges{range1}
+			result := ranges.Min()
+			Expect(result).NotTo(BeNil())
+			Expect(*result).To(Equal(range1))
+		})
+
+		It("returns min range that overlaps all ranges", func() {
+			range1 := libtime.DateTimeRangeFromTime(
+				time.Date(2023, 6, 10, 10, 0, 0, 0, time.UTC),
+				time.Date(2023, 6, 20, 15, 0, 0, 0, time.UTC),
+			)
+			range2 := libtime.DateTimeRangeFromTime(
+				time.Date(2023, 6, 12, 8, 0, 0, 0, time.UTC), // Later From
+				time.Date(2023, 6, 25, 12, 0, 0, 0, time.UTC),
+			)
+			range3 := libtime.DateTimeRangeFromTime(
+				time.Date(2023, 6, 8, 9, 0, 0, 0, time.UTC),
+				time.Date(2023, 6, 18, 18, 0, 0, 0, time.UTC), // Earlier Until
+			)
+			ranges := libtime.DateTimeRanges{range1, range2, range3}
+			result := ranges.Min()
+
+			Expect(result).NotTo(BeNil())
+			Expect(result.From.Time()).To(Equal(time.Date(2023, 6, 12, 8, 0, 0, 0, time.UTC)))
+			Expect(result.Until.Time()).To(Equal(time.Date(2023, 6, 18, 18, 0, 0, 0, time.UTC)))
+		})
+
+		It("returns nil when no overlap exists", func() {
+			range1 := libtime.DateTimeRangeFromTime(
+				time.Date(2023, 6, 10, 10, 0, 0, 0, time.UTC),
+				time.Date(2023, 6, 15, 15, 0, 0, 0, time.UTC),
+			)
+			range2 := libtime.DateTimeRangeFromTime(
+				time.Date(2023, 6, 20, 8, 0, 0, 0, time.UTC), // No overlap
+				time.Date(2023, 6, 25, 12, 0, 0, 0, time.UTC),
+			)
+			ranges := libtime.DateTimeRanges{range1, range2}
+			result := ranges.Min()
+
+			Expect(result).To(BeNil())
+		})
+	})
+})

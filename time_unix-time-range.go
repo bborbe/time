@@ -12,6 +12,55 @@ import (
 	"github.com/bborbe/validation"
 )
 
+type UnixTimeRanges []UnixTimeRange
+
+// Max returns the maximum UnixTimeRange that encompasses all ranges in the list.
+// It finds the earliest From time and the latest Until time across all ranges.
+// Returns nil if the list is empty.
+func (ranges UnixTimeRanges) Max() *UnixTimeRange {
+	if len(ranges) == 0 {
+		return nil
+	}
+
+	maxRange := ranges[0]
+	for _, r := range ranges[1:] {
+		if r.From.Before(maxRange.From) {
+			maxRange.From = r.From
+		}
+		if r.Until.After(maxRange.Until) {
+			maxRange.Until = r.Until
+		}
+	}
+
+	return maxRange.Ptr()
+}
+
+// Min returns the minimum UnixTimeRange that is contained within all ranges in the list.
+// It finds the latest From time and the earliest Until time across all ranges.
+// Returns nil if the list is empty or if there is no overlap between ranges.
+func (ranges UnixTimeRanges) Min() *UnixTimeRange {
+	if len(ranges) == 0 {
+		return nil
+	}
+
+	minRange := ranges[0]
+	for _, r := range ranges[1:] {
+		if r.From.After(minRange.From) {
+			minRange.From = r.From
+		}
+		if r.Until.Before(minRange.Until) {
+			minRange.Until = r.Until
+		}
+	}
+
+	// Check if the resulting range is valid (From <= Until)
+	if minRange.From.After(minRange.Until) {
+		return nil
+	}
+
+	return minRange.Ptr()
+}
+
 // UnixTimeRangeFromTime creates a UnixTimeRange from two time.Time values.
 // It converts the from and until times to UnixTime types and returns a UnixTimeRange.
 func UnixTimeRangeFromTime(from, until stdtime.Time) UnixTimeRange {
