@@ -21,7 +21,11 @@ func (r TimeRange) Validate(ctx context.Context) error {
 	return validation.All{
 		validation.Name("range", validation.HasValidationFunc(func(ctx context.Context) error {
 			if r.From.After(r.Until) {
-				return errors.Wrapf(ctx, validation.Error, "from must be less than or equal to until")
+				return errors.Wrapf(
+					ctx,
+					validation.Error,
+					"from must be less than or equal to until",
+				)
 			}
 			return nil
 		})),

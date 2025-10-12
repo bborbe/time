@@ -24,7 +24,9 @@ var _ = Describe("TimeRange Constructors", func() {
 		It("creates correct day range", func() {
 			result := libtime.DayTimeRange(testTime)
 			Expect(result.From).To(Equal(time.Date(2023, time.June, 20, 0, 0, 0, 0, time.UTC)))
-			Expect(result.Until).To(Equal(time.Date(2023, time.June, 20, 23, 59, 59, 999999999, time.UTC)))
+			Expect(
+				result.Until,
+			).To(Equal(time.Date(2023, time.June, 20, 23, 59, 59, 999999999, time.UTC)))
 		})
 
 		It("produces same range for all times within the same day", func() {
@@ -47,7 +49,9 @@ var _ = Describe("TimeRange Constructors", func() {
 			result := libtime.WeekTimeRange(testTime)
 			// Tuesday June 20 -> Week starts Monday June 19, ends Sunday June 25
 			Expect(result.From).To(Equal(time.Date(2023, time.June, 19, 0, 0, 0, 0, time.UTC)))
-			Expect(result.Until).To(Equal(time.Date(2023, time.June, 25, 23, 59, 59, 999999999, time.UTC)))
+			Expect(
+				result.Until,
+			).To(Equal(time.Date(2023, time.June, 25, 23, 59, 59, 999999999, time.UTC)))
 		})
 
 		It("handles Sunday correctly", func() {
@@ -55,7 +59,9 @@ var _ = Describe("TimeRange Constructors", func() {
 			result := libtime.WeekTimeRange(sunday)
 			// Sunday June 25 -> Same week (June 19-25)
 			Expect(result.From).To(Equal(time.Date(2023, time.June, 19, 0, 0, 0, 0, time.UTC)))
-			Expect(result.Until).To(Equal(time.Date(2023, time.June, 25, 23, 59, 59, 999999999, time.UTC)))
+			Expect(
+				result.Until,
+			).To(Equal(time.Date(2023, time.June, 25, 23, 59, 59, 999999999, time.UTC)))
 		})
 
 		It("handles Monday correctly", func() {
@@ -63,7 +69,9 @@ var _ = Describe("TimeRange Constructors", func() {
 			result := libtime.WeekTimeRange(monday)
 			// Monday June 19 -> Same week (June 19-25)
 			Expect(result.From).To(Equal(time.Date(2023, time.June, 19, 0, 0, 0, 0, time.UTC)))
-			Expect(result.Until).To(Equal(time.Date(2023, time.June, 25, 23, 59, 59, 999999999, time.UTC)))
+			Expect(
+				result.Until,
+			).To(Equal(time.Date(2023, time.June, 25, 23, 59, 59, 999999999, time.UTC)))
 		})
 	})
 
@@ -71,24 +79,33 @@ var _ = Describe("TimeRange Constructors", func() {
 		It("creates correct month range", func() {
 			result := libtime.MonthTimeRange(testTime)
 			Expect(result.From).To(Equal(time.Date(2023, time.June, 1, 0, 0, 0, 0, time.UTC)))
-			Expect(result.Until).To(Equal(time.Date(2023, time.June, 30, 23, 59, 59, 999999999, time.UTC)))
+			Expect(
+				result.Until,
+			).To(Equal(time.Date(2023, time.June, 30, 23, 59, 59, 999999999, time.UTC)))
 		})
 
 		It("handles leap year February", func() {
 			leapYear := time.Date(2024, time.February, 15, 12, 0, 0, 0, time.UTC)
 			result := libtime.MonthTimeRange(leapYear)
 			Expect(result.From).To(Equal(time.Date(2024, time.February, 1, 0, 0, 0, 0, time.UTC)))
-			Expect(result.Until).To(Equal(time.Date(2024, time.February, 29, 23, 59, 59, 999999999, time.UTC)))
+			Expect(
+				result.Until,
+			).To(Equal(time.Date(2024, time.February, 29, 23, 59, 59, 999999999, time.UTC)))
 		})
 	})
 
 	Context("QuarterTimeRange", func() {
-		DescribeTable("creates correct quarter range",
+		DescribeTable(
+			"creates correct quarter range",
 			func(inputMonth time.Month, expectedStartMonth time.Month, expectedEndMonth time.Month, expectedEndDay int) {
 				input := time.Date(2023, inputMonth, 15, 12, 0, 0, 0, time.UTC)
 				result := libtime.QuarterTimeRange(input)
-				Expect(result.From).To(Equal(time.Date(2023, expectedStartMonth, 1, 0, 0, 0, 0, time.UTC)))
-				Expect(result.Until).To(Equal(time.Date(2023, expectedEndMonth, expectedEndDay, 23, 59, 59, 999999999, time.UTC)))
+				Expect(
+					result.From,
+				).To(Equal(time.Date(2023, expectedStartMonth, 1, 0, 0, 0, 0, time.UTC)))
+				Expect(
+					result.Until,
+				).To(Equal(time.Date(2023, expectedEndMonth, expectedEndDay, 23, 59, 59, 999999999, time.UTC)))
 			},
 			Entry("Q1 - January", time.January, time.January, time.March, 31),
 			Entry("Q1 - February", time.February, time.January, time.March, 31),
@@ -109,7 +126,9 @@ var _ = Describe("TimeRange Constructors", func() {
 		It("creates correct year range", func() {
 			result := libtime.YearTimeRange(testTime)
 			Expect(result.From).To(Equal(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)))
-			Expect(result.Until).To(Equal(time.Date(2023, time.December, 31, 23, 59, 59, 999999999, time.UTC)))
+			Expect(
+				result.Until,
+			).To(Equal(time.Date(2023, time.December, 31, 23, 59, 59, 999999999, time.UTC)))
 		})
 	})
 

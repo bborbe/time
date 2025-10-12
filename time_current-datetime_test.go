@@ -161,7 +161,8 @@ var _ = Describe("CurrentDateTime", func() {
 
 				// Create different times
 				for i := 0; i < numGoroutines; i++ {
-					times[i] = libtimetest.ParseDateTime("2023-01-01T00:00:00Z").Add(libtime.Duration(time.Duration(i) * time.Hour))
+					times[i] = libtimetest.ParseDateTime("2023-01-01T00:00:00Z").
+						Add(libtime.Duration(time.Duration(i) * time.Hour))
 				}
 
 				var wg sync.WaitGroup
@@ -209,7 +210,9 @@ var _ = Describe("CurrentDateTime", func() {
 					wg.Add(1)
 					go func(index int) {
 						defer wg.Done()
-						timeToSet := fixedTime.Add(libtime.Duration(time.Duration(index) * time.Minute))
+						timeToSet := fixedTime.Add(
+							libtime.Duration(time.Duration(index) * time.Minute),
+						)
 						currentDateTime.SetNow(timeToSet)
 					}(i)
 				}

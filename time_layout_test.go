@@ -340,7 +340,9 @@ var _ = Describe("Layouts", func() {
 			It("returns error", func() {
 				Expect(err).To(HaveOccurred())
 				Expect(output).To(BeNil())
-				Expect(err.Error()).To(ContainSubstring("parse 'invalid-format' with any layouts failed"))
+				Expect(
+					err.Error(),
+				).To(ContainSubstring("parse 'invalid-format' with any layouts failed"))
 			})
 		})
 	})
@@ -352,7 +354,9 @@ var _ = Describe("Layouts", func() {
 		It("returns error", func() {
 			Expect(err).To(HaveOccurred())
 			Expect(output).To(BeNil())
-			Expect(err.Error()).To(ContainSubstring("parse '2022-06-03T09:32:52Z' with any layouts failed"))
+			Expect(
+				err.Error(),
+			).To(ContainSubstring("parse '2022-06-03T09:32:52Z' with any layouts failed"))
 		})
 	})
 })

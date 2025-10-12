@@ -81,7 +81,11 @@ func (r UnixTimeRange) Validate(ctx context.Context) error {
 		validation.Name("until", r.Until),
 		validation.Name("range", validation.HasValidationFunc(func(ctx context.Context) error {
 			if r.From.After(r.Until) {
-				return errors.Wrapf(ctx, validation.Error, "from must be less than or equal to until")
+				return errors.Wrapf(
+					ctx,
+					validation.Error,
+					"from must be less than or equal to until",
+				)
 			}
 			return nil
 		})),

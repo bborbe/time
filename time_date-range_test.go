@@ -46,8 +46,12 @@ var _ = Describe("DateRange", func() {
 		Context("DayDateRange", func() {
 			It("creates correct day range", func() {
 				result := libtime.DayDateRange(testDate)
-				Expect(result.From.Time()).To(Equal(time.Date(2023, time.June, 20, 0, 0, 0, 0, time.UTC)))
-				Expect(result.Until.Time()).To(Equal(time.Date(2023, time.June, 20, 23, 59, 59, 999999999, time.UTC)))
+				Expect(
+					result.From.Time(),
+				).To(Equal(time.Date(2023, time.June, 20, 0, 0, 0, 0, time.UTC)))
+				Expect(
+					result.Until.Time(),
+				).To(Equal(time.Date(2023, time.June, 20, 23, 59, 59, 999999999, time.UTC)))
 			})
 		})
 
@@ -55,16 +59,24 @@ var _ = Describe("DateRange", func() {
 			It("creates correct week range", func() {
 				result := libtime.WeekDateRange(testDate)
 				// Tuesday June 20 -> Week starts Monday June 19, ends Sunday June 25
-				Expect(result.From.Time()).To(Equal(time.Date(2023, time.June, 19, 0, 0, 0, 0, time.UTC)))
-				Expect(result.Until.Time()).To(Equal(time.Date(2023, time.June, 25, 23, 59, 59, 999999999, time.UTC)))
+				Expect(
+					result.From.Time(),
+				).To(Equal(time.Date(2023, time.June, 19, 0, 0, 0, 0, time.UTC)))
+				Expect(
+					result.Until.Time(),
+				).To(Equal(time.Date(2023, time.June, 25, 23, 59, 59, 999999999, time.UTC)))
 			})
 		})
 
 		Context("MonthDateRange", func() {
 			It("creates correct month range", func() {
 				result := libtime.MonthDateRange(testDate)
-				Expect(result.From.Time()).To(Equal(time.Date(2023, time.June, 1, 0, 0, 0, 0, time.UTC)))
-				Expect(result.Until.Time()).To(Equal(time.Date(2023, time.June, 30, 23, 59, 59, 999999999, time.UTC)))
+				Expect(
+					result.From.Time(),
+				).To(Equal(time.Date(2023, time.June, 1, 0, 0, 0, 0, time.UTC)))
+				Expect(
+					result.Until.Time(),
+				).To(Equal(time.Date(2023, time.June, 30, 23, 59, 59, 999999999, time.UTC)))
 			})
 		})
 
@@ -72,16 +84,24 @@ var _ = Describe("DateRange", func() {
 			It("creates correct quarter range", func() {
 				result := libtime.QuarterDateRange(testDate)
 				// June is Q2 (Apr-Jun)
-				Expect(result.From.Time()).To(Equal(time.Date(2023, time.April, 1, 0, 0, 0, 0, time.UTC)))
-				Expect(result.Until.Time()).To(Equal(time.Date(2023, time.June, 30, 23, 59, 59, 999999999, time.UTC)))
+				Expect(
+					result.From.Time(),
+				).To(Equal(time.Date(2023, time.April, 1, 0, 0, 0, 0, time.UTC)))
+				Expect(
+					result.Until.Time(),
+				).To(Equal(time.Date(2023, time.June, 30, 23, 59, 59, 999999999, time.UTC)))
 			})
 		})
 
 		Context("YearDateRange", func() {
 			It("creates correct year range", func() {
 				result := libtime.YearDateRange(testDate)
-				Expect(result.From.Time()).To(Equal(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)))
-				Expect(result.Until.Time()).To(Equal(time.Date(2023, time.December, 31, 23, 59, 59, 999999999, time.UTC)))
+				Expect(
+					result.From.Time(),
+				).To(Equal(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)))
+				Expect(
+					result.Until.Time(),
+				).To(Equal(time.Date(2023, time.December, 31, 23, 59, 59, 999999999, time.UTC)))
 			})
 		})
 	})
@@ -100,9 +120,15 @@ var _ = Describe("DateRange", func() {
 	Context("Consistency within periods", func() {
 		It("produces same day range for all times within the same day", func() {
 			dates := []libtime.Date{
-				libtime.Date(time.Date(2023, time.June, 20, 0, 0, 0, 0, time.UTC)),            // start
-				libtime.Date(time.Date(2023, time.June, 20, 12, 30, 45, 0, time.UTC)),         // midday
-				libtime.Date(time.Date(2023, time.June, 20, 23, 59, 59, 999999999, time.UTC)), // end
+				libtime.Date(
+					time.Date(2023, time.June, 20, 0, 0, 0, 0, time.UTC),
+				), // start
+				libtime.Date(
+					time.Date(2023, time.June, 20, 12, 30, 45, 0, time.UTC),
+				), // midday
+				libtime.Date(
+					time.Date(2023, time.June, 20, 23, 59, 59, 999999999, time.UTC),
+				), // end
 			}
 
 			expectedRange := libtime.DayDateRange(dates[0])
@@ -114,9 +140,15 @@ var _ = Describe("DateRange", func() {
 
 		It("produces same month range for all dates within the same month", func() {
 			dates := []libtime.Date{
-				libtime.Date(time.Date(2023, time.June, 1, 0, 0, 0, 0, time.UTC)),             // first day
-				libtime.Date(time.Date(2023, time.June, 15, 12, 0, 0, 0, time.UTC)),           // middle
-				libtime.Date(time.Date(2023, time.June, 30, 23, 59, 59, 999999999, time.UTC)), // last day
+				libtime.Date(
+					time.Date(2023, time.June, 1, 0, 0, 0, 0, time.UTC),
+				), // first day
+				libtime.Date(
+					time.Date(2023, time.June, 15, 12, 0, 0, 0, time.UTC),
+				), // middle
+				libtime.Date(
+					time.Date(2023, time.June, 30, 23, 59, 59, 999999999, time.UTC),
+				), // last day
 			}
 
 			expectedRange := libtime.MonthDateRange(dates[0])

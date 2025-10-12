@@ -173,7 +173,16 @@ var _ = Describe("Period Boundaries", func() {
 			func(inputMonth time.Month, expectedMonth time.Month, expectedDay int) {
 				input := time.Date(2023, inputMonth, 15, 12, 0, 0, 0, time.UTC)
 				result := libtime.EndOfQuarter(input)
-				expected := time.Date(2023, expectedMonth, expectedDay, 23, 59, 59, 999999999, time.UTC)
+				expected := time.Date(
+					2023,
+					expectedMonth,
+					expectedDay,
+					23,
+					59,
+					59,
+					999999999,
+					time.UTC,
+				)
 				Expect(result).To(Equal(expected))
 			},
 			Entry("Q1 - January", time.January, time.March, 31),

@@ -30,10 +30,12 @@ var _ = Describe("WaiterDuration", func() {
 	Describe("WaiterDurationFunc", func() {
 		It("implements WaiterDuration interface", func() {
 			callCount := 0
-			waiterFunc := libtime.WaiterDurationFunc(func(ctx context.Context, duration libtime.Duration) error {
-				callCount++
-				return nil
-			})
+			waiterFunc := libtime.WaiterDurationFunc(
+				func(ctx context.Context, duration libtime.Duration) error {
+					callCount++
+					return nil
+				},
+			)
 
 			var waiter libtime.WaiterDuration = waiterFunc
 			Expect(waiter).NotTo(BeNil())
@@ -47,11 +49,13 @@ var _ = Describe("WaiterDuration", func() {
 			var receivedCtx context.Context
 			var receivedDuration libtime.Duration
 
-			waiterFunc := libtime.WaiterDurationFunc(func(ctx context.Context, duration libtime.Duration) error {
-				receivedCtx = ctx
-				receivedDuration = duration
-				return nil
-			})
+			waiterFunc := libtime.WaiterDurationFunc(
+				func(ctx context.Context, duration libtime.Duration) error {
+					receivedCtx = ctx
+					receivedDuration = duration
+					return nil
+				},
+			)
 
 			expectedCtx := context.Background()
 			expectedDuration := libtime.Duration(5 * time.Second)
@@ -112,7 +116,10 @@ var _ = Describe("WaiterDuration", func() {
 
 				elapsed := time.Since(start)
 				Expect(err).To(BeNil())
-				Expect(elapsed).To(BeNumerically("<", 10*time.Millisecond)) // Should be almost instant
+				Expect(
+					elapsed,
+				).To(BeNumerically("<", 10*time.Millisecond))
+				// Should be almost instant
 			})
 
 			It("returns immediately with negative duration", func() {
@@ -123,7 +130,10 @@ var _ = Describe("WaiterDuration", func() {
 
 				elapsed := time.Since(start)
 				Expect(err).To(BeNil())
-				Expect(elapsed).To(BeNumerically("<", 10*time.Millisecond)) // Should be almost instant
+				Expect(
+					elapsed,
+				).To(BeNumerically("<", 10*time.Millisecond))
+				// Should be almost instant
 			})
 		})
 

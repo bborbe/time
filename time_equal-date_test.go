@@ -100,8 +100,17 @@ var _ = Describe("HasEqualDate", func() {
 			utc := time.UTC
 			pst := time.FixedZone("PST", -8*3600)
 
-			t1 := time.Date(2023, 12, 25, 2, 0, 0, 0, utc)  // 2023-12-25 02:00 UTC
-			t2 := time.Date(2023, 12, 24, 18, 0, 0, 0, pst) // 2023-12-24 18:00 PST (same moment as above)
+			t1 := time.Date(2023, 12, 25, 2, 0, 0, 0, utc) // 2023-12-25 02:00 UTC
+			t2 := time.Date(
+				2023,
+				12,
+				24,
+				18,
+				0,
+				0,
+				0,
+				pst,
+			) // 2023-12-24 18:00 PST (same moment as above)
 
 			result := libtime.HasEqualDate(t1, t2)
 			Expect(result).To(BeFalse())

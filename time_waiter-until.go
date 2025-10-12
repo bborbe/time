@@ -30,7 +30,8 @@ func NewWaiterUntil(currentDateTime CurrentDateTimeGetter) WaiterUntil {
 			glog.V(4).Infof("until already past or equal => skip wait")
 			return nil
 		}
-		glog.V(4).Infof("now: %s wait until: %s", now.Format(time.RFC3339), until.Format(time.RFC3339))
+		glog.V(4).
+			Infof("now: %s wait until: %s", now.Format(time.RFC3339), until.Format(time.RFC3339))
 		duration := until.Sub(now)
 		glog.V(4).Infof("wait for: %v", duration)
 		return waiterDuration.Wait(ctx, duration)

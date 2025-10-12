@@ -8,6 +8,16 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.20.0
+- Add GitHub Actions workflows for CI, code review, and automated testing
+- Add golangci-lint configuration for enhanced code quality checks
+- Add security scanning tools: gosec, osv-scanner, and trivy
+- Improve Makefile with additional security and quality checks
+- Integrate golines for automatic line length formatting (max 100 characters)
+- Update goimports-reviser to v3 for better import organization
+- Update Go module dependencies for testing and tooling
+- Improve code formatting across all range validation methods
+
 ## v1.19.2
 - Add Max() method to DateTimeRanges, UnixTimeRanges, and DateRanges for finding maximum encompassing range
 - Add Min() method to DateTimeRanges, UnixTimeRanges, and DateRanges for finding minimum overlapping range

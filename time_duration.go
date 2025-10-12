@@ -39,7 +39,9 @@ var UnitMap = map[string]Duration{
 	"w":  Week,
 }
 
-var durationRegexp = regexp.MustCompile(`^((\d*\.?\d+)(w))?((\d*\.?\d+)(d))?((\d*\.?\d+)(h))?((\d*\.?\d+)(m))?((\d*\.?\d+)(s))?((\d*\.?\d+)(ms))?((\d*\.?\d+)(us))?((\d*\.?\d+)(ns))?$`)
+var durationRegexp = regexp.MustCompile(
+	`^((\d*\.?\d+)(w))?((\d*\.?\d+)(d))?((\d*\.?\d+)(h))?((\d*\.?\d+)(m))?((\d*\.?\d+)(s))?((\d*\.?\d+)(ms))?((\d*\.?\d+)(us))?((\d*\.?\d+)(ns))?$`,
+)
 
 type Durations []Duration
 

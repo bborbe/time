@@ -129,7 +129,9 @@ var _ = Describe("DateTime", func() {
 				Expect(err).To(BeNil())
 			})
 			It("returns correct content", func() {
-				Expect(snapshotTime.Time().Format(time.RFC3339Nano)).To(Equal(`2023-06-19T07:56:34Z`))
+				Expect(
+					snapshotTime.Time().Format(time.RFC3339Nano),
+				).To(Equal(`2023-06-19T07:56:34Z`))
 			})
 		})
 		Context("with value now", func() {
@@ -140,7 +142,9 @@ var _ = Describe("DateTime", func() {
 				Expect(err).To(BeNil())
 			})
 			It("returns correct content", func() {
-				Expect(snapshotTime.Time().Format(time.RFC3339Nano)).To(Equal(`2024-11-09T16:29:43Z`))
+				Expect(
+					snapshotTime.Time().Format(time.RFC3339Nano),
+				).To(Equal(`2024-11-09T16:29:43Z`))
 			})
 		})
 		Context("with empty value", func() {
@@ -166,7 +170,8 @@ var _ = Describe("DateTime", func() {
 			})
 		})
 	})
-	DescribeTable("ParseDateTime",
+	DescribeTable(
+		"ParseDateTime",
 		func(value interface{}, formatedDate string, expectError bool) {
 			result, err := libtime.ParseDateTime(ctx, value)
 			if expectError {
@@ -179,28 +184,65 @@ var _ = Describe("DateTime", func() {
 			}
 		},
 		Entry("2023-06-19T07:56:34Z", "2023-06-19T07:56:34Z", "2023-06-19T07:56:34Z", false),
-		Entry("2023-06-19T07:56:34.234Z", "2023-06-19T07:56:34.234Z", "2023-06-19T07:56:34.234Z", false),
+		Entry(
+			"2023-06-19T07:56:34.234Z",
+			"2023-06-19T07:56:34.234Z",
+			"2023-06-19T07:56:34.234Z",
+			false,
+		),
 		Entry("2023-06-19T07:56Z", "2023-06-19T07:56Z", "2023-06-19T07:56:00Z", false),
 		Entry("NOW", "NOW", "2024-11-09T16:29:43Z", false),
 	)
-	DescribeTable("ComparePtr",
+	DescribeTable(
+		"ComparePtr",
 		func(a *libtime.DateTime, b *libtime.DateTime, expectedResult int) {
 			Expect(a.ComparePtr(b)).To(Equal(expectedResult))
 		},
-		Entry("equal", libtime.DateTime(time.Unix(1000, 0)).Ptr(), libtime.DateTime(time.Unix(1000, 0)).Ptr(), 0),
-		Entry("less", libtime.DateTime(time.Unix(999, 0)).Ptr(), libtime.DateTime(time.Unix(1000, 0)).Ptr(), -1),
-		Entry("greater", libtime.DateTime(time.Unix(1000, 0)).Ptr(), libtime.DateTime(time.Unix(999, 0)).Ptr(), 1),
+		Entry(
+			"equal",
+			libtime.DateTime(time.Unix(1000, 0)).Ptr(),
+			libtime.DateTime(time.Unix(1000, 0)).Ptr(),
+			0,
+		),
+		Entry(
+			"less",
+			libtime.DateTime(time.Unix(999, 0)).Ptr(),
+			libtime.DateTime(time.Unix(1000, 0)).Ptr(),
+			-1,
+		),
+		Entry(
+			"greater",
+			libtime.DateTime(time.Unix(1000, 0)).Ptr(),
+			libtime.DateTime(time.Unix(999, 0)).Ptr(),
+			1,
+		),
 		Entry("equal", nil, nil, 0),
 		Entry("less", nil, libtime.DateTime(time.Unix(1000, 0)).Ptr(), -1),
 		Entry("greater", libtime.DateTime(time.Unix(1000, 0)).Ptr(), nil, 1),
 	)
-	DescribeTable("Compare",
+	DescribeTable(
+		"Compare",
 		func(a libtime.DateTime, b libtime.DateTime, expectedResult int) {
 			Expect(a.Compare(b)).To(Equal(expectedResult))
 		},
-		Entry("equal", libtime.DateTime(time.Unix(1000, 0)), libtime.DateTime(time.Unix(1000, 0)), 0),
-		Entry("less", libtime.DateTime(time.Unix(999, 0)), libtime.DateTime(time.Unix(1000, 0)), -1),
-		Entry("greater", libtime.DateTime(time.Unix(1000, 0)), libtime.DateTime(time.Unix(999, 0)), 1),
+		Entry(
+			"equal",
+			libtime.DateTime(time.Unix(1000, 0)),
+			libtime.DateTime(time.Unix(1000, 0)),
+			0,
+		),
+		Entry(
+			"less",
+			libtime.DateTime(time.Unix(999, 0)),
+			libtime.DateTime(time.Unix(1000, 0)),
+			-1,
+		),
+		Entry(
+			"greater",
+			libtime.DateTime(time.Unix(1000, 0)),
+			libtime.DateTime(time.Unix(999, 0)),
+			1,
+		),
 	)
 	Context("TimePtr", func() {
 		var dateTime *libtime.DateTime

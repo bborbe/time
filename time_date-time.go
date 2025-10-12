@@ -70,7 +70,12 @@ func DateTimePtr(time *stdtime.Time) *DateTime {
 
 // NewDateTime creates a DateTime representing the date and time specified by the given parameters.
 // It wraps the standard library's time.Date function with the same parameter signature.
-func NewDateTime(year int, month stdtime.Month, day, hour, min, sec, nsec int, loc *stdtime.Location) DateTime {
+func NewDateTime(
+	year int,
+	month stdtime.Month,
+	day, hour, min, sec, nsec int,
+	loc *stdtime.Location,
+) DateTime {
 	return DateTime(stdtime.Date(year, month, day, hour, min, sec, nsec, loc))
 }
 

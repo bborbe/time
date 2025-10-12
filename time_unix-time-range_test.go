@@ -46,21 +46,33 @@ var _ = Describe("UnixTimeRange", func() {
 		var testUnixTime libtime.UnixTime
 		BeforeEach(func() {
 			// Tuesday, June 20, 2023 14:30:45 UTC
-			testUnixTime = libtime.UnixTime(time.Date(2023, time.June, 20, 14, 30, 45, 123456789, time.UTC))
+			testUnixTime = libtime.UnixTime(
+				time.Date(2023, time.June, 20, 14, 30, 45, 123456789, time.UTC),
+			)
 		})
 
 		Context("DayUnixTimeRange", func() {
 			It("creates correct day range", func() {
 				result := libtime.DayUnixTimeRange(testUnixTime)
-				Expect(result.From.Time()).To(Equal(time.Date(2023, time.June, 20, 0, 0, 0, 0, time.UTC)))
-				Expect(result.Until.Time()).To(Equal(time.Date(2023, time.June, 20, 23, 59, 59, 999999999, time.UTC)))
+				Expect(
+					result.From.Time(),
+				).To(Equal(time.Date(2023, time.June, 20, 0, 0, 0, 0, time.UTC)))
+				Expect(
+					result.Until.Time(),
+				).To(Equal(time.Date(2023, time.June, 20, 23, 59, 59, 999999999, time.UTC)))
 			})
 
 			It("produces same range for all times within the same day", func() {
 				unixTimes := []libtime.UnixTime{
-					libtime.UnixTime(time.Date(2023, time.June, 20, 0, 0, 0, 0, time.UTC)),            // start
-					libtime.UnixTime(time.Date(2023, time.June, 20, 12, 30, 45, 123456789, time.UTC)), // midday
-					libtime.UnixTime(time.Date(2023, time.June, 20, 23, 59, 59, 999999999, time.UTC)), // end
+					libtime.UnixTime(
+						time.Date(2023, time.June, 20, 0, 0, 0, 0, time.UTC),
+					), // start
+					libtime.UnixTime(
+						time.Date(2023, time.June, 20, 12, 30, 45, 123456789, time.UTC),
+					), // midday
+					libtime.UnixTime(
+						time.Date(2023, time.June, 20, 23, 59, 59, 999999999, time.UTC),
+					), // end
 				}
 
 				expectedRange := libtime.DayUnixTimeRange(unixTimes[0])
@@ -75,15 +87,25 @@ var _ = Describe("UnixTimeRange", func() {
 			It("creates correct week range", func() {
 				result := libtime.WeekUnixTimeRange(testUnixTime)
 				// Tuesday June 20 -> Week starts Monday June 19, ends Sunday June 25
-				Expect(result.From.Time()).To(Equal(time.Date(2023, time.June, 19, 0, 0, 0, 0, time.UTC)))
-				Expect(result.Until.Time()).To(Equal(time.Date(2023, time.June, 25, 23, 59, 59, 999999999, time.UTC)))
+				Expect(
+					result.From.Time(),
+				).To(Equal(time.Date(2023, time.June, 19, 0, 0, 0, 0, time.UTC)))
+				Expect(
+					result.Until.Time(),
+				).To(Equal(time.Date(2023, time.June, 25, 23, 59, 59, 999999999, time.UTC)))
 			})
 
 			It("produces same range for all times within the same week", func() {
 				unixTimes := []libtime.UnixTime{
-					libtime.UnixTime(time.Date(2023, time.June, 19, 0, 0, 0, 0, time.UTC)),            // Monday start
-					libtime.UnixTime(time.Date(2023, time.June, 22, 12, 30, 45, 0, time.UTC)),         // Thursday
-					libtime.UnixTime(time.Date(2023, time.June, 25, 23, 59, 59, 999999999, time.UTC)), // Sunday end
+					libtime.UnixTime(
+						time.Date(2023, time.June, 19, 0, 0, 0, 0, time.UTC),
+					), // Monday start
+					libtime.UnixTime(
+						time.Date(2023, time.June, 22, 12, 30, 45, 0, time.UTC),
+					), // Thursday
+					libtime.UnixTime(
+						time.Date(2023, time.June, 25, 23, 59, 59, 999999999, time.UTC),
+					), // Sunday end
 				}
 
 				expectedRange := libtime.WeekUnixTimeRange(unixTimes[0])
@@ -97,15 +119,25 @@ var _ = Describe("UnixTimeRange", func() {
 		Context("MonthUnixTimeRange", func() {
 			It("creates correct month range", func() {
 				result := libtime.MonthUnixTimeRange(testUnixTime)
-				Expect(result.From.Time()).To(Equal(time.Date(2023, time.June, 1, 0, 0, 0, 0, time.UTC)))
-				Expect(result.Until.Time()).To(Equal(time.Date(2023, time.June, 30, 23, 59, 59, 999999999, time.UTC)))
+				Expect(
+					result.From.Time(),
+				).To(Equal(time.Date(2023, time.June, 1, 0, 0, 0, 0, time.UTC)))
+				Expect(
+					result.Until.Time(),
+				).To(Equal(time.Date(2023, time.June, 30, 23, 59, 59, 999999999, time.UTC)))
 			})
 
 			It("handles leap year February", func() {
-				leapYear := libtime.UnixTime(time.Date(2024, time.February, 15, 12, 0, 0, 0, time.UTC))
+				leapYear := libtime.UnixTime(
+					time.Date(2024, time.February, 15, 12, 0, 0, 0, time.UTC),
+				)
 				result := libtime.MonthUnixTimeRange(leapYear)
-				Expect(result.From.Time()).To(Equal(time.Date(2024, time.February, 1, 0, 0, 0, 0, time.UTC)))
-				Expect(result.Until.Time()).To(Equal(time.Date(2024, time.February, 29, 23, 59, 59, 999999999, time.UTC)))
+				Expect(
+					result.From.Time(),
+				).To(Equal(time.Date(2024, time.February, 1, 0, 0, 0, 0, time.UTC)))
+				Expect(
+					result.Until.Time(),
+				).To(Equal(time.Date(2024, time.February, 29, 23, 59, 59, 999999999, time.UTC)))
 			})
 		})
 
@@ -113,16 +145,27 @@ var _ = Describe("UnixTimeRange", func() {
 			It("creates correct Q2 range for June", func() {
 				result := libtime.QuarterUnixTimeRange(testUnixTime)
 				// June is Q2 (Apr-Jun)
-				Expect(result.From.Time()).To(Equal(time.Date(2023, time.April, 1, 0, 0, 0, 0, time.UTC)))
-				Expect(result.Until.Time()).To(Equal(time.Date(2023, time.June, 30, 23, 59, 59, 999999999, time.UTC)))
+				Expect(
+					result.From.Time(),
+				).To(Equal(time.Date(2023, time.April, 1, 0, 0, 0, 0, time.UTC)))
+				Expect(
+					result.Until.Time(),
+				).To(Equal(time.Date(2023, time.June, 30, 23, 59, 59, 999999999, time.UTC)))
 			})
 
-			DescribeTable("creates correct quarter range for each month",
+			DescribeTable(
+				"creates correct quarter range for each month",
 				func(inputMonth time.Month, expectedStartMonth time.Month, expectedEndMonth time.Month, expectedEndDay int) {
-					input := libtime.UnixTime(time.Date(2023, inputMonth, 15, 12, 0, 0, 0, time.UTC))
+					input := libtime.UnixTime(
+						time.Date(2023, inputMonth, 15, 12, 0, 0, 0, time.UTC),
+					)
 					result := libtime.QuarterUnixTimeRange(input)
-					Expect(result.From.Time()).To(Equal(time.Date(2023, expectedStartMonth, 1, 0, 0, 0, 0, time.UTC)))
-					Expect(result.Until.Time()).To(Equal(time.Date(2023, expectedEndMonth, expectedEndDay, 23, 59, 59, 999999999, time.UTC)))
+					Expect(
+						result.From.Time(),
+					).To(Equal(time.Date(2023, expectedStartMonth, 1, 0, 0, 0, 0, time.UTC)))
+					Expect(
+						result.Until.Time(),
+					).To(Equal(time.Date(2023, expectedEndMonth, expectedEndDay, 23, 59, 59, 999999999, time.UTC)))
 				},
 				Entry("Q1 - January", time.January, time.January, time.March, 31),
 				Entry("Q1 - March", time.March, time.January, time.March, 31),
@@ -138,15 +181,21 @@ var _ = Describe("UnixTimeRange", func() {
 		Context("YearUnixTimeRange", func() {
 			It("creates correct year range", func() {
 				result := libtime.YearUnixTimeRange(testUnixTime)
-				Expect(result.From.Time()).To(Equal(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)))
-				Expect(result.Until.Time()).To(Equal(time.Date(2023, time.December, 31, 23, 59, 59, 999999999, time.UTC)))
+				Expect(
+					result.From.Time(),
+				).To(Equal(time.Date(2023, time.January, 1, 0, 0, 0, 0, time.UTC)))
+				Expect(
+					result.Until.Time(),
+				).To(Equal(time.Date(2023, time.December, 31, 23, 59, 59, 999999999, time.UTC)))
 			})
 		})
 	})
 
 	Context("TimeRange conversion", func() {
 		It("converts UnixTimeRange to TimeRange correctly", func() {
-			testUnixTime := libtime.UnixTime(time.Date(2023, time.June, 20, 14, 30, 45, 0, time.UTC))
+			testUnixTime := libtime.UnixTime(
+				time.Date(2023, time.June, 20, 14, 30, 45, 0, time.UTC),
+			)
 			unixTimeRange := libtime.DayUnixTimeRange(testUnixTime)
 			timeRange := unixTimeRange.TimeRange()
 
@@ -155,7 +204,9 @@ var _ = Describe("UnixTimeRange", func() {
 		})
 
 		It("converts all range types to TimeRange consistently", func() {
-			testUnixTime := libtime.UnixTime(time.Date(2023, time.June, 20, 14, 30, 45, 0, time.UTC))
+			testUnixTime := libtime.UnixTime(
+				time.Date(2023, time.June, 20, 14, 30, 45, 0, time.UTC),
+			)
 
 			dayRange := libtime.DayUnixTimeRange(testUnixTime)
 			weekRange := libtime.WeekUnixTimeRange(testUnixTime)

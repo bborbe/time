@@ -169,13 +169,29 @@ var _ = Describe("Date", func() {
 			})
 		})
 	})
-	DescribeTable("ComparePtr",
+	DescribeTable(
+		"ComparePtr",
 		func(a *libtime.Date, b *libtime.Date, expectedResult int) {
 			Expect(a.ComparePtr(b)).To(Equal(expectedResult))
 		},
-		Entry("equal", libtime.Date(time.Unix(1000, 0)).Ptr(), libtime.Date(time.Unix(1000, 0)).Ptr(), 0),
-		Entry("less", libtime.Date(time.Unix(999, 0)).Ptr(), libtime.Date(time.Unix(1000, 0)).Ptr(), -1),
-		Entry("greater", libtime.Date(time.Unix(1000, 0)).Ptr(), libtime.Date(time.Unix(999, 0)).Ptr(), 1),
+		Entry(
+			"equal",
+			libtime.Date(time.Unix(1000, 0)).Ptr(),
+			libtime.Date(time.Unix(1000, 0)).Ptr(),
+			0,
+		),
+		Entry(
+			"less",
+			libtime.Date(time.Unix(999, 0)).Ptr(),
+			libtime.Date(time.Unix(1000, 0)).Ptr(),
+			-1,
+		),
+		Entry(
+			"greater",
+			libtime.Date(time.Unix(1000, 0)).Ptr(),
+			libtime.Date(time.Unix(999, 0)).Ptr(),
+			1,
+		),
 		Entry("equal", nil, nil, 0),
 		Entry("less", nil, libtime.Date(time.Unix(1000, 0)).Ptr(), -1),
 		Entry("greater", libtime.Date(time.Unix(1000, 0)).Ptr(), nil, 1),

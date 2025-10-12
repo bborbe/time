@@ -45,10 +45,12 @@ var _ = Describe("WaiterUntil", func() {
 	Describe("WaiterUntilFunc", func() {
 		It("implements WaiterUntil interface", func() {
 			callCount := 0
-			waiterFunc := libtime.WaiterUntilFunc(func(ctx context.Context, until libtime.DateTime) error {
-				callCount++
-				return nil
-			})
+			waiterFunc := libtime.WaiterUntilFunc(
+				func(ctx context.Context, until libtime.DateTime) error {
+					callCount++
+					return nil
+				},
+			)
 
 			var waiter libtime.WaiterUntil = waiterFunc
 			Expect(waiter).NotTo(BeNil())
@@ -63,11 +65,13 @@ var _ = Describe("WaiterUntil", func() {
 			var receivedCtx context.Context
 			var receivedUntil libtime.DateTime
 
-			waiterFunc := libtime.WaiterUntilFunc(func(ctx context.Context, until libtime.DateTime) error {
-				receivedCtx = ctx
-				receivedUntil = until
-				return nil
-			})
+			waiterFunc := libtime.WaiterUntilFunc(
+				func(ctx context.Context, until libtime.DateTime) error {
+					receivedCtx = ctx
+					receivedUntil = until
+					return nil
+				},
+			)
 
 			expectedCtx := context.Background()
 			expectedUntil := libtimetest.ParseDateTime("2023-12-25T15:30:45Z")
@@ -146,7 +150,10 @@ var _ = Describe("WaiterUntil", func() {
 				elapsed := time.Since(start)
 
 				Expect(err).To(BeNil())
-				Expect(elapsed).To(BeNumerically("<", 10*time.Millisecond)) // Should be almost instant
+				Expect(
+					elapsed,
+				).To(BeNumerically("<", 10*time.Millisecond))
+				// Should be almost instant
 			})
 
 			It("returns immediately when until time equals current time", func() {
@@ -160,7 +167,10 @@ var _ = Describe("WaiterUntil", func() {
 				elapsed := time.Since(start)
 
 				Expect(err).To(BeNil())
-				Expect(elapsed).To(BeNumerically("<", 10*time.Millisecond)) // Should be almost instant
+				Expect(
+					elapsed,
+				).To(BeNumerically("<", 10*time.Millisecond))
+				// Should be almost instant
 			})
 
 			It("returns immediately when until time is significantly in the past", func() {
@@ -214,41 +224,48 @@ var _ = Describe("WaiterUntil", func() {
 				Expect(err).To(Equal(context.DeadlineExceeded))
 			})
 
-			It("returns context error immediately for past times even with cancelled context", func() {
-				now := libtimetest.ParseDateTime("2023-12-25T10:00:00Z")
-				currentDateTime.SetNow(now)
+			It(
+				"returns context error immediately for past times even with cancelled context",
+				func() {
+					now := libtimetest.ParseDateTime("2023-12-25T10:00:00Z")
+					currentDateTime.SetNow(now)
 
-				until := now.Add(libtime.Duration(-1 * time.Hour)) // Past time
-				ctx, cancel := context.WithCancel(context.Background())
-				cancel() // Cancel immediately
+					until := now.Add(libtime.Duration(-1 * time.Hour)) // Past time
+					ctx, cancel := context.WithCancel(context.Background())
+					cancel() // Cancel immediately
 
-				err := waiter.WaitUntil(ctx, until)
-				Expect(err).To(BeNil()) // Past times skip waiting and return nil
-			})
+					err := waiter.WaitUntil(ctx, until)
+					Expect(err).To(BeNil()) // Past times skip waiting and return nil
+				},
+			)
 		})
 
 		Describe("with dynamic current time", func() {
-			It("calculates wait duration based on current time at call time", func(ctx context.Context) {
-				// Set initial time
-				now := libtimetest.ParseDateTime("2023-12-25T10:00:00Z")
-				currentDateTime.SetNow(now)
+			It(
+				"calculates wait duration based on current time at call time",
+				func(ctx context.Context) {
+					// Set initial time
+					now := libtimetest.ParseDateTime("2023-12-25T10:00:00Z")
+					currentDateTime.SetNow(now)
 
-				// Set until time 50ms in the future from initial time
-				until := now.Add(libtime.Duration(50 * time.Millisecond))
+					// Set until time 50ms in the future from initial time
+					until := now.Add(libtime.Duration(50 * time.Millisecond))
 
-				// Change current time to be closer to until time (30ms in the future)
-				currentDateTime.SetNow(now.Add(libtime.Duration(20 * time.Millisecond)))
+					// Change current time to be closer to until time (30ms in the future)
+					currentDateTime.SetNow(now.Add(libtime.Duration(20 * time.Millisecond)))
 
-				start := time.Now()
-				err := waiter.WaitUntil(context.Background(), until)
-				elapsed := time.Since(start)
+					start := time.Now()
+					err := waiter.WaitUntil(context.Background(), until)
+					elapsed := time.Since(start)
 
-				Expect(err).To(BeNil())
-				// Should wait for remaining 30ms
-				expectedDuration := 30 * time.Millisecond
-				Expect(elapsed).To(BeNumerically(">=", expectedDuration))
-				Expect(elapsed).To(BeNumerically("<", expectedDuration+200*time.Millisecond))
-			}, SpecTimeout(2*time.Second))
+					Expect(err).To(BeNil())
+					// Should wait for remaining 30ms
+					expectedDuration := 30 * time.Millisecond
+					Expect(elapsed).To(BeNumerically(">=", expectedDuration))
+					Expect(elapsed).To(BeNumerically("<", expectedDuration+200*time.Millisecond))
+				},
+				SpecTimeout(2*time.Second),
+			)
 
 			It("uses current time from getter at call time", func() {
 				callCount := 0
@@ -301,7 +318,16 @@ var _ = Describe("WaiterUntil", func() {
 				est := time.FixedZone("EST", -5*3600)
 
 				nowUTC := time.Date(2023, 12, 25, 15, 0, 0, 0, utc)
-				untilEST := time.Date(2023, 12, 25, 10, 0, 1, 0, est) // 1 second later in EST (same moment + 1s)
+				untilEST := time.Date(
+					2023,
+					12,
+					25,
+					10,
+					0,
+					1,
+					0,
+					est,
+				) // 1 second later in EST (same moment + 1s)
 
 				currentDateTime.SetNow(libtime.DateTime(nowUTC))
 

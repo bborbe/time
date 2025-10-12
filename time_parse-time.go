@@ -13,7 +13,11 @@ import (
 	"github.com/bborbe/parse"
 )
 
-func ParseTimeDefault(ctx context.Context, value interface{}, defaultValue stdtime.Time) stdtime.Time {
+func ParseTimeDefault(
+	ctx context.Context,
+	value interface{},
+	defaultValue stdtime.Time,
+) stdtime.Time {
 	result, err := ParseTime(ctx, value)
 	if err != nil {
 		return defaultValue

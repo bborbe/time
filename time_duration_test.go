@@ -55,18 +55,28 @@ var _ = DescribeTable("ParseDuration",
 )
 
 var _ = Describe("Duration", func() {
-	var _ = DescribeTable("String",
+	var _ = DescribeTable(
+		"String",
 		func(inputDuration libtime.Duration, expectedOutput string) {
 			Expect(inputDuration.String()).To(Equal(expectedOutput))
 		},
 		Entry("30s", 30*libtime.Second, "30s"),
 		Entry("59m30s", 59*libtime.Minute+30*libtime.Second, "59m30s"),
 		Entry("23h59m30s", 23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "23h59m30s"),
-		Entry("5d23h59m30s", 5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "5d23h59m30s"),
-		Entry("10w5d23h59m30s", 10*libtime.Week+5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "10w5d23h59m30s"),
+		Entry(
+			"5d23h59m30s",
+			5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second,
+			"5d23h59m30s",
+		),
+		Entry(
+			"10w5d23h59m30s",
+			10*libtime.Week+5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second,
+			"10w5d23h59m30s",
+		),
 	)
 
-	var _ = DescribeTable("MarshalJSON",
+	var _ = DescribeTable(
+		"MarshalJSON",
 		func(inputDuration libtime.Duration, expectedOutput string, expectError bool) {
 			bytes, err := inputDuration.MarshalJSON()
 			if expectError {
@@ -80,12 +90,28 @@ var _ = Describe("Duration", func() {
 		Entry("0", libtime.Duration(0), `"0s"`, false),
 		Entry("30s", 30*libtime.Second, `"30s"`, false),
 		Entry("59m30s", 59*libtime.Minute+30*libtime.Second, `"59m30s"`, false),
-		Entry("23h59m30s", 23*libtime.Hour+59*libtime.Minute+30*libtime.Second, `"23h59m30s"`, false),
-		Entry("143h59m30s", 5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, `"143h59m30s"`, false),
-		Entry("1823h59m30s", 10*libtime.Week+5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, `"1823h59m30s"`, false),
+		Entry(
+			"23h59m30s",
+			23*libtime.Hour+59*libtime.Minute+30*libtime.Second,
+			`"23h59m30s"`,
+			false,
+		),
+		Entry(
+			"143h59m30s",
+			5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second,
+			`"143h59m30s"`,
+			false,
+		),
+		Entry(
+			"1823h59m30s",
+			10*libtime.Week+5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second,
+			`"1823h59m30s"`,
+			false,
+		),
 	)
 
-	var _ = DescribeTable("String",
+	var _ = DescribeTable(
+		"String",
 		func(inputDuration libtime.Duration, expectedOutput string) {
 			Expect(inputDuration.String()).To(Equal(expectedOutput))
 		},
@@ -101,8 +127,16 @@ var _ = Describe("Duration", func() {
 		Entry("1w1ns", libtime.Week+libtime.Nanosecond, "1w1ns"),
 		Entry("59m30s", 59*libtime.Minute+30*libtime.Second, "59m30s"),
 		Entry("23h59m30s", 23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "23h59m30s"),
-		Entry("5d23h59m30s", 5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "5d23h59m30s"),
-		Entry("10w5d23h59m30s", 10*libtime.Week+5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second, "10w5d23h59m30s"),
+		Entry(
+			"5d23h59m30s",
+			5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second,
+			"5d23h59m30s",
+		),
+		Entry(
+			"10w5d23h59m30s",
+			10*libtime.Week+5*libtime.Day+23*libtime.Hour+59*libtime.Minute+30*libtime.Second,
+			"10w5d23h59m30s",
+		),
 	)
 
 	Context("UnmarshalJSON", func() {

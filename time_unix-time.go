@@ -87,7 +87,12 @@ func UnixTimeFromMicro(usec int64) UnixTime {
 
 // NewUnixTime creates a UnixTime representing the date and time specified by the given parameters.
 // It wraps the standard library's time.Date function with the same parameter signature.
-func NewUnixTime(year int, month stdtime.Month, day, hour, min, sec, nsec int, loc *stdtime.Location) UnixTime {
+func NewUnixTime(
+	year int,
+	month stdtime.Month,
+	day, hour, min, sec, nsec int,
+	loc *stdtime.Location,
+) UnixTime {
 	return UnixTime(stdtime.Date(year, month, day, hour, min, sec, nsec, loc))
 }
 

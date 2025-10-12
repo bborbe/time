@@ -34,7 +34,11 @@ func (t TimeOfDays) Strings() []string {
 	return result
 }
 
-func ParseTimeOfDayDefault(ctx context.Context, value interface{}, defaultValue TimeOfDay) TimeOfDay {
+func ParseTimeOfDayDefault(
+	ctx context.Context,
+	value interface{},
+	defaultValue TimeOfDay,
+) TimeOfDay {
 	result, err := ParseTimeOfDay(ctx, value)
 	if err != nil {
 		return defaultValue

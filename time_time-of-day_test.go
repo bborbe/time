@@ -85,12 +85,16 @@ var _ = Describe("TimeOfDay", func() {
 			It("returns correct winterTime", func() {
 				Expect(winterTime).NotTo(BeNil())
 				Expect(winterTime.Format(time.RFC3339Nano)).To(Equal("2024-01-01T15:37:59+01:00"))
-				Expect(winterTime.Time().UTC().Format(time.RFC3339Nano)).To(Equal("2024-01-01T14:37:59Z"))
+				Expect(
+					winterTime.Time().UTC().Format(time.RFC3339Nano),
+				).To(Equal("2024-01-01T14:37:59Z"))
 			})
 			It("returns correct summerTime", func() {
 				Expect(summerTime).NotTo(BeNil())
 				Expect(summerTime.Format(time.RFC3339Nano)).To(Equal("2024-07-01T15:37:59+02:00"))
-				Expect(summerTime.Time().UTC().Format(time.RFC3339Nano)).To(Equal("2024-07-01T13:37:59Z"))
+				Expect(
+					summerTime.Time().UTC().Format(time.RFC3339Nano),
+				).To(Equal("2024-07-01T13:37:59Z"))
 			})
 		})
 	})
@@ -131,7 +135,8 @@ var _ = Describe("TimeOfDay", func() {
 			Expect(string(bytes)).To(Equal(`"13:45:59.123456Z"`))
 		})
 	})
-	DescribeTable("Date",
+	DescribeTable(
+		"Date",
 		func(input libtime.TimeOfDay, year int, month int, day int, expectedTime string, expectError bool) {
 			dateTime, err := input.Date(year, time.Month(month), day)
 			if expectError {
@@ -144,10 +149,27 @@ var _ = Describe("TimeOfDay", func() {
 		},
 		Entry("13:37", ParseTimeOfDay("13:37"), 2024, 12, 24, "2024-12-24T13:37:00Z", false),
 		Entry("13:37:42", ParseTimeOfDay("13:37:42"), 2024, 12, 24, "2024-12-24T13:37:42Z", false),
-		Entry("13:37:42Z", ParseTimeOfDay("13:37:42Z"), 2024, 12, 24, "2024-12-24T13:37:42Z", false),
-		Entry("13:37:42 Europe/Berlin", ParseTimeOfDay("13:37:42 Europe/Berlin"), 2024, 12, 24, "2024-12-24T12:37:42Z", false),
+		Entry(
+			"13:37:42Z",
+			ParseTimeOfDay("13:37:42Z"),
+			2024,
+			12,
+			24,
+			"2024-12-24T13:37:42Z",
+			false,
+		),
+		Entry(
+			"13:37:42 Europe/Berlin",
+			ParseTimeOfDay("13:37:42 Europe/Berlin"),
+			2024,
+			12,
+			24,
+			"2024-12-24T12:37:42Z",
+			false,
+		),
 	)
-	DescribeTable("UnmarshalJSON",
+	DescribeTable(
+		"UnmarshalJSON",
 		func(input string, expected string, expectError bool) {
 			timeOfDay = libtime.TimeOfDay{}
 			err = timeOfDay.UnmarshalJSON([]byte(input))
@@ -166,6 +188,11 @@ var _ = Describe("TimeOfDay", func() {
 		Entry("without tz", `"13:45:59"`, `13:45:59Z`, false),
 		Entry("without tz and ns", `"13:45:59.123456"`, `13:45:59.123456Z`, false),
 		Entry("datetime with tz", `"2023-10-02T13:45:59Z"`, `13:45:59Z`, false),
-		Entry("datetime with tz and ns", `"2023-10-02T13:45:59.123456Z"`, `13:45:59.123456Z`, false),
+		Entry(
+			"datetime with tz and ns",
+			`"2023-10-02T13:45:59.123456Z"`,
+			`13:45:59.123456Z`,
+			false,
+		),
 	)
 })
