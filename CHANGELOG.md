@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.21.0
+
+- update go and deps
+
 ## v1.20.0
 - Add GitHub Actions workflows for CI, code review, and automated testing
 - Add golangci-lint configuration for enhanced code quality checks
