@@ -112,11 +112,12 @@ func (d *Date) UnmarshalJSON(b []byte) error {
 		*d = Date(stdtime.Time{})
 		return nil
 	}
-	t, err := stdtime.ParseInLocation(stdtime.DateOnly, str, stdtime.UTC)
+	// Use ParseTime which supports NOW, NOW-14d, NOW+1h, etc. and RFC3339/DateOnly formats
+	t, err := ParseTime(context.Background(), str)
 	if err != nil {
-		return errors.Wrapf(context.Background(), err, "parse in location failed")
+		return errors.Wrapf(context.Background(), err, "parse time failed")
 	}
-	*d = Date(t)
+	*d = ToDate(*t)
 	return nil
 }
 

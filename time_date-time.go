@@ -148,15 +148,13 @@ func (d *DateTime) UnmarshalJSON(b []byte) error {
 	case "", "null":
 		*d = DateTime(stdtime.Time{})
 		return nil
-	case "NOW":
-		*d = DateTime(Now())
-		return nil
 	default:
-		t, err := stdtime.ParseInLocation(stdtime.RFC3339Nano, str, stdtime.UTC)
+		// Use ParseTime which supports NOW, NOW-14d, NOW+1h, etc. and RFC3339 formats
+		t, err := ParseTime(context.Background(), str)
 		if err != nil {
-			return errors.Wrapf(context.Background(), err, "parse in location failed")
+			return errors.Wrapf(context.Background(), err, "parse time failed")
 		}
-		*d = DateTime(t)
+		*d = DateTime(*t)
 		return nil
 	}
 }

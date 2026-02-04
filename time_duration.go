@@ -100,6 +100,9 @@ func ParseDuration(ctx context.Context, value interface{}) (*Duration, error) {
 	if len(str) > 0 && str[0] == '-' {
 		isNegative = true
 		str = str[1:]
+	} else if len(str) > 0 && str[0] == '+' {
+		// Remove optional + prefix (positive is default)
+		str = str[1:]
 	}
 	// Convert to lowercase to support both uppercase and lowercase units
 	str = strings.ToLower(str)

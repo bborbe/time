@@ -110,8 +110,13 @@ var _ = Describe("Date", func() {
 	Context("UnmarshalJSON", func() {
 		var snapshotTime libtime.Date
 		var value string
+		var now time.Time
 		BeforeEach(func() {
 			snapshotTime = libtime.Date{}
+			now = time.Unix(1731169783, 0)
+			libtime.Now = func() time.Time {
+				return now
+			}
 		})
 		JustBeforeEach(func() {
 			err = snapshotTime.UnmarshalJSON([]byte(value))
@@ -125,6 +130,39 @@ var _ = Describe("Date", func() {
 			})
 			It("returns correct content", func() {
 				Expect(snapshotTime.Time().Format(time.DateOnly)).To(Equal(`2023-06-19`))
+			})
+		})
+		Context("with value NOW", func() {
+			BeforeEach(func() {
+				value = `"NOW"`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content", func() {
+				Expect(snapshotTime.Time().Format(time.DateOnly)).To(Equal(`2024-11-09`))
+			})
+		})
+		Context("with value NOW-14d", func() {
+			BeforeEach(func() {
+				value = `"NOW-14d"`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content (now minus 14 days)", func() {
+				Expect(snapshotTime.Time().Format(time.DateOnly)).To(Equal(`2024-10-26`))
+			})
+		})
+		Context("with value NOW+1d", func() {
+			BeforeEach(func() {
+				value = `"NOW+1d"`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content (now plus 1 day)", func() {
+				Expect(snapshotTime.Time().Format(time.DateOnly)).To(Equal(`2024-11-10`))
 			})
 		})
 		Context("with empty value", func() {

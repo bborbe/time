@@ -147,6 +147,45 @@ var _ = Describe("DateTime", func() {
 				).To(Equal(`2024-11-09T16:29:43Z`))
 			})
 		})
+		Context("with value NOW-14d", func() {
+			BeforeEach(func() {
+				value = `"NOW-14d"`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content (now minus 14 days)", func() {
+				Expect(
+					snapshotTime.Time().Format(time.RFC3339Nano),
+				).To(Equal(`2024-10-26T16:29:43Z`))
+			})
+		})
+		Context("with value NOW+1h", func() {
+			BeforeEach(func() {
+				value = `"NOW+1h"`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content (now plus 1 hour)", func() {
+				Expect(
+					snapshotTime.Time().Format(time.RFC3339Nano),
+				).To(Equal(`2024-11-09T17:29:43Z`))
+			})
+		})
+		Context("with value NOW-7d", func() {
+			BeforeEach(func() {
+				value = `"NOW-7d"`
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns correct content (now minus 7 days)", func() {
+				Expect(
+					snapshotTime.Time().Format(time.RFC3339Nano),
+				).To(Equal(`2024-11-02T16:29:43Z`))
+			})
+		})
 		Context("with empty value", func() {
 			BeforeEach(func() {
 				value = `""`

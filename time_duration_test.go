@@ -46,6 +46,9 @@ var _ = DescribeTable("ParseDuration",
 	Entry("combined mixed case 2", "1H30m", 90*libtime.Minute, false),
 	Entry("negative uppercase", "-1H30M", -90*libtime.Minute, false),
 	Entry("dot uppercase", "1.5H", 90*libtime.Minute, false),
+	// Positive prefix
+	Entry("positive prefix", "+1h", libtime.Hour, false),
+	Entry("positive prefix combined", "+1h30m", 90*libtime.Minute, false),
 	// Original lowercase tests
 	Entry("combined", "1h30m", 90*libtime.Minute, false),
 	Entry("negative", "-1h30m", -90*libtime.Minute, false),

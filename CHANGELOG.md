@@ -8,6 +8,11 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.22.0
+
+- Add NOW-14d, NOW+1h relative date support to DateTime and Date UnmarshalJSON
+- Add positive prefix (+1h) support to ParseDuration
+
 ## v1.21.2
 
 - Update Go 1.25.6
