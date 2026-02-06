@@ -1,6 +1,6 @@
 module github.com/bborbe/time
 
-go 1.25.6
+go 1.25.7
 
 replace (
 	k8s.io/kube-openapi => k8s.io/kube-openapi v0.0.0-20250701173324-9bd5c66d9911
@@ -8,7 +8,7 @@ replace (
 
 require (
 	github.com/bborbe/collection v1.20.1
-	github.com/bborbe/errors v1.5.1
+	github.com/bborbe/errors v1.5.2
 	github.com/bborbe/parse v1.10.1
 	github.com/bborbe/validation v1.4.1
 	github.com/golang/glog v1.2.5

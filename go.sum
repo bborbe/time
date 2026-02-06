@@ -117,8 +117,8 @@ github.com/aymerick/douceur v0.2.0 h1:Mv+mAeH1Q+n9Fr+oyamOlAkUNPWPlA8PPGR0QAaYuP
 github.com/aymerick/douceur v0.2.0/go.mod h1:wlT5vV2O3h55X9m7iVYN0TBM0NH/MmbLnd30/FjWUq4=
 github.com/bborbe/collection v1.20.1 h1:reD/T/BPWb8c5onF5lJ8K3sJizVkZt6jCpTPqm8IlqM=
 github.com/bborbe/collection v1.20.1/go.mod h1:flBt+YSEslY3r1HZ1zC+48/NF8lRmHP+DMbFbRgjnC0=
-github.com/bborbe/errors v1.5.1 h1:UoldRutdx7Q79NtAV+AYXEfqBBIOiNhrsfzWLBL+WkE=
-github.com/bborbe/errors v1.5.1/go.mod h1:lxi4kcOlnaUOeendZBlvhRjV2kbSEKW9xIosYoWf5KQ=
+github.com/bborbe/errors v1.5.2 h1:Z/yvX7WjPUc8AJyXqMUEz7esuaIBSQg9c/6p0MalYho=
+github.com/bborbe/errors v1.5.2/go.mod h1:VdtC1MQEbXjHjw3i56H2LpR2lvQ2HoXg4eRea59cq7o=
 github.com/bborbe/math v1.3.0 h1:/QiPxLHguEvNN0RD2DRqQFgsXFCt/cdGQwdwNAajOAI=
 github.com/bborbe/math v1.3.0/go.mod h1:SHhYyoeScFVnw/CgNAkodRpANOWmhLTJ63Wc8fbJ0bk=
 github.com/bborbe/parse v1.10.1 h1:sOytzwCpeLmZobxZvA6vz4eihYRmVGIADVECLHFUoAk=
