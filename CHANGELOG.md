@@ -1,15 +1,5 @@
 # Changelog
 
-## v1.24.0
-
-### Added
-- 003-add-text-marshaler-to-all-types
-
-## v1.23.0
-
-### Added
-- 001-add-text-marshaler-to-date
-
 All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).
@@ -17,6 +7,16 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MAJOR version when you make incompatible API changes,
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
+
+## v1.24.0
+
+- Add encoding.TextMarshaler/TextUnmarshaler to DateTime, UnixTime, Duration, TimeOfDay
+- Add comprehensive JSON and YAML struct regression tests for all 5 time types
+
+## v1.23.0
+
+- Add encoding.TextMarshaler/TextUnmarshaler to Date
+- Add JSON regression and YAML round-trip tests for Date
 
 ## v1.22.2
 
