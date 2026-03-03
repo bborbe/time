@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.23.0
+
+### Added
+- 001-add-text-marshaler-to-date
+
 All notable changes to this project will be documented in this file.
 
 Please choose versions by [Semantic Versioning](http://semver.org/).

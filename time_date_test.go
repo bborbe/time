@@ -12,6 +12,7 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"gopkg.in/yaml.v3"
 
 	libtime "github.com/bborbe/time"
 )
@@ -329,6 +330,256 @@ var _ = Describe("Date", func() {
 		It("matches time.Date behavior", func() {
 			expected := time.Date(2023, time.June, 19, 7, 56, 34, 0, time.UTC)
 			Expect(result.Time()).To(Equal(expected))
+		})
+	})
+	Context("JSON Regression Tests - Phase 1", func() {
+		Context("MarshalJSON *Date nil pointer", func() {
+			var nilDate *libtime.Date
+			var bytes []byte
+			JustBeforeEach(func() {
+				bytes, err = json.Marshal(nilDate)
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns null", func() {
+				Expect(string(bytes)).To(Equal(`null`))
+			})
+		})
+		Context("UnmarshalJSON round-trip with date-only format", func() {
+			var originalDate libtime.Date
+			var unmarshaledDate libtime.Date
+			var jsonBytes []byte
+			var remarshaledBytes []byte
+			BeforeEach(func() {
+				originalDate = libtime.Date(time.Unix(1687161394, 0))
+			})
+			JustBeforeEach(func() {
+				// Marshal original date
+				jsonBytes, err = originalDate.MarshalJSON()
+				Expect(err).To(BeNil())
+				// Unmarshal into new date
+				err = unmarshaledDate.UnmarshalJSON(jsonBytes)
+				Expect(err).To(BeNil())
+				// Re-marshal to verify round-trip
+				remarshaledBytes, err = unmarshaledDate.MarshalJSON()
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("unmarshals to correct date", func() {
+				Expect(unmarshaledDate.String()).To(Equal("2023-06-19"))
+			})
+			It("re-marshals to identical JSON", func() {
+				Expect(string(remarshaledBytes)).To(Equal(string(jsonBytes)))
+				Expect(string(remarshaledBytes)).To(Equal(`"2023-06-19"`))
+			})
+		})
+		Context("UnmarshalJSON with RFC3339 format", func() {
+			var date libtime.Date
+			BeforeEach(func() {
+				date = libtime.Date{}
+			})
+			JustBeforeEach(func() {
+				err = date.UnmarshalJSON([]byte(`"2023-06-19T07:56:34Z"`))
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("extracts date-only portion", func() {
+				Expect(date.String()).To(Equal("2023-06-19"))
+			})
+			It("marshals back as date-only", func() {
+				bytes, err := date.MarshalJSON()
+				Expect(err).To(BeNil())
+				Expect(string(bytes)).To(Equal(`"2023-06-19"`))
+			})
+		})
+		Context("JSON struct round-trip", func() {
+			type TestStruct struct {
+				Date    libtime.Date  `json:"date"`
+				DatePtr *libtime.Date `json:"datePtr"`
+			}
+			var original TestStruct
+			var unmarshaled TestStruct
+			var jsonBytes []byte
+			BeforeEach(func() {
+				original = TestStruct{
+					Date:    libtime.Date(time.Unix(1687161394, 0)),
+					DatePtr: libtime.Date(time.Unix(1687161394, 0)).Ptr(),
+				}
+			})
+			JustBeforeEach(func() {
+				// Marshal
+				jsonBytes, err = json.Marshal(original)
+				Expect(err).To(BeNil())
+				// Unmarshal
+				err = json.Unmarshal(jsonBytes, &unmarshaled)
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("round-trips Date field correctly", func() {
+				Expect(unmarshaled.Date.String()).To(Equal("2023-06-19"))
+				Expect(unmarshaled.Date.String()).To(Equal(original.Date.String()))
+			})
+			It("round-trips DatePtr field correctly", func() {
+				Expect(unmarshaled.DatePtr).NotTo(BeNil())
+				Expect(unmarshaled.DatePtr.String()).To(Equal("2023-06-19"))
+				Expect(unmarshaled.DatePtr.String()).To(Equal(original.DatePtr.String()))
+			})
+			It("marshals to expected JSON format", func() {
+				Expect(string(jsonBytes)).To(ContainSubstring(`"date":"2023-06-19"`))
+				Expect(string(jsonBytes)).To(ContainSubstring(`"datePtr":"2023-06-19"`))
+			})
+		})
+	})
+	Context("MarshalText - Phase 2", func() {
+		var date libtime.Date
+		var textBytes []byte
+		JustBeforeEach(func() {
+			textBytes, err = date.MarshalText()
+		})
+		Context("non-zero date", func() {
+			BeforeEach(func() {
+				date = libtime.Date(time.Unix(1687161394, 0))
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns date-only format without quotes", func() {
+				Expect(string(textBytes)).To(Equal("2023-06-19"))
+			})
+		})
+		Context("zero date", func() {
+			BeforeEach(func() {
+				date = libtime.Date{}
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns nil bytes", func() {
+				Expect(textBytes).To(BeNil())
+			})
+		})
+	})
+	Context("UnmarshalText - Phase 2", func() {
+		var date libtime.Date
+		var textInput []byte
+		JustBeforeEach(func() {
+			err = date.UnmarshalText(textInput)
+		})
+		Context("date-only format", func() {
+			BeforeEach(func() {
+				textInput = []byte("2023-06-19")
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("parses correctly", func() {
+				Expect(date.String()).To(Equal("2023-06-19"))
+			})
+		})
+		Context("empty string", func() {
+			BeforeEach(func() {
+				textInput = []byte("")
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("sets to zero date", func() {
+				Expect(date.IsZero()).To(BeTrue())
+			})
+		})
+		Context("RFC3339 format", func() {
+			BeforeEach(func() {
+				textInput = []byte("2023-06-19T07:56:34Z")
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("extracts date portion", func() {
+				Expect(date.String()).To(Equal("2023-06-19"))
+			})
+		})
+	})
+	Context("YAML round-trip - Phase 2", func() {
+		type TestStruct struct {
+			Date    libtime.Date  `yaml:"date"`
+			DatePtr *libtime.Date `yaml:"datePtr"`
+		}
+		var original TestStruct
+		var unmarshaled TestStruct
+		var yamlBytes []byte
+		BeforeEach(func() {
+			original = TestStruct{
+				Date:    libtime.Date(time.Unix(1687161394, 0)),
+				DatePtr: libtime.Date(time.Unix(1687161394, 0)).Ptr(),
+			}
+		})
+		JustBeforeEach(func() {
+			// Marshal to YAML
+			yamlBytes, err = yaml.Marshal(original)
+			Expect(err).To(BeNil())
+			// Unmarshal from YAML
+			err = yaml.Unmarshal(yamlBytes, &unmarshaled)
+		})
+		It("returns no error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("marshals to date-only format (not timestamp)", func() {
+			yamlString := string(yamlBytes)
+			// YAML may quote or not quote strings - both are valid
+			Expect(yamlString).To(MatchRegexp(`date: "?2023-06-19"?`))
+			Expect(yamlString).To(MatchRegexp(`datePtr: "?2023-06-19"?`))
+			// Ensure it's NOT a full timestamp
+			Expect(yamlString).NotTo(ContainSubstring("T07:56:34"))
+		})
+		It("round-trips Date field correctly", func() {
+			Expect(unmarshaled.Date.String()).To(Equal("2023-06-19"))
+			Expect(unmarshaled.Date.String()).To(Equal(original.Date.String()))
+		})
+		It("round-trips DatePtr field correctly", func() {
+			Expect(unmarshaled.DatePtr).NotTo(BeNil())
+			Expect(unmarshaled.DatePtr.String()).To(Equal("2023-06-19"))
+			Expect(unmarshaled.DatePtr.String()).To(Equal(original.DatePtr.String()))
+		})
+	})
+	Context("YAML omitempty - Phase 2", func() {
+		type TestStruct struct {
+			Date        libtime.Date  `yaml:"date,omitempty"`
+			DatePtr     *libtime.Date `yaml:"datePtr,omitempty"`
+			DateNonZero libtime.Date  `yaml:"dateNonZero,omitempty"`
+		}
+		var testStruct TestStruct
+		var yamlBytes []byte
+		BeforeEach(func() {
+			testStruct = TestStruct{
+				Date:        libtime.Date{},                         // zero
+				DatePtr:     nil,                                    // nil
+				DateNonZero: libtime.Date(time.Unix(1687161394, 0)), // non-zero
+			}
+		})
+		JustBeforeEach(func() {
+			yamlBytes, err = yaml.Marshal(testStruct)
+		})
+		It("returns no error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("omits zero Date field with omitempty", func() {
+			yamlString := string(yamlBytes)
+			// Zero date with omitempty should be omitted (YAML treats zero time specially)
+			// Note: This behavior depends on YAML implementation
+			Expect(yamlString).NotTo(ContainSubstring("date:"))
+		})
+		It("omits nil *Date field with omitempty", func() {
+			yamlString := string(yamlBytes)
+			Expect(yamlString).NotTo(ContainSubstring("datePtr:"))
+		})
+		It("includes non-zero Date field", func() {
+			yamlString := string(yamlBytes)
+			// YAML may quote or not quote strings - both are valid
+			Expect(yamlString).To(MatchRegexp(`dateNonZero: "?2023-06-19"?`))
 		})
 	})
 })

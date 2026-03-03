@@ -6,6 +6,7 @@ package time
 
 import (
 	"context"
+	"encoding"
 	"encoding/json"
 	"strings"
 	stdtime "time"
@@ -79,6 +80,10 @@ func NewDate(
 
 type Date stdtime.Time
 
+var _ encoding.TextMarshaler = Date{}
+
+var _ encoding.TextUnmarshaler = (*Date)(nil)
+
 func (d Date) Year() int {
 	return d.Time().Year()
 }
@@ -127,6 +132,28 @@ func (d Date) MarshalJSON() ([]byte, error) {
 		return json.Marshal(nil)
 	}
 	return json.Marshal(time.Format(stdtime.DateOnly))
+}
+
+func (d Date) MarshalText() ([]byte, error) {
+	t := d.Time()
+	if t.IsZero() {
+		return nil, nil
+	}
+	return []byte(t.Format(stdtime.DateOnly)), nil
+}
+
+func (d *Date) UnmarshalText(b []byte) error {
+	str := string(b)
+	if len(str) == 0 {
+		*d = Date(stdtime.Time{})
+		return nil
+	}
+	t, err := ParseTime(context.Background(), str)
+	if err != nil {
+		return errors.Wrapf(context.Background(), err, "parse time failed")
+	}
+	*d = ToDate(*t)
+	return nil
 }
 
 func (d Date) Time() stdtime.Time {

@@ -1,3 +1,13 @@
+---
+status: completed
+summary: Added encoding.TextMarshaler and encoding.TextUnmarshaler to Date type with comprehensive regression tests
+container: time-001-add-text-marshaler-to-date
+dark-factory-version: v0.13.2
+created: "2026-03-03T17:19:38Z"
+queued: "2026-03-03T17:19:38Z"
+started: "2026-03-03T17:19:38Z"
+completed: "2026-03-03T17:23:53Z"
+---
 <objective>
 Add encoding.TextMarshaler and encoding.TextUnmarshaler interfaces to the Date type. This enables YAML (gopkg.in/yaml.v3) and other encoding formats to serialize Date as "2026-03-04" (date-only) instead of a full timestamp.
 </objective>

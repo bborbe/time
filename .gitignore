@@ -6,3 +6,5 @@
 /.mcp-*
 /.dark-factory.lock
 /prompts/log
+/.idea
+.idea/
