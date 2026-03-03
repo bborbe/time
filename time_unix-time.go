@@ -6,6 +6,7 @@ package time
 
 import (
 	"context"
+	"encoding"
 	"encoding/json"
 	"strconv"
 	"strings"
@@ -98,6 +99,10 @@ func NewUnixTime(
 
 type UnixTime stdtime.Time
 
+var _ encoding.TextMarshaler = UnixTime{}
+
+var _ encoding.TextUnmarshaler = (*UnixTime)(nil)
+
 func (u UnixTime) Year() int {
 	return u.Time().Year()
 }
@@ -167,6 +172,28 @@ func (u *UnixTime) UnmarshalJSON(b []byte) error {
 
 func (u UnixTime) MarshalJSON() ([]byte, error) {
 	return json.Marshal(u.Time().Unix())
+}
+
+func (u UnixTime) MarshalText() ([]byte, error) {
+	t := u.Time()
+	if t.IsZero() {
+		return nil, nil
+	}
+	return []byte(t.Format(stdtime.RFC3339Nano)), nil
+}
+
+func (u *UnixTime) UnmarshalText(b []byte) error {
+	str := string(b)
+	if len(str) == 0 {
+		*u = UnixTime(stdtime.Time{})
+		return nil
+	}
+	t, err := ParseTime(context.Background(), str)
+	if err != nil {
+		return errors.Wrapf(context.Background(), err, "parse time failed")
+	}
+	*u = UnixTime(*t)
+	return nil
 }
 
 func (u UnixTime) Time() stdtime.Time {

@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.24.0
+
+### Added
+- 003-add-text-marshaler-to-all-types
+
 ## v1.23.0
 
 ### Added

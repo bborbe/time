@@ -6,6 +6,7 @@ package time
 
 import (
 	"context"
+	"encoding"
 	"encoding/json"
 	"strings"
 	stdtime "time"
@@ -84,6 +85,10 @@ func DateTimeFromUnixMicro(ms int64) DateTime {
 }
 
 type DateTime stdtime.Time
+
+var _ encoding.TextMarshaler = DateTime{}
+
+var _ encoding.TextUnmarshaler = (*DateTime)(nil)
 
 func (d DateTime) Year() int {
 	return d.Time().Year()
@@ -165,6 +170,28 @@ func (d DateTime) MarshalJSON() ([]byte, error) {
 		return json.Marshal(nil)
 	}
 	return json.Marshal(time.Format(stdtime.RFC3339Nano))
+}
+
+func (d DateTime) MarshalText() ([]byte, error) {
+	t := d.Time()
+	if t.IsZero() {
+		return nil, nil
+	}
+	return []byte(t.Format(stdtime.RFC3339Nano)), nil
+}
+
+func (d *DateTime) UnmarshalText(b []byte) error {
+	str := string(b)
+	if len(str) == 0 {
+		*d = DateTime(stdtime.Time{})
+		return nil
+	}
+	t, err := ParseTime(context.Background(), str)
+	if err != nil {
+		return errors.Wrapf(context.Background(), err, "parse time failed")
+	}
+	*d = DateTime(*t)
+	return nil
 }
 
 func (d DateTime) Time() stdtime.Time {

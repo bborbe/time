@@ -12,6 +12,7 @@ import (
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"gopkg.in/yaml.v3"
 
 	libtime "github.com/bborbe/time"
 )
@@ -375,6 +376,198 @@ var _ = Describe("DateTime", func() {
 		It("matches time.Date behavior", func() {
 			expected := time.Date(2023, time.June, 19, 7, 56, 34, 0, time.UTC)
 			Expect(result.Time()).To(Equal(expected))
+		})
+	})
+	Context("YAML round-trip - Phase 2", func() {
+		type TestStruct struct {
+			DateTime    libtime.DateTime  `yaml:"dateTime"`
+			DateTimePtr *libtime.DateTime `yaml:"dateTimePtr"`
+		}
+		var original TestStruct
+		var unmarshaled TestStruct
+		var yamlBytes []byte
+		BeforeEach(func() {
+			original = TestStruct{
+				DateTime:    libtime.DateTime(time.Unix(1687161394, 0)),
+				DateTimePtr: libtime.DateTime(time.Unix(1687161394, 0)).Ptr(),
+			}
+		})
+		JustBeforeEach(func() {
+			// Marshal to YAML
+			var err error
+			yamlBytes, err = yaml.Marshal(original)
+			Expect(err).To(BeNil())
+			// Unmarshal from YAML
+			err = yaml.Unmarshal(yamlBytes, &unmarshaled)
+			Expect(err).To(BeNil())
+		})
+		It("returns no error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("marshals to RFC3339Nano format (not integer)", func() {
+			yamlString := string(yamlBytes)
+			Expect(yamlString).To(MatchRegexp(`dateTime: "?2023-06-19T07:56:34Z"?`))
+			Expect(yamlString).To(MatchRegexp(`dateTimePtr: "?2023-06-19T07:56:34Z"?`))
+		})
+		It("round-trips DateTime field correctly", func() {
+			Expect(unmarshaled.DateTime.String()).To(Equal("2023-06-19T07:56:34Z"))
+			Expect(unmarshaled.DateTime.String()).To(Equal(original.DateTime.String()))
+		})
+		It("round-trips DateTimePtr field correctly", func() {
+			Expect(unmarshaled.DateTimePtr).NotTo(BeNil())
+			Expect(unmarshaled.DateTimePtr.String()).To(Equal("2023-06-19T07:56:34Z"))
+			Expect(unmarshaled.DateTimePtr.String()).To(Equal(original.DateTimePtr.String()))
+		})
+	})
+	Context("YAML omitempty - Phase 2", func() {
+		type TestStruct struct {
+			DateTime        libtime.DateTime  `yaml:"dateTime,omitempty"`
+			DateTimePtr     *libtime.DateTime `yaml:"dateTimePtr,omitempty"`
+			DateTimeNonZero libtime.DateTime  `yaml:"dateTimeNonZero,omitempty"`
+		}
+		var testStruct TestStruct
+		var yamlBytes []byte
+		BeforeEach(func() {
+			testStruct = TestStruct{
+				DateTime:        libtime.DateTime{},                         // zero
+				DateTimePtr:     nil,                                        // nil
+				DateTimeNonZero: libtime.DateTime(time.Unix(1687161394, 0)), // non-zero
+			}
+		})
+		JustBeforeEach(func() {
+			yamlBytes, err = yaml.Marshal(testStruct)
+		})
+		It("returns no error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("omits zero DateTime field with omitempty", func() {
+			yamlString := string(yamlBytes)
+			Expect(yamlString).NotTo(ContainSubstring("dateTime:"))
+		})
+		It("omits nil *DateTime field with omitempty", func() {
+			yamlString := string(yamlBytes)
+			Expect(yamlString).NotTo(ContainSubstring("dateTimePtr:"))
+		})
+		It("includes non-zero DateTime field", func() {
+			yamlString := string(yamlBytes)
+			Expect(yamlString).To(MatchRegexp(`dateTimeNonZero: "?2023-06-19T07:56:34Z"?`))
+		})
+	})
+	Context("struct marshal regression - Phase 1", func() {
+		Context("A. JSON Marshal — non-zero values set for Field and FieldPtr only", func() {
+			var jsonBytes []byte
+			JustBeforeEach(func() {
+				testStruct := struct {
+					Field        libtime.DateTime  `json:"field"`
+					FieldPtr     *libtime.DateTime `json:"fieldPtr"`
+					FieldOmit    libtime.DateTime  `json:"fieldOmit,omitempty"`
+					FieldPtrOmit *libtime.DateTime `json:"fieldPtrOmit,omitempty"`
+				}{
+					Field:    libtime.DateTime(time.Unix(1687161394, 0)),
+					FieldPtr: libtime.DateTime(time.Unix(1687161394, 0)).Ptr(),
+				}
+				jsonBytes, err = json.Marshal(testStruct)
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns exact JSON output", func() {
+				Expect(
+					string(jsonBytes),
+				).To(Equal(`{"field":"2023-06-19T07:56:34Z","fieldPtr":"2023-06-19T07:56:34Z","fieldOmit":null}`))
+			})
+		})
+		Context("B. JSON Unmarshal — round-trip", func() {
+			var original struct {
+				Field        libtime.DateTime  `json:"field"`
+				FieldPtr     *libtime.DateTime `json:"fieldPtr"`
+				FieldOmit    libtime.DateTime  `json:"fieldOmit,omitempty"`
+				FieldPtrOmit *libtime.DateTime `json:"fieldPtrOmit,omitempty"`
+			}
+			var unmarshaled struct {
+				Field        libtime.DateTime  `json:"field"`
+				FieldPtr     *libtime.DateTime `json:"fieldPtr"`
+				FieldOmit    libtime.DateTime  `json:"fieldOmit,omitempty"`
+				FieldPtrOmit *libtime.DateTime `json:"fieldPtrOmit,omitempty"`
+			}
+			var jsonBytes []byte
+			BeforeEach(func() {
+				original = struct {
+					Field        libtime.DateTime  `json:"field"`
+					FieldPtr     *libtime.DateTime `json:"fieldPtr"`
+					FieldOmit    libtime.DateTime  `json:"fieldOmit,omitempty"`
+					FieldPtrOmit *libtime.DateTime `json:"fieldPtrOmit,omitempty"`
+				}{
+					Field:    libtime.DateTime(time.Unix(1687161394, 0)),
+					FieldPtr: libtime.DateTime(time.Unix(1687161394, 0)).Ptr(),
+				}
+			})
+			JustBeforeEach(func() {
+				jsonBytes, err = json.Marshal(original)
+				Expect(err).To(BeNil())
+				err = json.Unmarshal(jsonBytes, &unmarshaled)
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("round-trips Field correctly", func() {
+				Expect(unmarshaled.Field.String()).To(Equal(original.Field.String()))
+			})
+			It("round-trips FieldPtr correctly", func() {
+				Expect(unmarshaled.FieldPtr).NotTo(BeNil())
+				Expect(unmarshaled.FieldPtr.String()).To(Equal(original.FieldPtr.String()))
+			})
+			It("zero fields remain zero", func() {
+				Expect(unmarshaled.FieldOmit.IsZero()).To(BeTrue())
+				Expect(unmarshaled.FieldPtrOmit).To(BeNil())
+			})
+		})
+		Context("C. JSON Marshal — all fields set (non-zero)", func() {
+			var jsonBytes []byte
+			JustBeforeEach(func() {
+				testStruct := struct {
+					Field        libtime.DateTime  `json:"field"`
+					FieldPtr     *libtime.DateTime `json:"fieldPtr"`
+					FieldOmit    libtime.DateTime  `json:"fieldOmit,omitempty"`
+					FieldPtrOmit *libtime.DateTime `json:"fieldPtrOmit,omitempty"`
+				}{
+					Field:        libtime.DateTime(time.Unix(1687161394, 0)),
+					FieldPtr:     libtime.DateTime(time.Unix(1687161394, 0)).Ptr(),
+					FieldOmit:    libtime.DateTime(time.Unix(1687161394, 0)),
+					FieldPtrOmit: libtime.DateTime(time.Unix(1687161394, 0)).Ptr(),
+				}
+				jsonBytes, err = json.Marshal(testStruct)
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("all fields appear in output", func() {
+				jsonStr := string(jsonBytes)
+				Expect(jsonStr).To(ContainSubstring(`"field":"2023-06-19T07:56:34Z"`))
+				Expect(jsonStr).To(ContainSubstring(`"fieldPtr":"2023-06-19T07:56:34Z"`))
+				Expect(jsonStr).To(ContainSubstring(`"fieldOmit":"2023-06-19T07:56:34Z"`))
+				Expect(jsonStr).To(ContainSubstring(`"fieldPtrOmit":"2023-06-19T07:56:34Z"`))
+			})
+		})
+		Context("D. JSON Marshal — all fields zero/nil", func() {
+			var jsonBytes []byte
+			JustBeforeEach(func() {
+				testStruct := struct {
+					Field        libtime.DateTime  `json:"field"`
+					FieldPtr     *libtime.DateTime `json:"fieldPtr"`
+					FieldOmit    libtime.DateTime  `json:"fieldOmit,omitempty"`
+					FieldPtrOmit *libtime.DateTime `json:"fieldPtrOmit,omitempty"`
+				}{}
+				jsonBytes, err = json.Marshal(testStruct)
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("non-omitempty fields produce null, omitempty fields produce null", func() {
+				Expect(
+					string(jsonBytes),
+				).To(Equal(`{"field":null,"fieldPtr":null,"fieldOmit":null}`))
+			})
 		})
 	})
 })

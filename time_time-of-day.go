@@ -6,6 +6,7 @@ package time
 
 import (
 	"context"
+	"encoding"
 	"encoding/json"
 	"strings"
 	stdtime "time"
@@ -107,6 +108,10 @@ type TimeOfDay struct {
 	Location   *stdtime.Location
 }
 
+var _ encoding.TextMarshaler = TimeOfDay{}
+
+var _ encoding.TextUnmarshaler = (*TimeOfDay)(nil)
+
 func (t TimeOfDay) String() string {
 	return t.Format(TimeOfDayLayout)
 }
@@ -144,6 +149,24 @@ func (t *TimeOfDay) UnmarshalJSON(b []byte) error {
 
 func (t TimeOfDay) MarshalJSON() ([]byte, error) {
 	return json.Marshal(t.String())
+}
+
+func (t TimeOfDay) MarshalText() ([]byte, error) {
+	return []byte(t.String()), nil
+}
+
+func (t *TimeOfDay) UnmarshalText(b []byte) error {
+	str := string(b)
+	if len(str) == 0 {
+		*t = TimeOfDay{}
+		return nil
+	}
+	parsed, err := ParseTimeOfDay(context.Background(), str)
+	if err != nil {
+		return errors.Wrapf(context.Background(), err, "parse time of day failed")
+	}
+	*t = *parsed
+	return nil
 }
 
 func (t TimeOfDay) Ptr() *TimeOfDay {

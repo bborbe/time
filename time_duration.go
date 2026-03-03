@@ -6,6 +6,7 @@ package time
 
 import (
 	"context"
+	"encoding"
 	"encoding/json"
 	"regexp"
 	"strconv"
@@ -150,6 +151,10 @@ func DurationPtr(time *stdtime.Duration) *Duration {
 
 type Duration stdtime.Duration
 
+var _ encoding.TextMarshaler = Duration(0)
+
+var _ encoding.TextUnmarshaler = (*Duration)(nil)
+
 func (d Duration) Duration() stdtime.Duration {
 	return stdtime.Duration(d)
 }
@@ -222,4 +227,26 @@ func (d *Duration) UnmarshalJSON(b []byte) error {
 func (d Duration) MarshalJSON() ([]byte, error) {
 	// use stdtime.Duration.String to produce output in standard golang format
 	return json.Marshal(d.Duration().String())
+}
+
+func (d Duration) MarshalText() ([]byte, error) {
+	if d.Duration() == 0 {
+		return nil, nil
+	}
+	return []byte(d.Duration().String()), nil
+}
+
+func (d *Duration) UnmarshalText(b []byte) error {
+	str := string(b)
+	if len(str) == 0 {
+		*d = Duration(0)
+		return nil
+	}
+	ctx := context.Background()
+	duration, err := ParseDuration(ctx, str)
+	if err != nil {
+		return errors.Wrapf(ctx, err, "parse duration failed")
+	}
+	*d = *duration
+	return nil
 }

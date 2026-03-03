@@ -6,9 +6,11 @@ package time_test
 
 import (
 	"context"
+	"encoding/json"
 
 	. "github.com/onsi/ginkgo/v2"
 	. "github.com/onsi/gomega"
+	"gopkg.in/yaml.v3"
 
 	libtime "github.com/bborbe/time"
 )
@@ -58,6 +60,7 @@ var _ = DescribeTable("ParseDuration",
 )
 
 var _ = Describe("Duration", func() {
+	var err error
 	var _ = DescribeTable(
 		"String",
 		func(inputDuration libtime.Duration, expectedOutput string) {
@@ -227,6 +230,190 @@ var _ = Describe("Duration", func() {
 			})
 			It("returns correct content", func() {
 				Expect(duration).To(Equal(libtime.Duration(0)))
+			})
+		})
+	})
+	Context("YAML round-trip - Phase 2", func() {
+		type TestStruct struct {
+			Duration    libtime.Duration  `yaml:"duration"`
+			DurationPtr *libtime.Duration `yaml:"durationPtr"`
+		}
+		var original TestStruct
+		var unmarshaled TestStruct
+		var yamlBytes []byte
+		BeforeEach(func() {
+			original = TestStruct{
+				Duration:    90 * libtime.Minute,
+				DurationPtr: (90 * libtime.Minute).Ptr(),
+			}
+		})
+		JustBeforeEach(func() {
+			// Marshal to YAML
+			yamlBytes, err = yaml.Marshal(original)
+			Expect(err).To(BeNil())
+			// Unmarshal from YAML
+			err = yaml.Unmarshal(yamlBytes, &unmarshaled)
+		})
+		It("returns no error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("marshals to Go duration format", func() {
+			yamlString := string(yamlBytes)
+			Expect(yamlString).To(MatchRegexp(`duration: "?1h30m0s"?`))
+			Expect(yamlString).To(MatchRegexp(`durationPtr: "?1h30m0s"?`))
+		})
+		It("round-trips Duration field correctly", func() {
+			Expect(unmarshaled.Duration).To(Equal(original.Duration))
+		})
+		It("round-trips DurationPtr field correctly", func() {
+			Expect(unmarshaled.DurationPtr).NotTo(BeNil())
+			Expect(*unmarshaled.DurationPtr).To(Equal(*original.DurationPtr))
+		})
+	})
+	Context("YAML omitempty - Phase 2", func() {
+		type TestStruct struct {
+			Duration        libtime.Duration  `yaml:"duration,omitempty"`
+			DurationPtr     *libtime.Duration `yaml:"durationPtr,omitempty"`
+			DurationNonZero libtime.Duration  `yaml:"durationNonZero,omitempty"`
+		}
+		var testStruct TestStruct
+		var yamlBytes []byte
+		BeforeEach(func() {
+			testStruct = TestStruct{
+				Duration:        libtime.Duration(0), // zero
+				DurationPtr:     nil,                 // nil
+				DurationNonZero: 90 * libtime.Minute, // non-zero
+			}
+		})
+		JustBeforeEach(func() {
+			yamlBytes, err = yaml.Marshal(testStruct)
+		})
+		It("returns no error", func() {
+			Expect(err).To(BeNil())
+		})
+		It("omits zero Duration field with omitempty", func() {
+			yamlString := string(yamlBytes)
+			Expect(yamlString).NotTo(ContainSubstring("duration:"))
+		})
+		It("omits nil *Duration field with omitempty", func() {
+			yamlString := string(yamlBytes)
+			Expect(yamlString).NotTo(ContainSubstring("durationPtr:"))
+		})
+		It("includes non-zero Duration field", func() {
+			yamlString := string(yamlBytes)
+			Expect(yamlString).To(MatchRegexp(`durationNonZero: "?1h30m0s"?`))
+		})
+	})
+	Context("struct marshal regression - Phase 1", func() {
+		Context("A. JSON Marshal — non-zero values set for Field and FieldPtr only", func() {
+			var jsonBytes []byte
+			JustBeforeEach(func() {
+				testStruct := struct {
+					Field        libtime.Duration  `json:"field"`
+					FieldPtr     *libtime.Duration `json:"fieldPtr"`
+					FieldOmit    libtime.Duration  `json:"fieldOmit,omitempty"`
+					FieldPtrOmit *libtime.Duration `json:"fieldPtrOmit,omitempty"`
+				}{
+					Field:    90 * libtime.Minute,
+					FieldPtr: (90 * libtime.Minute).Ptr(),
+				}
+				jsonBytes, err = json.Marshal(testStruct)
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("returns exact JSON output", func() {
+				Expect(string(jsonBytes)).To(Equal(`{"field":"1h30m0s","fieldPtr":"1h30m0s"}`))
+			})
+		})
+		Context("B. JSON Unmarshal — round-trip", func() {
+			var original struct {
+				Field        libtime.Duration  `json:"field"`
+				FieldPtr     *libtime.Duration `json:"fieldPtr"`
+				FieldOmit    libtime.Duration  `json:"fieldOmit,omitempty"`
+				FieldPtrOmit *libtime.Duration `json:"fieldPtrOmit,omitempty"`
+			}
+			var unmarshaled struct {
+				Field        libtime.Duration  `json:"field"`
+				FieldPtr     *libtime.Duration `json:"fieldPtr"`
+				FieldOmit    libtime.Duration  `json:"fieldOmit,omitempty"`
+				FieldPtrOmit *libtime.Duration `json:"fieldPtrOmit,omitempty"`
+			}
+			var jsonBytes []byte
+			BeforeEach(func() {
+				original = struct {
+					Field        libtime.Duration  `json:"field"`
+					FieldPtr     *libtime.Duration `json:"fieldPtr"`
+					FieldOmit    libtime.Duration  `json:"fieldOmit,omitempty"`
+					FieldPtrOmit *libtime.Duration `json:"fieldPtrOmit,omitempty"`
+				}{
+					Field:    90 * libtime.Minute,
+					FieldPtr: (90 * libtime.Minute).Ptr(),
+				}
+			})
+			JustBeforeEach(func() {
+				jsonBytes, err = json.Marshal(original)
+				Expect(err).To(BeNil())
+				err = json.Unmarshal(jsonBytes, &unmarshaled)
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("round-trips Field correctly", func() {
+				Expect(unmarshaled.Field).To(Equal(original.Field))
+			})
+			It("round-trips FieldPtr correctly", func() {
+				Expect(unmarshaled.FieldPtr).NotTo(BeNil())
+				Expect(*unmarshaled.FieldPtr).To(Equal(*original.FieldPtr))
+			})
+			It("zero fields remain zero", func() {
+				Expect(unmarshaled.FieldOmit).To(Equal(libtime.Duration(0)))
+				Expect(unmarshaled.FieldPtrOmit).To(BeNil())
+			})
+		})
+		Context("C. JSON Marshal — all fields set (non-zero)", func() {
+			var jsonBytes []byte
+			JustBeforeEach(func() {
+				testStruct := struct {
+					Field        libtime.Duration  `json:"field"`
+					FieldPtr     *libtime.Duration `json:"fieldPtr"`
+					FieldOmit    libtime.Duration  `json:"fieldOmit,omitempty"`
+					FieldPtrOmit *libtime.Duration `json:"fieldPtrOmit,omitempty"`
+				}{
+					Field:        90 * libtime.Minute,
+					FieldPtr:     (90 * libtime.Minute).Ptr(),
+					FieldOmit:    90 * libtime.Minute,
+					FieldPtrOmit: (90 * libtime.Minute).Ptr(),
+				}
+				jsonBytes, err = json.Marshal(testStruct)
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("all fields appear in output", func() {
+				jsonStr := string(jsonBytes)
+				Expect(jsonStr).To(ContainSubstring(`"field":"1h30m0s"`))
+				Expect(jsonStr).To(ContainSubstring(`"fieldPtr":"1h30m0s"`))
+				Expect(jsonStr).To(ContainSubstring(`"fieldOmit":"1h30m0s"`))
+				Expect(jsonStr).To(ContainSubstring(`"fieldPtrOmit":"1h30m0s"`))
+			})
+		})
+		Context("D. JSON Marshal — all fields zero/nil", func() {
+			var jsonBytes []byte
+			JustBeforeEach(func() {
+				testStruct := struct {
+					Field        libtime.Duration  `json:"field"`
+					FieldPtr     *libtime.Duration `json:"fieldPtr"`
+					FieldOmit    libtime.Duration  `json:"fieldOmit,omitempty"`
+					FieldPtrOmit *libtime.Duration `json:"fieldPtrOmit,omitempty"`
+				}{}
+				jsonBytes, err = json.Marshal(testStruct)
+			})
+			It("returns no error", func() {
+				Expect(err).To(BeNil())
+			})
+			It("non-omitempty fields produce 0s, omitempty fields omitted", func() {
+				Expect(string(jsonBytes)).To(Equal(`{"field":"0s","fieldPtr":null}`))
 			})
 		})
 	})
