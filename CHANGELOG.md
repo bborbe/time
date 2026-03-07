@@ -2,16 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
-## v1.25.0
-
-- feat: add Before, After, Equal, EqualPtr, Truncate methods to Date type
-- feat: add Compare and ComparePtr methods to UnixTime type
-
 Please choose versions by [Semantic Versioning](http://semver.org/).
 
 * MAJOR version when you make incompatible API changes,
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
+
+## v1.25.0
+
+- feat: Add Before, After, Equal, EqualPtr, Truncate methods to Date type
+- feat: Add Compare and ComparePtr methods to UnixTime type
 
 ## v1.24.2
 
