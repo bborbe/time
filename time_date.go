@@ -193,6 +193,32 @@ func (d *Date) ComparePtr(stdTime *Date) int {
 	return d.Compare(*stdTime)
 }
 
+func (d Date) Before(other HasTime) bool {
+	return d.Time().Before(other.Time())
+}
+
+func (d Date) After(other HasTime) bool {
+	return d.Time().After(other.Time())
+}
+
+func (d Date) Equal(other Date) bool {
+	return d.Time().Equal(other.Time())
+}
+
+func (d *Date) EqualPtr(other *Date) bool {
+	if d == nil && other == nil {
+		return true
+	}
+	if d != nil && other != nil {
+		return d.Equal(*other)
+	}
+	return false
+}
+
+func (d Date) Truncate(duration HasDuration) Date {
+	return Date(d.Time().Truncate(duration.Duration()))
+}
+
 func (d Date) Add(duration HasDuration) Date {
 	return Date(d.Time().Add(duration.Duration()))
 }

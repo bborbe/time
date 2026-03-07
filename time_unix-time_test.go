@@ -258,6 +258,45 @@ var _ = Describe("UnixTime", func() {
 			Expect(yamlString).To(MatchRegexp(`unixTimeNonZero: "?2023-06-19T07:56:34Z"?`))
 		})
 	})
+	DescribeTable(
+		"Compare",
+		func(a libtime.UnixTime, b libtime.UnixTime, expectedResult int) {
+			Expect(a.Compare(b)).To(Equal(expectedResult))
+		},
+		Entry(
+			"earlier returns -1",
+			libtime.UnixTime(time.Unix(999, 0)),
+			libtime.UnixTime(time.Unix(1000, 0)),
+			-1,
+		),
+		Entry(
+			"later returns 1",
+			libtime.UnixTime(time.Unix(1000, 0)),
+			libtime.UnixTime(time.Unix(999, 0)),
+			1,
+		),
+		Entry(
+			"same returns 0",
+			libtime.UnixTime(time.Unix(1000, 0)),
+			libtime.UnixTime(time.Unix(1000, 0)),
+			0,
+		),
+	)
+	DescribeTable(
+		"ComparePtr",
+		func(a *libtime.UnixTime, b *libtime.UnixTime, expectedResult int) {
+			Expect(a.ComparePtr(b)).To(Equal(expectedResult))
+		},
+		Entry("both nil returns 0", nil, nil, 0),
+		Entry("nil receiver returns -1", nil, libtime.UnixTime(time.Unix(1000, 0)).Ptr(), -1),
+		Entry("nil argument returns 1", libtime.UnixTime(time.Unix(1000, 0)).Ptr(), nil, 1),
+		Entry(
+			"both non-nil delegates to Compare",
+			libtime.UnixTime(time.Unix(1000, 0)).Ptr(),
+			libtime.UnixTime(time.Unix(1000, 0)).Ptr(),
+			0,
+		),
+	)
 	Context("struct marshal regression - Phase 1", func() {
 		Context("A. JSON Marshal — non-zero values set for Field and FieldPtr only", func() {
 			var jsonBytes []byte

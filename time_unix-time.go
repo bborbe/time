@@ -244,6 +244,23 @@ func (u UnixTime) Truncate(duration HasDuration) UnixTime {
 	return UnixTime(u.Time().Truncate(duration.Duration()))
 }
 
+func (u UnixTime) Compare(other UnixTime) int {
+	return Compare(u.Time(), other.Time())
+}
+
+func (u *UnixTime) ComparePtr(other *UnixTime) int {
+	if u == nil && other == nil {
+		return 0
+	}
+	if u == nil {
+		return -1
+	}
+	if other == nil {
+		return 1
+	}
+	return u.Compare(*other)
+}
+
 func (u UnixTime) DateTime() DateTime {
 	return DateTime(u)
 }

@@ -208,6 +208,81 @@ var _ = Describe("Date", func() {
 			})
 		})
 	})
+	Context("Before", func() {
+		It("returns true when earlier", func() {
+			a := ParseDate("2023-06-18")
+			b := ParseDate("2023-06-19")
+			Expect(a.Before(b)).To(BeTrue())
+		})
+		It("returns false when later", func() {
+			a := ParseDate("2023-06-19")
+			b := ParseDate("2023-06-18")
+			Expect(a.Before(b)).To(BeFalse())
+		})
+		It("returns false when same", func() {
+			a := ParseDate("2023-06-19")
+			b := ParseDate("2023-06-19")
+			Expect(a.Before(b)).To(BeFalse())
+		})
+	})
+	Context("After", func() {
+		It("returns true when later", func() {
+			a := ParseDate("2023-06-20")
+			b := ParseDate("2023-06-19")
+			Expect(a.After(b)).To(BeTrue())
+		})
+		It("returns false when earlier", func() {
+			a := ParseDate("2023-06-18")
+			b := ParseDate("2023-06-19")
+			Expect(a.After(b)).To(BeFalse())
+		})
+		It("returns false when same", func() {
+			a := ParseDate("2023-06-19")
+			b := ParseDate("2023-06-19")
+			Expect(a.After(b)).To(BeFalse())
+		})
+	})
+	Context("Equal", func() {
+		It("returns true when same date", func() {
+			a := ParseDate("2023-06-19")
+			b := ParseDate("2023-06-19")
+			Expect(a.Equal(b)).To(BeTrue())
+		})
+		It("returns false when different date", func() {
+			a := ParseDate("2023-06-19")
+			b := ParseDate("2023-06-20")
+			Expect(a.Equal(b)).To(BeFalse())
+		})
+	})
+	Context("EqualPtr", func() {
+		It("returns true when both nil", func() {
+			var a *libtime.Date
+			var b *libtime.Date
+			Expect(a.EqualPtr(b)).To(BeTrue())
+		})
+		It("returns true when both non-nil and same", func() {
+			a := ParseDate("2023-06-19").Ptr()
+			b := ParseDate("2023-06-19").Ptr()
+			Expect(a.EqualPtr(b)).To(BeTrue())
+		})
+		It("returns false when one nil", func() {
+			a := ParseDate("2023-06-19").Ptr()
+			var b *libtime.Date
+			Expect(a.EqualPtr(b)).To(BeFalse())
+		})
+		It("returns false when receiver nil", func() {
+			var a *libtime.Date
+			b := ParseDate("2023-06-19").Ptr()
+			Expect(a.EqualPtr(b)).To(BeFalse())
+		})
+	})
+	Context("Truncate", func() {
+		It("truncating to 24h returns date with time zeroed", func() {
+			d := ParseDate("2023-06-19")
+			result := d.Truncate(libtime.Duration(24 * time.Hour))
+			Expect(result.String()).To(Equal("2023-06-19"))
+		})
+	})
 	DescribeTable(
 		"ComparePtr",
 		func(a *libtime.Date, b *libtime.Date, expectedResult int) {
