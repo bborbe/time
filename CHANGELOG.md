@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.25.3
+
+- chore: verify project health — all tests pass, linting clean, precommit succeeds
+
 ## v1.25.2
 
 - standardize Makefile: add mocks mkdir, reorder lint, multiline trivy, add .PHONY declarations
