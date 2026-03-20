@@ -8,6 +8,14 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.25.1
+
+- upgrade golangci-lint from v1 to v2
+- update bborbe/errors to v1.5.5
+- update bborbe/collection to v1.20.5
+- update bborbe/parse to v1.10.5
+- update bborbe/validation to v1.4.6
+
 ## v1.25.0
 
 - feat: Add Before, After, Equal, EqualPtr, Truncate methods to Date type
