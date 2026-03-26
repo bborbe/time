@@ -2,6 +2,10 @@ module github.com/bborbe/time
 
 go 1.26.1
 
+replace (
+	github.com/opencontainers/runtime-spec => github.com/opencontainers/runtime-spec v1.2.1
+)
+
 require (
 	github.com/bborbe/collection v1.20.7
 	github.com/bborbe/errors v1.5.8
@@ -119,7 +123,7 @@ require (
 	github.com/cloudflare/circl v1.6.3 // indirect
 	github.com/compose-spec/compose-go/v2 v2.8.1 // indirect
 	github.com/containerd/cgroups/v3 v3.1.2 // indirect
-	github.com/containerd/containerd v1.7.29 // indirect
+	github.com/containerd/containerd v1.7.30 // indirect
 	github.com/containerd/containerd/api v1.10.0 // indirect
 	github.com/containerd/continuity v0.4.5 // indirect
 	github.com/containerd/errdefs v1.0.0 // indirect
