@@ -8,6 +8,12 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.25.6
+
+- Remove golang.org/x/lint direct dependency (moved to indirect)
+- Remove opencontainers/runtime-spec replace directive
+- Downgrade containerd to v1.7.29
+
 ## v1.25.5
 
 - fix: Add replace directive for opencontainers/runtime-spec to v1.2.1 to fix containerd/oci compilation with Go 1.26
