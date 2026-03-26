@@ -8,6 +8,13 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.25.4
+
+- Update bborbe/* dependencies (collection, errors, parse, validation)
+- Update golangci-lint v2.11.4, osv-scanner v2.3.5
+- Update docker/moby/containerd dependencies
+- Clean up go.mod: remove replace/exclude blocks
+
 ## v1.25.3
 
 - chore: verify project health — all tests pass, linting clean, precommit succeeds
