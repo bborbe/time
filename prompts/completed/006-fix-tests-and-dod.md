@@ -1,11 +1,12 @@
 ---
-status: failed
+status: completed
+summary: Added replace directive for opencontainers/runtime-spec@v1.2.1 in go.mod to fix containerd/oci compilation failure with runtime-spec v1.3.0 under Go 1.26
 container: time-006-fix-tests-and-dod
-dark-factory-version: v0.59.5-dirty
+dark-factory-version: v0.67.3-dirty
 created: "2026-03-20T14:24:31Z"
 queued: "2026-03-20T14:24:31Z"
-started: "2026-03-20T16:45:56Z"
-completed: "2026-03-20T16:49:20Z"
+started: "2026-03-26T19:10:47Z"
+completed: "2026-03-26T19:26:25Z"
 ---
 
 <summary>
