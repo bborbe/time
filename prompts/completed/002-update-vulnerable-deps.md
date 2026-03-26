@@ -1,5 +1,5 @@
 ---
-status: failed
+status: completed
 container: time-002-update-vulnerable-deps
 dark-factory-version: v0.14.1
 created: "2026-03-03T20:07:09Z"
