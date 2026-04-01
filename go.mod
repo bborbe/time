@@ -3,15 +3,19 @@ module github.com/bborbe/time
 go 1.26.1
 
 replace (
+	github.com/anthropics/anthropic-sdk-go => github.com/anthropics/anthropic-sdk-go v1.26.0
+	github.com/charmbracelet/x/cellbuf => github.com/charmbracelet/x/cellbuf v0.0.15
 	github.com/denis-tingaikin/go-header => github.com/denis-tingaikin/go-header v0.5.0
+	github.com/diskfs/go-diskfs => github.com/diskfs/go-diskfs v1.7.0
+	github.com/nunnatsa/ginkgolinter/types => github.com/nunnatsa/ginkgolinter v0.19.1
 	github.com/opencontainers/runtime-spec => github.com/opencontainers/runtime-spec v1.2.0
 )
 
 require (
-	github.com/bborbe/collection v1.20.7
-	github.com/bborbe/errors v1.5.8
-	github.com/bborbe/parse v1.10.8
-	github.com/bborbe/validation v1.4.9
+	github.com/bborbe/collection v1.20.8
+	github.com/bborbe/errors v1.5.9
+	github.com/bborbe/parse v1.10.9
+	github.com/bborbe/validation v1.4.10
 	github.com/golang/glog v1.2.5
 	github.com/golangci/golangci-lint/v2 v2.11.4
 	github.com/google/addlicense v1.2.0

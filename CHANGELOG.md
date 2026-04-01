@@ -8,6 +8,13 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.25.8
+
+- bump bborbe/collection to v1.20.8
+- bump bborbe/errors to v1.5.9
+- bump bborbe/parse to v1.10.9
+- bump bborbe/validation to v1.4.10
+
 ## v1.25.7
 
 - bump go-crypto, containerd, docker, go-git, moby/buildkit, otel deps
