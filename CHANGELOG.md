@@ -8,6 +8,11 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.25.7
+
+- bump go-crypto, containerd, docker, go-git, moby/buildkit, otel deps
+- add replace directives for denis-tingaikin/go-header and opencontainers/runtime-spec
+
 ## v1.25.6
 
 - Remove golang.org/x/lint direct dependency (moved to indirect)
