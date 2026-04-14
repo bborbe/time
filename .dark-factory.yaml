@@ -1,3 +1,7 @@
 pr: false
 worktree: false
 autoRelease: true
+
+extraMounts:
+  - src: ${GOPATH}/pkg
+    dst: /home/node/go/pkg

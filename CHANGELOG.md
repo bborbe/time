@@ -8,6 +8,14 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.25.9
+
+- Bump bborbe/* dependencies (collection, errors, parse, validation)
+- Bump golang.org/x/* dependencies (crypto, net, sys, tools, etc.)
+- Bump counterfeiter v6.12.2, sentry-go v0.45.0
+- Update Go toolchain to 1.26.2
+- Add extraMounts to dark-factory config
+
 ## v1.25.8
 
 - bump bborbe/collection to v1.20.8
