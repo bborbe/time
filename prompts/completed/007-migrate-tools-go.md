@@ -1,11 +1,12 @@
 ---
-status: committing
+status: completed
 summary: Migrated bborbe/time from tools.go to tools.env + Makefile @version pattern; go.mod reduced from 450 lines to 42 lines with no replace block.
 container: time-007-migrate-tools-go
 dark-factory-version: dev
 created: "2026-04-30T20:02:45Z"
 queued: "2026-04-30T20:02:45Z"
 started: "2026-04-30T20:02:46Z"
+completed: "2026-04-30T20:06:51Z"
 ---
 
 # Migrate from tools.go to tools.env + Makefile @version pattern
