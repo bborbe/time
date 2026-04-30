@@ -5,6 +5,7 @@
 /.update-logs/
 /.mcp-*
 /.dark-factory.lock
+/.dark-factory.log
 /prompts/log
 /.idea
 .idea/
