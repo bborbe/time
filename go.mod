@@ -12,10 +12,10 @@ replace (
 )
 
 require (
-	github.com/bborbe/collection v1.20.9
-	github.com/bborbe/errors v1.5.10
-	github.com/bborbe/parse v1.10.10
-	github.com/bborbe/validation v1.4.11
+	github.com/bborbe/collection v1.20.11
+	github.com/bborbe/errors v1.5.11
+	github.com/bborbe/parse v1.10.11
+	github.com/bborbe/validation v1.4.12
 	github.com/golang/glog v1.2.5
 	github.com/golangci/golangci-lint/v2 v2.11.4
 	github.com/google/addlicense v1.2.0
@@ -23,8 +23,8 @@ require (
 	github.com/incu6us/goimports-reviser/v3 v3.12.6
 	github.com/kisielk/errcheck v1.10.0
 	github.com/maxbrunsfeld/counterfeiter/v6 v6.12.2
-	github.com/onsi/ginkgo/v2 v2.28.1
-	github.com/onsi/gomega v1.39.1
+	github.com/onsi/ginkgo/v2 v2.28.3
+	github.com/onsi/gomega v1.40.0
 	github.com/securego/gosec/v2 v2.25.0
 	github.com/segmentio/golines v0.13.0
 	github.com/shoenig/go-modtool v0.7.1
@@ -94,8 +94,8 @@ require (
 	github.com/aymanbagabas/go-osc52/v2 v2.0.1 // indirect
 	github.com/aymerick/douceur v0.2.0 // indirect
 	github.com/bazelbuild/buildtools v0.0.0-20250826111327-4006b543a694 // indirect
-	github.com/bborbe/math v1.3.7 // indirect
-	github.com/bborbe/run v1.9.17 // indirect
+	github.com/bborbe/math v1.3.9 // indirect
+	github.com/bborbe/run v1.9.23 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/bkielbasa/cyclop v1.2.3 // indirect
 	github.com/blizzy78/varnamelen v0.8.0 // indirect
@@ -171,7 +171,7 @@ require (
 	github.com/firefart/nonamedreturns v1.0.6 // indirect
 	github.com/fsnotify/fsnotify v1.9.0 // indirect
 	github.com/fzipp/gocyclo v0.6.0 // indirect
-	github.com/getsentry/sentry-go v0.45.0 // indirect
+	github.com/getsentry/sentry-go v0.46.1 // indirect
 	github.com/ghostiam/protogetter v0.3.20 // indirect
 	github.com/go-critic/go-critic v0.14.3 // indirect
 	github.com/go-errors/errors v1.4.2 // indirect
@@ -211,7 +211,7 @@ require (
 	github.com/google/go-containerregistry v0.20.7 // indirect
 	github.com/google/jsonschema-go v0.4.2 // indirect
 	github.com/google/osv-scalibr v0.4.6-0.20260318175007-ec4239d68fb9 // indirect
-	github.com/google/pprof v0.0.0-20260115054156-294ebfa9ad83 // indirect
+	github.com/google/pprof v0.0.0-20260402051712-545e8a4df936 // indirect
 	github.com/google/s2a-go v0.1.9 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.3.6 // indirect
