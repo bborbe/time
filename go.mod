@@ -1,10 +1,10 @@
 module github.com/bborbe/time
 
-go 1.26.2
+go 1.26.3
 
 require (
-	github.com/bborbe/collection v1.20.11
-	github.com/bborbe/errors v1.5.11
+	github.com/bborbe/collection v1.20.12
+	github.com/bborbe/errors v1.5.13
 	github.com/bborbe/parse v1.10.11
 	github.com/bborbe/validation v1.4.12
 	github.com/golang/glog v1.2.5

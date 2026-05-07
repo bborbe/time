@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.25.11
+
+- Bump Go to 1.26.3
+- Update github.com/bborbe/collection to v1.20.12
+- Update github.com/bborbe/errors to v1.5.13
+
 ## v1.25.10
 
 - chore: Migrate to tools.env + Makefile @version pattern; remove tools.go and obsolete replace block. go.mod reduced from 450 to 42 lines.
