@@ -1,11 +1,12 @@
 ---
-status: committing
+status: completed
 summary: Added Clone and ClonePtr methods to Date and UnixTime types, mirroring the DateTime pattern, with Ginkgo/Gomega tests covering zero, non-zero, and nil receiver cases.
 container: time-008-add-clone-to-date-and-unixtime
 dark-factory-version: v0.156.1-1-g04f3863-dirty
 created: "2026-05-08T16:37:45Z"
 queued: "2026-05-08T16:37:45Z"
 started: "2026-05-08T16:37:58Z"
+completed: "2026-05-08T16:39:55Z"
 ---
 <summary>
 - Adds Clone and ClonePtr methods to the Date type
