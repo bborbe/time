@@ -417,4 +417,31 @@ var _ = Describe("UnixTime", func() {
 			)
 		})
 	})
+	Context("Clone", func() {
+		It("returns zero UnixTime for zero value", func() {
+			var u libtime.UnixTime
+			Expect(u.Clone()).To(Equal(libtime.UnixTime{}))
+		})
+		It("returns equal UnixTime for non-zero value", func() {
+			u := libtime.UnixTimeFromSeconds(1687161394)
+			Expect(u.Clone()).To(Equal(u))
+		})
+	})
+	Context("ClonePtr", func() {
+		It("returns nil for nil receiver", func() {
+			var u *libtime.UnixTime
+			Expect(u.ClonePtr()).To(BeNil())
+		})
+		It("returns non-nil pointer to equal UnixTime for non-nil receiver", func() {
+			u := libtime.UnixTimeFromSeconds(1687161394)
+			result := u.ClonePtr()
+			Expect(result).NotTo(BeNil())
+			Expect(*result).To(Equal(u))
+		})
+		It("returns a different pointer than the receiver", func() {
+			u := libtime.UnixTimeFromSeconds(1687161394)
+			result := u.ClonePtr()
+			Expect(result).NotTo(BeIdenticalTo(&u))
+		})
+	})
 })

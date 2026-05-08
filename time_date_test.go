@@ -774,4 +774,31 @@ var _ = Describe("Date", func() {
 			})
 		})
 	})
+	Context("Clone", func() {
+		It("returns zero Date for zero value", func() {
+			var d libtime.Date
+			Expect(d.Clone()).To(Equal(libtime.Date{}))
+		})
+		It("returns equal Date for non-zero value", func() {
+			d := ParseDate("2023-06-19")
+			Expect(d.Clone()).To(Equal(d))
+		})
+	})
+	Context("ClonePtr", func() {
+		It("returns nil for nil receiver", func() {
+			var d *libtime.Date
+			Expect(d.ClonePtr()).To(BeNil())
+		})
+		It("returns non-nil pointer to equal Date for non-nil receiver", func() {
+			d := ParseDate("2023-06-19")
+			result := d.ClonePtr()
+			Expect(result).NotTo(BeNil())
+			Expect(*result).To(Equal(d))
+		})
+		It("returns a different pointer than the receiver", func() {
+			d := ParseDate("2023-06-19")
+			result := d.ClonePtr()
+			Expect(result).NotTo(BeIdenticalTo(&d))
+		})
+	})
 })

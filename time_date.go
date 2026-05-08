@@ -111,6 +111,17 @@ func (d Date) Ptr() *Date {
 	return &d
 }
 
+func (d Date) Clone() Date {
+	return d
+}
+
+func (d *Date) ClonePtr() *Date {
+	if d == nil {
+		return nil
+	}
+	return d.Clone().Ptr()
+}
+
 func (d *Date) UnmarshalJSON(b []byte) error {
 	str := strings.Trim(string(b), `"`)
 	if len(str) == 0 || str == "null" {

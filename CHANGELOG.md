@@ -2,6 +2,10 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.26.0
+
+- feat: add Clone and ClonePtr methods to Date and UnixTime types
+
 ## v1.25.12
 
 - bump github.com/bborbe/parse v1.10.11 → v1.10.12

@@ -160,6 +160,17 @@ func (u UnixTime) Ptr() *UnixTime {
 	return &u
 }
 
+func (u UnixTime) Clone() UnixTime {
+	return u
+}
+
+func (u *UnixTime) ClonePtr() *UnixTime {
+	if u == nil {
+		return nil
+	}
+	return u.Clone().Ptr()
+}
+
 func (u *UnixTime) UnmarshalJSON(b []byte) error {
 	str := strings.Trim(string(b), `"`)
 	n, err := strconv.ParseInt(str, 10, 64)
