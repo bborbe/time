@@ -1,10 +1,11 @@
 ---
-status: generating
+status: prompted
 tags:
     - dark-factory
     - spec
 approved: "2026-05-08T16:37:45Z"
 generating: "2026-05-08T16:37:57Z"
+prompted: "2026-05-08T16:40:25Z"
 branch: dark-factory/add-date-or-datetime-type
 ---
 

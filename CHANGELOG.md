@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file.
 
+Please choose versions by [Semantic Versioning](http://semver.org/).
+
+* MAJOR version when you make incompatible API changes,
+* MINOR version when you add functionality in a backwards-compatible manner, and
+* PATCH version when you make backwards-compatible bug fixes.
+
+## v1.27.0
+
+- feat: add DateOrDateTime type accepting both date-only and RFC3339 input, serializing as YYYY-MM-DD when midnight UTC and as RFC3339Nano otherwise
+
 ## v1.26.0
 
 - feat: add Clone and ClonePtr methods to Date and UnixTime types
@@ -20,12 +30,6 @@ All notable changes to this project will be documented in this file.
 ## v1.25.10
 
 - chore: Migrate to tools.env + Makefile @version pattern; remove tools.go and obsolete replace block. go.mod reduced from 450 to 42 lines.
-
-Please choose versions by [Semantic Versioning](http://semver.org/).
-
-* MAJOR version when you make incompatible API changes,
-* MINOR version when you add functionality in a backwards-compatible manner, and
-* PATCH version when you make backwards-compatible bug fixes.
 
 ## v1.25.9
 
