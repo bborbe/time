@@ -2,6 +2,11 @@
 
 All notable changes to this project will be documented in this file.
 
+## v1.25.12
+
+- bump github.com/bborbe/parse v1.10.11 → v1.10.12
+- bump github.com/bborbe/validation v1.4.12 → v1.4.13
+
 ## v1.25.11
 
 - Bump Go to 1.26.3
