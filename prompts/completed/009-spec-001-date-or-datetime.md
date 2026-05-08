@@ -1,5 +1,5 @@
 ---
-status: committing
+status: completed
 spec: [001-add-date-or-datetime-type]
 summary: Created DateOrDateTime type with full API surface (marshaling, comparison, arithmetic, discriminators) and comprehensive Ginkgo/Gomega tests covering all 40 required scenarios.
 container: time-009-spec-001-date-or-datetime
@@ -7,6 +7,7 @@ dark-factory-version: v0.156.1-1-g04f3863-dirty
 created: "2026-05-08T17:00:00Z"
 queued: "2026-05-08T16:46:32Z"
 started: "2026-05-08T16:46:33Z"
+completed: "2026-05-08T16:50:27Z"
 branch: dark-factory/add-date-or-datetime-type
 ---
 
