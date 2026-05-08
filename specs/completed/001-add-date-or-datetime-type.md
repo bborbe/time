@@ -1,5 +1,5 @@
 ---
-status: verifying
+status: completed
 tags:
     - dark-factory
     - spec
@@ -7,6 +7,7 @@ approved: "2026-05-08T16:37:45Z"
 generating: "2026-05-08T16:37:57Z"
 prompted: "2026-05-08T16:40:25Z"
 verifying: "2026-05-08T16:50:27Z"
+completed: "2026-05-08T18:09:57Z"
 branch: dark-factory/add-date-or-datetime-type
 ---
 
@@ -119,3 +120,16 @@ Expected: format, lint, test, security checks all pass. No changes to existing t
 ## Do-Nothing Option
 
 If we do nothing, vault-cli keeps its private copy and each new consumer either re-implements the type, copies the file, or invents an incompatible variant. Cost grows linearly with the number of consumers (agent, OpenClaw, dark-factory, trading services are all queued up). The library is the right home; deferring only multiplies the migration burden later.
+
+## Verification Result
+
+**Verified:** 2026-05-08T18:09:19Z (HEAD ccb9b68)
+**Binary:** dark-factory v0.156.1-1-g04f3863-dirty (installed)
+**Scenario:** Pure-Go primitive — fresh `make precommit` plus `go test -count=1` against time_date-or-date-time.go in github.com/bborbe/time.
+**Evidence:**
+- `make precommit` end-of-run: gosec 43 files / 0 issues, trivy 0 vulnerabilities, "ready to commit"
+- `go test -count=1 -v .`: `Ran 778 of 778 Specs in 1.593 seconds — SUCCESS! 778 Passed | 0 Failed`
+- `time_date-or-date-time.go:89-91` compile-time `var _ encoding.TextMarshaler = DateOrDateTime{}` and `var _ encoding.TextUnmarshaler = (*DateOrDateTime)(nil)`
+- `time_date-or-date-time_test.go` (699 lines) covers MarshalText/JSON/Binary, UnmarshalText/JSON, midnight-UTC vs RFC3339 round-trip, empty input, IsDateOnly, AsDate, AsDateTime, all date/time component getters incl. zero-value cases, Validate, Clone/ClonePtr, Compare/ComparePtr, Before/After/Equal/EqualPtr, Add/Sub/AddDate/Truncate, ParseDateOrDateTime, JSON struct round-trip
+- `go.mod` direct deps unchanged (collection, errors, parse, validation, glog, ginkgo, gomega, yaml.v3) — no new entries
+**Verdict:** PASS
