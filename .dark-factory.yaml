@@ -1,4 +1,4 @@
-autoRelease: true
+autoRelease: false
 pr: false
 preflightCommand: "make precommit"
 preflightInterval: "8h"
