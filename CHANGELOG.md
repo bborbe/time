@@ -8,6 +8,13 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## v1.27.1
+
+- bump go toolchain to 1.26.4
+- update ginkgo/v2 to v2.29.0 and gomega to v1.41.0
+- update golang.org/x/{net,sys,text} to latest
+- add exclude for cloud.google.com/go v0.26.0
+
 ## v1.27.0
 
 - feat: add DateOrDateTime type accepting both date-only and RFC3339 input, serializing as YYYY-MM-DD when midnight UTC and as RFC3339Nano otherwise

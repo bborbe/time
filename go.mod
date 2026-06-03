@@ -1,6 +1,6 @@
 module github.com/bborbe/time
 
-go 1.26.3
+go 1.26.4
 
 require (
 	github.com/bborbe/collection v1.20.12
@@ -8,8 +8,8 @@ require (
 	github.com/bborbe/parse v1.10.12
 	github.com/bborbe/validation v1.4.13
 	github.com/golang/glog v1.2.5
-	github.com/onsi/ginkgo/v2 v2.28.3
-	github.com/onsi/gomega v1.40.0
+	github.com/onsi/ginkgo/v2 v2.29.0
+	github.com/onsi/gomega v1.41.0
 	gopkg.in/yaml.v3 v3.0.1
 )
 
@@ -39,4 +39,8 @@ require (
 	golang.org/x/text v0.37.0 // indirect
 	golang.org/x/tools v0.44.0 // indirect
 	google.golang.org/protobuf v1.36.11 // indirect
+)
+
+exclude (
+	cloud.google.com/go v0.26.0
 )
