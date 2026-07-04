@@ -3,8 +3,8 @@ module github.com/bborbe/time
 go 1.26.4
 
 require (
-	github.com/bborbe/collection v1.20.13
-	github.com/bborbe/errors v1.5.13
+	github.com/bborbe/collection v1.20.15
+	github.com/bborbe/errors v1.5.15
 	github.com/bborbe/parse v1.10.13
 	github.com/bborbe/validation v1.4.14
 	github.com/golang/glog v1.2.5
@@ -16,7 +16,7 @@ require (
 require (
 	github.com/Masterminds/semver/v3 v3.4.0 // indirect
 	github.com/bborbe/math v1.3.10 // indirect
-	github.com/bborbe/run v1.9.27 // indirect
+	github.com/bborbe/run v1.9.28 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/getsentry/sentry-go v0.46.2 // indirect
