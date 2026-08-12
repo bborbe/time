@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- chore: add the missing root `LICENSE` (BSD-3-Clause, matching the rest of the fleet). The repo is public and had no license file.
+
 ## v1.27.7
 
 - Bump `golang.org/x/text` to v0.39.0 (CVE-2026-56852)
