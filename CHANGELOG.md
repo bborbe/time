@@ -8,7 +8,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## Unreleased
+## v1.27.9
 
 - Update Go to 1.26.6 and update dependencies (golang.org/x/mod v0.40.0 for GOSUMDB/GOPROXY spoofing CVEs)
 
