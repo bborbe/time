@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- Update Go to 1.26.6 and update dependencies (golang.org/x/mod v0.40.0 for GOSUMDB/GOPROXY spoofing CVEs)
+
 ## v1.27.8
 
 - chore: add the missing root `LICENSE` (BSD-3-Clause, matching the rest of the fleet). The repo is public and had no license file.
