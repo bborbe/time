@@ -8,7 +8,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## Unreleased
+## v1.27.10
 
 - chore: Update build tooling for Go 1.27 compatibility (golangci-lint v2.13.1, errcheck v1.20.0, gofmt runs last in `format` target)
 
