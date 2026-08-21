@@ -1,22 +1,22 @@
 module github.com/bborbe/time
 
-go 1.26.6
+go 1.27.0
 
 require (
-	github.com/bborbe/collection v1.20.20
-	github.com/bborbe/errors v1.5.17
-	github.com/bborbe/parse v1.10.19
-	github.com/bborbe/validation v1.4.19
+	github.com/bborbe/collection v1.20.22
+	github.com/bborbe/errors v1.5.19
+	github.com/bborbe/parse v1.10.20
+	github.com/bborbe/validation v1.4.20
 	github.com/golang/glog v1.2.5
-	github.com/onsi/ginkgo/v2 v2.32.0
+	github.com/onsi/ginkgo/v2 v2.32.1
 	github.com/onsi/gomega v1.42.1
 	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0 // indirect
-	github.com/bborbe/math v1.3.18 // indirect
-	github.com/bborbe/run v1.9.34 // indirect
+	github.com/bborbe/math v1.3.20 // indirect
+	github.com/bborbe/run v1.9.36 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
 	github.com/getsentry/sentry-go v0.48.0 // indirect
@@ -40,4 +40,6 @@ require (
 	google.golang.org/protobuf v1.36.12 // indirect
 )
 
-exclude cloud.google.com/go v0.26.0
+exclude (
+	cloud.google.com/go v0.26.0
+)
