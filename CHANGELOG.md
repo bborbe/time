@@ -10,6 +10,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 
 ## v1.27.10
 
+- chore: update Go to 1.27.0 and update dependencies
 - chore: Update build tooling for Go 1.27 compatibility (golangci-lint v2.13.1, errcheck v1.20.0, gofmt runs last in `format` target)
 
 ## v1.27.9
