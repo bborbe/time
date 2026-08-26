@@ -3,10 +3,10 @@ module github.com/bborbe/time
 go 1.27.0
 
 require (
-	github.com/bborbe/collection v1.20.22
-	github.com/bborbe/errors v1.5.20
-	github.com/bborbe/parse v1.10.20
-	github.com/bborbe/validation v1.4.20
+	github.com/bborbe/collection v1.20.24
+	github.com/bborbe/errors v1.5.21
+	github.com/bborbe/parse v1.10.21
+	github.com/bborbe/validation v1.4.23
 	github.com/golang/glog v1.2.5
 	github.com/onsi/ginkgo/v2 v2.32.1
 	github.com/onsi/gomega v1.42.1
@@ -15,7 +15,7 @@ require (
 
 require (
 	github.com/Masterminds/semver/v3 v3.4.0 // indirect
-	github.com/bborbe/math v1.3.21 // indirect
+	github.com/bborbe/math v1.4.7 // indirect
 	github.com/bborbe/run v1.9.37 // indirect
 	github.com/beorn7/perks v1.0.1 // indirect
 	github.com/cespare/xxhash/v2 v2.3.0 // indirect
