@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- chore: update github.com/bborbe/collection to v1.20.25, github.com/bborbe/errors to v1.6.0, github.com/bborbe/parse to v1.11.0, github.com/onsi/gomega to v1.43.0
+
 ## v1.27.11
 
 - chore: update github.com/bborbe/collection to v1.20.24, github.com/bborbe/errors to v1.5.21, github.com/bborbe/parse to v1.10.21, github.com/bborbe/validation to v1.4.23
