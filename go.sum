@@ -1,13 +1,13 @@
 github.com/Masterminds/semver/v3 v3.4.0 h1:Zog+i5UMtVoCU8oKka5P7i9q9HgrJeGzI9SA1Xbatp0=
 github.com/Masterminds/semver/v3 v3.4.0/go.mod h1:4V+yj/TJE1HU9XfppCwVMZq3I84lprf4nC11bSS5beM=
-github.com/bborbe/collection v1.20.25 h1:URU6OUFsNVisdTL5/MYMF7Ss/d1HSRfIGZ2UQuad+iE=
-github.com/bborbe/collection v1.20.25/go.mod h1:tB9tK2mJnqqfcJDtqP+8tIXTFW7LzjPCTmGOYE1llGI=
+github.com/bborbe/collection v1.20.26 h1:C0Spwgh2Y22UXhj7lr9K7wO4R8HA8luOkakFPMlGCxw=
+github.com/bborbe/collection v1.20.26/go.mod h1:FLjguM/PRD6g9tf8fP+wlyFwctMU+iQ8PX3+BBGk7UY=
 github.com/bborbe/errors v1.6.0 h1:gUE7PJpabcOBqgBxhJO5zPyTnbV651qxSoFiTPZMdBE=
 github.com/bborbe/errors v1.6.0/go.mod h1:NL1wqDWqHS08eGme6uL963guOSUlGpmyw+7C0RSfMPo=
 github.com/bborbe/math v1.4.8 h1:KA/7SfaYwIE21f5o/VUIBCijuY+y5vbHX6ACRcmu/v4=
 github.com/bborbe/math v1.4.8/go.mod h1:liwdH+Xg+SricoiOYynfOpkjLlMiHkODpc+SDDNlRRg=
-github.com/bborbe/parse v1.11.0 h1:x/oedoRmY+13lmXvLkL1iCEqvrs0SsaxcvpNw2VxsBI=
-github.com/bborbe/parse v1.11.0/go.mod h1:D+k+5cxQdW0KeBplQs47XNWskC+UQ/hA5XlC65bCPqU=
+github.com/bborbe/parse v1.11.1 h1:kTU3SoDAYoli/6AfrXPKI7LHRKCS2UBlpmrMav6VcxQ=
+github.com/bborbe/parse v1.11.1/go.mod h1:PLld5sA8VKx5tdjjZiILCHBxrTPLSuYFSJ0dGjtXmjk=
 github.com/bborbe/run v1.10.2 h1:0qtUOl2/M9vSBXTKPlyu9Or1bYJk4IppZ7CMHNHlR9g=
 github.com/bborbe/run v1.10.2/go.mod h1:BpfgKGHvcACeiqjOCGBFHQPb0G7/pLPqH5+xcdkejVY=
 github.com/bborbe/validation v1.4.23 h1:pSNFesuedkAhHMWFwm2yz7+Tpsjh7dsTnbJdIhmVrx4=
