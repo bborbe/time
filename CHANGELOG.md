@@ -8,7 +8,7 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
-## Unreleased
+## v1.27.19
 
 - chore: update github.com/bborbe/collection to v1.21.4, github.com/bborbe/errors to v1.6.5, github.com/bborbe/validation to v1.5.6
 
