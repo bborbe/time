@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- chore: update github.com/bborbe/collection to v1.21.6, github.com/bborbe/validation to v1.5.9, github.com/onsi/ginkgo/v2 to v2.34.0
+
 ## v1.27.26
 
 - chore: restate the do-not-merge contract in the gate workflow
