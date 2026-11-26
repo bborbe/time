@@ -8,6 +8,10 @@ Please choose versions by [Semantic Versioning](http://semver.org/).
 * MINOR version when you add functionality in a backwards-compatible manner, and
 * PATCH version when you make backwards-compatible bug fixes.
 
+## Unreleased
+
+- chore: update github.com/bborbe/collection to v1.21.9, github.com/bborbe/errors to v1.7.1, github.com/bborbe/parse to v1.12.8, github.com/bborbe/validation to v1.5.12
+
 ## v1.27.29
 
 - chore: remove 5 stale vulnerability ignores (withdrawn advisory, module absent from go.mod, or version outside the affected range)
